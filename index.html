@@ -2,33 +2,157 @@
 <html lang="no">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Leieting</title>
   <style>
-    body { font-family: sans-serif; max-width: 800px;
-           margin: 0 auto; padding: 20px; }
-    h1 { color: #2c7a4b; }
-    .annonse { border: 1px solid #ddd; border-radius: 8px;
-               padding: 16px; margin: 16px 0; }
-    .pris { font-weight: bold; color: #2c7a4b; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f5f5f0; color: #1a1a1a; }
+
+    header {
+      background: #1a5c3a;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 { color: #fff; font-size: 22px; font-weight: 600; }
+    header p  { color: #a8d5b8; font-size: 14px; }
+
+    .sokebar {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 12px 24px;
+      display: flex;
+      gap: 10px;
+    }
+    .sokebar input {
+      flex: 1;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 14px;
+    }
+
+    main { padding: 24px; max-width: 1000px; margin: 0 auto; }
+
+    .antall { font-size: 13px; color: #888; margin-bottom: 16px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .kort {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .kort-bilde {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+    }
+    .kort-info { padding: 14px; }
+    .kort-info h2 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .kort-info .sted { font-size: 13px; color: #888; margin-bottom: 10px; }
+    .kort-info .pris { font-size: 15px; font-weight: 700; color: #1a5c3a; }
+
+    .knapp {
+      display: block;
+      margin-top: 10px;
+      background: #1a5c3a;
+      color: #fff;
+      text-align: center;
+      padding: 8px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .knapp:hover { background: #144d30; }
   </style>
 </head>
 <body>
 
+<header>
   <h1>Leieting</h1>
-  <p>Lei og lån ting av folk nær deg</p>
+  <p>Lei og lån ting nær deg</p>
+</header>
 
-  <div class="annonse">
-    <h2>Sykkel — trekkhjul</h2>
-    <p>Perfekt for turer. Hentes i Mandal sentrum.</p>
-    <p class="pris">150 kr per dag</p>
-  </div>
+<div class="sokebar">
+  <input type="text" placeholder="Søk etter ting å leie...">
+</div>
 
-  <div class="annonse">
-    <h2>Drill med bits</h2>
-    <p>Bosch-drill med komplett bits-sett.</p>
-    <p class="pris">100 kr per dag</p>
+<main>
+  <p class="antall">6 annonser i nærheten</p>
+
+  <div class="grid">
+
+    <div class="kort">
+      <div class="kort-bilde" style="background:#d4eadc;">🚲</div>
+      <div class="kort-info">
+        <h2>Sykkel — trekkhjul</h2>
+        <p class="sted">📍 Mandal sentrum</p>
+        <p class="pris">150 kr / dag</p>
+        <a href="#" class="knapp">Kontakt utleier</a>
+      </div>
+    </div>
+
+    <div class="kort">
+      <div class="kort-bilde" style="background:#dce8f5;">🔧</div>
+      <div class="kort-info">
+        <h2>Drill med bits</h2>
+        <p class="sted">📍 Mandal sentrum</p>
+        <p class="pris">100 kr / dag</p>
+        <a href="#" class="knapp">Kontakt utleier</a>
+      </div>
+    </div>
+
+    <div class="kort">
+      <div class="kort-bilde" style="background:#f5e8d4;">⛺</div>
+      <div class="kort-info">
+        <h2>Telt — 4 personer</h2>
+        <p class="sted">📍 Mandal</p>
+        <p class="pris">200 kr / dag</p>
+        <a href="#" class="knapp">Kontakt utleier</a>
+      </div>
+    </div>
+
+    <div class="kort">
+      <div class="kort-bilde" style="background:#f0dce8;">📷</div>
+      <div class="kort-info">
+        <h2>Kamera — Canon</h2>
+        <p class="sted">📍 Mandal</p>
+        <p class="pris">250 kr / dag</p>
+        <a href="#" class="knapp">Kontakt utleier</a>
+      </div>
+    </div>
+
+    <div class="kort">
+      <div class="kort-bilde" style="background:#e8f0dc;">🏕️</div>
+      <div class="kort-info">
+        <h2>Luftmadrass — dobbel</h2>
+        <p class="sted">📍 Mandal</p>
+        <p class="pris">80 kr / dag</p>
+        <a href="#" class="knapp">Kontakt utleier</a>
+      </div>
+    </div>
+
+    <div class="kort">
+      <div class="kort-bilde" style="background:#dce8f5;">🛶</div>
+      <div class="kort-info">
+        <h2>Kano med årer</h2>
+        <p class="sted">📍 Mandal</p>
+        <p class="pris">350 kr / dag</p>
+        <a href="#" class="knapp">Kontakt utleier</a>
+      </div>
+    </div>
+
   </div>
+</main>
 
 </body>
 </html>
