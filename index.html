@@ -81,6 +81,41 @@
   <h1>Leieting</h1>
   <p>Lei og lån ting nær deg</p>
 </header>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const { createClient } = supabase;
+  const sb = createClient(
+    'https://pmnhjwbagcgmiejxnmip.supabase.co',
+    'sb_publishable_u1uyzCisxiZB0VuvJrLIQA_oWok2DKH'
+
+  );
+</script>
+
+<div id="innlogging" style="background:#fff;
+  padding:16px 24px; border-bottom:1px solid #e0e0e0;
+  display:flex; gap:10px; align-items:center;">
+  <input id="epost" type="email"
+    placeholder="Din e-post"
+    style="border:1px solid #ccc; border-radius:8px;
+    padding:8px 12px; font-size:14px;">
+  <input id="passord" type="password"
+    placeholder="Passord"
+    style="border:1px solid #ccc; border-radius:8px;
+    padding:8px 12px; font-size:14px;">
+  <button onclick="registrer()"
+    style="background:#1a5c3a; color:#fff;
+    border:none; border-radius:8px;
+    padding:8px 16px; font-size:14px; cursor:pointer;">
+    Registrer
+  </button>
+  <button onclick="loggInn()"
+    style="background:#fff; color:#1a5c3a;
+    border:1px solid #1a5c3a; border-radius:8px;
+    padding:8px 16px; font-size:14px; cursor:pointer;">
+    Logg inn
+  </button>
+  <span id="bruker" style="font-size:13px; color:#888;"></span>
+</div>
 
 <div class="sokebar">
   <input type="text" id="sok"
