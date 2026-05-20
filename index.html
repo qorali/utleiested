@@ -215,5 +215,38 @@ function filtrer() {
   });
 }
 </script>
+<script>
+async function registrer() {
+  const epost =
+    document.getElementById('epost').value;
+  const passord =
+    document.getElementById('passord').value;
+  const { error } = await sb.auth.signUp({
+    email: epost, password: passord
+  });
+  if (error) {
+    alert('Feil: ' + error.message);
+  } else {
+    alert('Sjekk e-posten din for bekreftelse!');
+  }
+}
+
+async function loggInn() {
+  const epost =
+    document.getElementById('epost').value;
+  const passord =
+    document.getElementById('passord').value;
+  const { data, error } =
+    await sb.auth.signInWithPassword({
+      email: epost, password: passord
+    });
+  if (error) {
+    alert('Feil: ' + error.message);
+  } else {
+    document.getElementById('bruker').textContent =
+      'Innlogget: ' + data.user.email;
+  }
+}
+</script>
 </body>
 </html>
