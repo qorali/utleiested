@@ -82,8 +82,17 @@
   <p>Lei og lån ting nær deg</p>
 </header>
 
-<div class="sokebar">
-  <input type="text" placeholder="Søk etter ting å leie...">
+div class="sokebar">
+  <input type="text" id="sok"
+    placeholder="Søk etter ting..."
+    oninput="filtrer()">
+  <select id="kategori" onchange="filtrer()">
+    <option value="">Alle kategorier</option>
+    <option value="sport">Sport og friluft</option>
+    <option value="verktoy">Verktøy</option>
+    <option value="elektronikk">Elektronikk</option>
+    <option value="annet">Annet</option>
+  </select>
 </div>
 
 <main>
@@ -91,7 +100,7 @@
 
   <div class="grid">
 
-    <div class="kort">
+    <div class="kort" data-kategori="sport">
       <div class="kort-bilde" style="background:#d4eadc;">🚲</div>
       <div class="kort-info">
         <h2>Sykkel — trekkhjul</h2>
@@ -101,7 +110,7 @@
       </div>
     </div>
 
-    <div class="kort">
+    <div class="kort" data-kategori="verktoy">
       <div class="kort-bilde" style="background:#dce8f5;">🔧</div>
       <div class="kort-info">
         <h2>Drill med bits</h2>
@@ -111,7 +120,7 @@
       </div>
     </div>
 
-    <div class="kort">
+    <div class="kort" data-kategori="sport">
       <div class="kort-bilde" style="background:#f5e8d4;">⛺</div>
       <div class="kort-info">
         <h2>Telt — 4 personer</h2>
@@ -121,7 +130,7 @@
       </div>
     </div>
 
-    <div class="kort">
+    <div class="kort" data-kategori="elektronikk">
       <div class="kort-bilde" style="background:#f0dce8;">📷</div>
       <div class="kort-info">
         <h2>Kamera — Canon</h2>
@@ -131,7 +140,7 @@
       </div>
     </div>
 
-    <div class="kort">
+    <div class="kort" data-kategori="annet">
       <div class="kort-bilde" style="background:#e8f0dc;">🏕️</div>
       <div class="kort-info">
         <h2>Luftmadrass — dobbel</h2>
@@ -141,7 +150,7 @@
       </div>
     </div>
 
-    <div class="kort">
+    <div class="kort" data-kategori="sport">
       <div class="kort-bilde" style="background:#dce8f5;">🛶</div>
       <div class="kort-info">
         <h2>Kano med årer</h2>
@@ -154,5 +163,22 @@
   </div>
 </main>
 
+<script>
+function filtrer() {
+  const sokeTekst = document.getElementById('sok').value.toLowerCase();
+  const kategori = document.getElementById('kategori').value;
+  const kort = document.querySelectorAll('.kort');
+
+  kort.forEach(k => {
+    const tittel = k.querySelector('h2').textContent.toLowerCase();
+    const kat = k.getAttribute('data-kategori');
+
+    const treffSok = tittel.includes(sokeTekst);
+    const treffKat = kategori === '' || kat === kategori;
+
+    k.style.display = treffSok && treffKat ? 'block' : 'none';
+  });
+}
+</script>
 </body>
 </html>
