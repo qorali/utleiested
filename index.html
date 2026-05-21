@@ -144,9 +144,19 @@
     <option value="elektronikk">Elektronikk</option>
     <option value="annet">Annet</option>
   </select>
-  <input id="a-sted" type="text" placeholder="Sted (f.eks. Mandal sentrum)"
-    style="width:100%; border:1px solid #ccc; border-radius:8px;
-    padding:10px; font-size:14px; margin-bottom:10px;">
+ <input id="a-sted" type="text" placeholder="Sted (f.eks. Mandal sentrum)"
+  style="width:100%; border:1px solid #ccc; border-radius:8px;
+  padding:10px; font-size:14px; margin-bottom:10px;">
+<div style="margin-bottom:10px;">
+  <label style="font-size:13px; color:#555; margin-bottom:6px; display:block;">
+    Bilder (velg opptil 5)
+  </label>
+  <input id="a-bilder" type="file" accept="image/*" multiple
+    style="width:100%; font-size:13px;">
+  <div id="bilde-forhandsvisning"
+    style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+  </div>
+</div>
   <button onclick="publiserAnnonse()"
     style="background:#1a5c3a; color:#fff; border:none;
     border-radius:8px; padding:10px 24px; font-size:14px;
@@ -386,10 +396,28 @@ async function publiserAnnonse() {
   const pris = document.getElementById('a-pris').value;
   const kategori = document.getElementById('a-kategori').value;
   const sted = document.getElementById('a-sted').value;
+  const bilderInput = document.getElementById('a-bilder');
 
   if (!tittel || !pris || !kategori || !sted) {
     alert('Fyll inn alle feltene!');
     return;
+  }
+
+  let bildeUrler = [];
+  if (bilderInput.files.length > 0) {
+    const filer = Array.from(bilderInput.files).slice(0, 5);
+    for (const fil of filer) {
+      const filNavn = Date.now() + '_' + fil.name;
+      const { error } = await sb.storage
+        .from('bilder')
+        .upload(filNavn, fil);
+      if (!error) {
+        const { data } = sb.storage
+          .from('bilder')
+          .getPublicUrl(filNavn);
+        bildeUrler.push(data.publicUrl);
+      }
+    }
   }
 
   const { error } = await sb.from('annonser').insert([{
@@ -398,7 +426,8 @@ async function publiserAnnonse() {
     pris: pris,
     kategori: kategori,
     sted: sted,
-    epost: bruker.data.user.email
+    epost: bruker.data.user.email,
+    bilder: bildeUrler.join(',')
   }]);
 
   if (error) {
@@ -415,19 +444,32 @@ async function hentAnnonser() {
   if (error || !data.length) return;
 
   const grid = document.querySelector('.grid');
-  const nyeKort = data.map(a => `
-    <div class="kort" data-kategori="${a.kategori}">
-      <div class="kort-bilde" style="background:#e8f0dc; font-size:48px;">📦</div>
-      <div class="kort-info">
-        <h2>${a.tittel}</h2>
-        <p class="sted">📍 ${a.sted}</p>
-        <p class="pris">${a.pris}</p>
-        <a href="#" class="knapp"
-          onclick="visSkjema('${a.tittel}'); return false;">
-          Kontakt utleier</a>
+  const nyeKort = data.map(a => {
+    const bilder = a.bilder ? a.bilder.split(',') : [];
+    const bildeSrc = bilder.length > 0
+      ? `<img src="${bilder[0]}" style="width:100%; height:100%; object-fit:cover;">`
+      : '📦';
+    const ekstraBilder = bilder.slice(1).map(b =>
+      `<img src="${b}" style="width:48px; height:48px; object-fit:cover; border-radius:6px;">`
+    ).join('');
+
+    return `
+      <div class="kort" data-kategori="${a.kategori}">
+        <div class="kort-bilde" style="background:#e8f0dc; font-size:48px; padding:0; overflow:hidden;">
+          ${bildeSrc}
+        </div>
+        ${ekstraBilder ? `<div style="display:flex; gap:4px; padding:6px 12px; flex-wrap:wrap;">${ekstraBilder}</div>` : ''}
+        <div class="kort-info">
+          <h2>${a.tittel}</h2>
+          <p class="sted">📍 ${a.sted}</p>
+          <p class="pris">${a.pris}</p>
+          <a href="#" class="knapp"
+            onclick="visSkjema('${a.tittel}'); return false;">
+            Kontakt utleier</a>
+        </div>
       </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 
   grid.innerHTML += nyeKort;
 }
