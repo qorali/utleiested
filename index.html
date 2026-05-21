@@ -6,48 +6,100 @@
   <title>Leieting</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: sans-serif; background: #f5f5f0; color: #1a1a1a; }
+    body { font-family: sans-serif; background: #f5f5f0; color: #1a1a1a; padding-bottom: 70px; }
 
-    header {
+    /* TOPBAR */
+    .topbar {
       background: #1a5c3a;
-      padding: 16px 24px;
+      padding: 14px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
-    header h1 { color: #fff; font-size: 22px; font-weight: 600; }
-    header p  { color: #a8d5b8; font-size: 14px; }
+    .topbar h1 { color: #fff; font-size: 20px; }
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+    .topbar span { color: #a8d5b8; font-size: 13px; }
+    .topbar button {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .topbar button:hover { background: rgba(255,255,255,0.25); }
 
-    .sokebar {
+    /* BOTTOM NAV */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
       background: #fff;
-      border-bottom: 1px solid #e0e0e0;
-      padding: 12px 24px;
+      border-top: 1px solid #e0e0e0;
       display: flex;
-      gap: 10px;
+      z-index: 50;
+    }
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 0;
+      cursor: pointer;
+      color: #888;
+      font-size: 11px;
+      gap: 4px;
+      border: none;
+      background: none;
+    }
+    .nav-item.active { color: #1a5c3a; }
+    .nav-item span { font-size: 22px; }
+
+    /* SIDER */
+    .side { display: none; padding: 16px; max-width: 900px; margin: 0 auto; }
+    .side.aktiv { display: block; }
+
+    /* SØKEBAR */
+    .sokebar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
     }
     .sokebar input {
       flex: 1;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 8px 14px;
+      min-width: 150px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 10px 14px;
       font-size: 14px;
+      background: #fff;
+    }
+    .sokebar select {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 14px;
+      background: #fff;
     }
 
-    main { padding: 24px; max-width: 1000px; margin: 0 auto; }
-
-    .antall { font-size: 13px; color: #888; margin-bottom: 16px; }
-
+    /* GRID */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 14px;
     }
-
     .kort {
       background: #fff;
-      border: 1px solid #e0e0e0;
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
+      border: 1px solid #e8e8e8;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
     }
     .kort-bilde {
       height: 120px;
@@ -55,15 +107,15 @@
       align-items: center;
       justify-content: center;
       font-size: 48px;
+      overflow: hidden;
     }
-    .kort-info { padding: 14px; }
-    .kort-info h2 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-    .kort-info .sted { font-size: 13px; color: #888; margin-bottom: 10px; }
-    .kort-info .pris { font-size: 15px; font-weight: 700; color: #1a5c3a; }
-
+    .kort-bilde img { width: 100%; height: 100%; object-fit: cover; }
+    .kort-info { padding: 12px; }
+    .kort-info h2 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .kort-info .sted { font-size: 12px; color: #888; margin-bottom: 8px; }
+    .kort-info .pris { font-size: 14px; font-weight: 700; color: #1a5c3a; margin-bottom: 8px; }
     .knapp {
       display: block;
-      margin-top: 10px;
       background: #1a5c3a;
       color: #fff;
       text-align: center;
@@ -71,343 +123,384 @@
       border-radius: 8px;
       text-decoration: none;
       font-size: 13px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
     }
     .knapp:hover { background: #144d30; }
-  @media (max-width: 600px) {
-  header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-    padding: 12px 16px;
-  }
+    .knapp.rod { background: #c0392b; }
+    .knapp.rod:hover { background: #a93226; }
 
-  #innlogging {
-    flex-wrap: wrap;
-    padding: 10px 16px;
-    gap: 8px;
-  }
+    /* SEKSJONSTITTEL */
+    .sekstittel {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #1a1a1a;
+    }
 
-  #innlogging input {
-    flex: 1;
-    min-width: 120px;
-  }
+    /* INNLOGGING-SIDE */
+    .innlogging-boks {
+      max-width: 360px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px;
+      border: 1px solid #e8e8e8;
+    }
+    .innlogging-boks h2 { font-size: 20px; margin-bottom: 20px; }
+    .innlogging-boks input {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .innlogging-boks button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+    .btn-green { background: #1a5c3a; color: #fff; }
+    .btn-outline { background: #fff; color: #1a5c3a; border: 1px solid #1a5c3a !important; }
 
-  .sokebar {
-    flex-direction: column;
-    padding: 10px 16px;
-  }
+    /* MODAL */
+    .modal-bg {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 100;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px;
+      width: 92%;
+      max-width: 420px;
+      z-index: 101;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal h2 { font-size: 18px; margin-bottom: 16px; }
+    .modal input, .modal textarea, .modal select {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .modal textarea { height: 80px; }
+    .modal button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
 
-  .sokebar input,
-  .sokebar select {
-    width: 100%;
-  }
+    /* FAB */
+    .fab {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: #1a5c3a;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 49;
+    }
 
-  main {
-    padding: 16px;
-  }
+    /* TOM TILSTAND */
+    .tom {
+      text-align: center;
+      padding: 40px 20px;
+      color: #888;
+    }
+    .tom span { font-size: 48px; display: block; margin-bottom: 12px; }
 
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
-  }
-
-  .kort-bilde {
-    height: 90px;
-  }
-
-  .kort-info h2 {
-    font-size: 13px;
-  }
-
-  .kort-info .pris {
-    font-size: 13px;
-  }
-
-  #booking-skjema,
-  #leggut-skjema {
-    width: 95%;
-    padding: 20px;
-  }
-
-  #legg-ut-knapp {
-    width: 100%;
-    margin-left: 0 !important;
-    margin-top: 8px;
-  }
-}
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .kort-bilde { height: 100px; }
+    }
   </style>
 </head>
 <body>
 
-<header>
+<div class="topbar">
   <h1>Leieting</h1>
-  <p>Lei og lån ting nær deg</p>
-</header>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  const { createClient } = supabase;
-  const sb = createClient(
-    'https://pmnhjwbagcgmiejxnmip.supabase.co',
-    'sb_publishable_u1uyzCisxiZB0VuvJrLIQA_oWok2DKH'
+  <div class="topbar-right">
+    <span id="topbar-bruker"></span>
+    <button id="topbar-btn" onclick="byttSide('profil')">Logg inn</button>
+  </div>
+</div>
 
-  );
-</script>
+<div class="modal-bg" id="modal-bg" onclick="lukkAlleModaler()"></div>
 
-<div id="innlogging" style="background:#fff;
-  padding:16px 24px; border-bottom:1px solid #e0e0e0;
-  display:flex; gap:10px; align-items:center;">
-  <input id="epost" type="email"
-    placeholder="Din e-post"
-    style="border:1px solid #ccc; border-radius:8px;
-    padding:8px 12px; font-size:14px;">
-  <input id="passord" type="password"
-    placeholder="Passord"
-    style="border:1px solid #ccc; border-radius:8px;
-    padding:8px 12px; font-size:14px;">
-  <button onclick="registrer()"
-    style="background:#1a5c3a; color:#fff;
-    border:none; border-radius:8px;
-    padding:8px 16px; font-size:14px; cursor:pointer;">
-    Registrer
-  </button>
-  <button onclick="loggInn()"
-    style="background:#fff; color:#1a5c3a;
-    border:1px solid #1a5c3a; border-radius:8px;
-    padding:8px 16px; font-size:14px; cursor:pointer;">
-    Logg inn
-  </button>
-  <span id="bruker" style="font-size:13px; color:#888;"></span>
-<button id="legg-ut-knapp" onclick="visLeggUt()"
-  style="display:none; background:#1a5c3a; color:#fff;
-  border:none; border-radius:8px; padding:8px 16px;
-  font-size:14px; cursor:pointer; margin-left:10px;">
-  + Legg ut annonse
-</button>
-<div id="leggut-skjema" style="display:none; position:fixed; top:50%;
-  left:50%; transform:translate(-50%,-50%); background:#fff;
-  border-radius:16px; padding:32px; width:90%; max-width:400px;
-  z-index:101; overflow-y:auto; max-height:90vh;">
-  <h2 style="margin-bottom:16px; font-size:18px;">Legg ut annonse</h2>
-  <input id="a-tittel" type="text" placeholder="Tittel (f.eks. Sykkel — trekkhjul)"
-    style="width:100%; border:1px solid #ccc; border-radius:8px;
-    padding:10px; font-size:14px; margin-bottom:10px;">
-  <textarea id="a-beskrivelse" placeholder="Beskrivelse"
-    style="width:100%; border:1px solid #ccc; border-radius:8px;
-    padding:10px; font-size:14px; margin-bottom:10px; height:80px;"></textarea>
-  <input id="a-pris" type="text" placeholder="Pris (f.eks. 150 kr / dag)"
-    style="width:100%; border:1px solid #ccc; border-radius:8px;
-    padding:10px; font-size:14px; margin-bottom:10px;">
-  <select id="a-kategori"
-    style="width:100%; border:1px solid #ccc; border-radius:8px;
-    padding:10px; font-size:14px; margin-bottom:10px;">
+<!-- BOOKING MODAL -->
+<div class="modal" id="booking-modal">
+  <h2 id="booking-tittel">Send forespørsel</h2>
+  <input id="b-navn" type="text" placeholder="Ditt navn">
+  <input id="b-epost" type="email" placeholder="Din e-post">
+  <input id="b-dato" type="date">
+  <textarea id="b-melding" placeholder="Melding til utleier"></textarea>
+  <button class="btn-green" onclick="sendBooking()">Send forespørsel</button>
+  <button class="btn-outline" style="border:1px solid #ccc; color:#888;" onclick="lukkAlleModaler()">Avbryt</button>
+</div>
+
+<!-- LEGG UT MODAL -->
+<div class="modal" id="leggut-modal">
+  <h2>Legg ut annonse</h2>
+  <input id="a-tittel" type="text" placeholder="Tittel (f.eks. Sykkel — trekkhjul)">
+  <textarea id="a-beskrivelse" placeholder="Beskrivelse"></textarea>
+  <input id="a-pris" type="text" placeholder="Pris (f.eks. 150 kr / dag)">
+  <select id="a-kategori">
     <option value="">Velg kategori</option>
     <option value="sport">Sport og friluft</option>
     <option value="verktoy">Verktøy</option>
     <option value="elektronikk">Elektronikk</option>
     <option value="annet">Annet</option>
   </select>
- <input id="a-sted" type="text" placeholder="Sted (f.eks. Mandal sentrum)"
-  style="width:100%; border:1px solid #ccc; border-radius:8px;
-  padding:10px; font-size:14px; margin-bottom:10px;">
-<div style="margin-bottom:10px;">
-  <label style="font-size:13px; color:#555; margin-bottom:6px; display:block;">
-    Bilder (velg opptil 5)
-  </label>
-  <input id="a-bilder" type="file" accept="image/*" multiple
-    style="width:100%; font-size:13px;">
-  <div id="bilde-forhandsvisning"
-    style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+  <input id="a-sted" type="text" placeholder="Sted (f.eks. Mandal sentrum)">
+  <div style="margin-bottom:10px;">
+    <label style="font-size:13px; color:#555; margin-bottom:6px; display:block;">Bilder (velg opptil 5)</label>
+    <input id="a-bilder" type="file" accept="image/*" multiple style="font-size:13px;">
   </div>
-</div>
-  <button onclick="publiserAnnonse()"
-    style="background:#1a5c3a; color:#fff; border:none;
-    border-radius:8px; padding:10px 24px; font-size:14px;
-    cursor:pointer; width:100%;">Publiser annonse</button>
-  <button onclick="lukkLeggUt()"
-    style="background:none; border:none; color:#888;
-    font-size:13px; margin-top:10px; cursor:pointer; width:100%;">
-    Avbryt</button>
-</div>
+  <button class="btn-green" onclick="publiserAnnonse()">Publiser annonse</button>
+  <button style="background:none; border:none; color:#888; font-size:13px; cursor:pointer;" onclick="lukkAlleModaler()">Avbryt</button>
 </div>
 
-<div class="sokebar">
-  <input type="text" id="sok"
-    placeholder="Søk etter ting..."
-    oninput="filtrer()">
-  <select id="kategori" onchange="filtrer()">
-    <option value="">Alle kategorier</option>
-    <option value="sport">Sport og friluft</option>
-    <option value="verktoy">Verktøy</option>
-    <option value="elektronikk">Elektronikk</option>
-    <option value="annet">Annet</option>
-  </select>
-</div>
+<!-- FAB KNAPP -->
+<button class="fab" id="fab" onclick="visLeggUt()">+</button>
 
-<main>
-  <p class="antall">6 annonser i nærheten</p>
-
-  <div class="grid">
-
+<!-- UTFORSK SIDE -->
+<div class="side aktiv" id="side-utforsk">
+  <div class="sokebar">
+    <input type="text" id="sok" placeholder="Søk etter ting..." oninput="filtrer()">
+    <select id="kategori" onchange="filtrer()">
+      <option value="">Alle kategorier</option>
+      <option value="sport">Sport og friluft</option>
+      <option value="verktoy">Verktøy</option>
+      <option value="elektronikk">Elektronikk</option>
+      <option value="annet">Annet</option>
+    </select>
+  </div>
+  <div class="grid" id="utforsk-grid">
+    <!-- Faste annonser -->
     <div class="kort" data-kategori="sport">
       <div class="kort-bilde" style="background:#d4eadc;">🚲</div>
       <div class="kort-info">
         <h2>Sykkel — trekkhjul</h2>
         <p class="sted">📍 Mandal sentrum</p>
         <p class="pris">150 kr / dag</p>
-        <a href="#" class="knapp" onclick="visSkjema('Sykkel — trekkhjul'); return false;">Kontakt utleier</a>
+        <a href="#" class="knapp" onclick="visBooking('Sykkel — trekkhjul'); return false;">Kontakt utleier</a>
       </div>
     </div>
-
     <div class="kort" data-kategori="verktoy">
       <div class="kort-bilde" style="background:#dce8f5;">🔧</div>
       <div class="kort-info">
         <h2>Drill med bits</h2>
         <p class="sted">📍 Mandal sentrum</p>
         <p class="pris">100 kr / dag</p>
-        <a href="#" class="knapp" onclick="visSkjema('Drill med blits'); return false;">Kontakt utleier</a>
+        <a href="#" class="knapp" onclick="visBooking('Drill med bits'); return false;">Kontakt utleier</a>
       </div>
     </div>
-
     <div class="kort" data-kategori="sport">
       <div class="kort-bilde" style="background:#f5e8d4;">⛺</div>
       <div class="kort-info">
         <h2>Telt — 4 personer</h2>
         <p class="sted">📍 Mandal</p>
         <p class="pris">200 kr / dag</p>
-        <a href="#" class="knapp" onclick="visSkjema('Telt - 4 personer'); return false;">Kontakt utleier</a>
+        <a href="#" class="knapp" onclick="visBooking('Telt — 4 personer'); return false;">Kontakt utleier</a>
       </div>
     </div>
-
     <div class="kort" data-kategori="elektronikk">
       <div class="kort-bilde" style="background:#f0dce8;">📷</div>
       <div class="kort-info">
         <h2>Kamera — Canon</h2>
         <p class="sted">📍 Mandal</p>
         <p class="pris">250 kr / dag</p>
-        <a href="#" class="knapp" onclick="visSkjema('Kamera - Canon'); return false;">Kontakt utleier</a>
+        <a href="#" class="knapp" onclick="visBooking('Kamera — Canon'); return false;">Kontakt utleier</a>
       </div>
     </div>
-
     <div class="kort" data-kategori="annet">
       <div class="kort-bilde" style="background:#e8f0dc;">🏕️</div>
       <div class="kort-info">
         <h2>Luftmadrass — dobbel</h2>
         <p class="sted">📍 Mandal</p>
         <p class="pris">80 kr / dag</p>
-        <a href="#" class="knapp" onclick="visSkjema('Luftmadrass - Dobbel'); return false;">Kontakt utleier</a>
+        <a href="#" class="knapp" onclick="visBooking('Luftmadrass — dobbel'); return false;">Kontakt utleier</a>
       </div>
     </div>
-
     <div class="kort" data-kategori="sport">
       <div class="kort-bilde" style="background:#dce8f5;">🛶</div>
       <div class="kort-info">
         <h2>Kano med årer</h2>
         <p class="sted">📍 Mandal</p>
         <p class="pris">350 kr / dag</p>
-        <a href="#" class="knapp" onclick="visSkjema('Kano med årer'); return false;">Kontakt utleier</a>
+        <a href="#" class="knapp" onclick="visBooking('Kano med årer'); return false;">Kontakt utleier</a>
       </div>
     </div>
-
   </div>
-</main>
+</div>
 
+<!-- FOR DEG SIDE -->
+<div class="side" id="side-fordeg">
+  <p class="sekstittel">For deg</p>
+  <div class="grid" id="fordeg-grid"></div>
+</div>
+
+<!-- MINE ANNONSER SIDE -->
+<div class="side" id="side-mine">
+  <p class="sekstittel">Mine annonser</p>
+  <div id="mine-grid"></div>
+</div>
+
+<!-- PROFIL SIDE -->
+<div class="side" id="side-profil">
+  <div class="innlogging-boks">
+    <h2 id="profil-tittel">Logg inn</h2>
+    <div id="profil-innlogging">
+      <input id="epost" type="email" placeholder="E-post">
+      <input id="passord" type="password" placeholder="Passord (min. 6 tegn)">
+      <button class="btn-green" onclick="loggInn()">Logg inn</button>
+      <button class="btn-outline" onclick="registrer()">Registrer deg</button>
+    </div>
+    <div id="profil-logget-inn" style="display:none;">
+      <p style="font-size:14px; color:#555; margin-bottom:16px;" id="profil-epost"></p>
+      <button class="btn-outline" onclick="loggUt()">Logg ut</button>
+    </div>
+  </div>
+</div>
+
+<!-- BUNN-NAVIGASJON -->
+<nav class="bottom-nav">
+  <button class="nav-item active" id="nav-utforsk" onclick="byttSide('utforsk')">
+    <span>🔍</span>Utforsk
+  </button>
+  <button class="nav-item" id="nav-fordeg" onclick="byttSide('fordeg')">
+    <span>⭐</span>For deg
+  </button>
+  <button class="nav-item" id="nav-mine" onclick="byttSide('mine')">
+    <span>📋</span>Mine
+  </button>
+  <button class="nav-item" id="nav-profil" onclick="byttSide('profil')">
+    <span>👤</span>Profil
+  </button>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-function filtrer() {
-  const sokeTekst = document.getElementById('sok').value.toLowerCase();
-  const kategori = document.getElementById('kategori').value;
-  const kort = document.querySelectorAll('.kort');
+const { createClient } = supabase;
+const sb = createClient(
+  'https://pmnhjwbagcgmiejxnmip.supabase.co',
+  'sb_publishable_u1uyzCisxiZB0VuvJrLIQA_oWok2DKH'
+);
 
-  kort.forEach(k => {
-    const tittel = k.querySelector('h2').textContent.toLowerCase();
-    const kat = k.getAttribute('data-kategori');
+let aktivSide = 'utforsk';
+let innloggetBruker = null;
+let valgtTing = '';
 
-    const treffSok = tittel.includes(sokeTekst);
-    const treffKat = kategori === '' || kat === kategori;
+// NAVIGASJON
+function byttSide(side) {
+  document.querySelectorAll('.side').forEach(s => s.classList.remove('aktiv'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('side-' + side).classList.add('aktiv');
+  document.getElementById('nav-' + side).classList.add('active');
+  aktivSide = side;
 
-    k.style.display = treffSok && treffKat ? 'block' : 'none';
-  });
+  const fab = document.getElementById('fab');
+  fab.style.display = innloggetBruker && side === 'utforsk' ? 'flex' : 'none';
+
+  if (side === 'mine') hentMineAnnonser();
+  if (side === 'fordeg') hentForDeg();
 }
-</script>
-<script>
+
+// INNLOGGING
 async function registrer() {
-  const epost =
-    document.getElementById('epost').value;
-  const passord =
-    document.getElementById('passord').value;
-  const { error } = await sb.auth.signUp({
-    email: epost, password: passord
-  });
-  if (error) {
-    alert('Feil: ' + error.message);
-  } else {
-    alert('Sjekk e-posten din for bekreftelse!');
-  }
+  const epost = document.getElementById('epost').value;
+  const passord = document.getElementById('passord').value;
+  const { error } = await sb.auth.signUp({ email: epost, password: passord });
+  if (error) alert('Feil: ' + error.message);
+  else alert('Sjekk e-posten din for bekreftelse!');
 }
 
 async function loggInn() {
-  const epost =
-    document.getElementById('epost').value;
-  const passord =
-    document.getElementById('passord').value;
-  const { data, error } =
-    await sb.auth.signInWithPassword({
-      email: epost, password: passord
-    });
-  if (error) {
-    alert('Feil: ' + error.message);
+  const epost = document.getElementById('epost').value;
+  const passord = document.getElementById('passord').value;
+  const { data, error } = await sb.auth.signInWithPassword({ email: epost, password: passord });
+  if (error) alert('Feil: ' + error.message);
+  else oppdaterBruker(data.user);
+}
+
+async function loggUt() {
+  await sb.auth.signOut();
+  innloggetBruker = null;
+  oppdaterBrukerUI(null);
+  byttSide('utforsk');
+}
+
+function oppdaterBruker(bruker) {
+  innloggetBruker = bruker;
+  oppdaterBrukerUI(bruker);
+  byttSide('utforsk');
+}
+
+function oppdaterBrukerUI(bruker) {
+  const topbarBruker = document.getElementById('topbar-bruker');
+  const topbarBtn = document.getElementById('topbar-btn');
+  const profilInnlogging = document.getElementById('profil-innlogging');
+  const profilLoggetInn = document.getElementById('profil-logget-inn');
+  const profilTittel = document.getElementById('profil-tittel');
+  const fab = document.getElementById('fab');
+
+  if (bruker) {
+    topbarBruker.textContent = bruker.email.split('@')[0];
+    topbarBtn.textContent = 'Logg ut';
+    topbarBtn.onclick = loggUt;
+    profilInnlogging.style.display = 'none';
+    profilLoggetInn.style.display = 'block';
+    profilTittel.textContent = 'Min profil';
+    document.getElementById('profil-epost').textContent = '📧 ' + bruker.email;
+    fab.style.display = aktivSide === 'utforsk' ? 'flex' : 'none';
   } else {
-    document.getElementById('bruker').textContent =
-  'Innlogget: ' + data.user.email;
-document.getElementById('legg-ut-knapp').style.display = 'block';
+    topbarBruker.textContent = '';
+    topbarBtn.textContent = 'Logg inn';
+    topbarBtn.onclick = () => byttSide('profil');
+    profilInnlogging.style.display = 'block';
+    profilLoggetInn.style.display = 'none';
+    profilTittel.textContent = 'Logg inn';
+    fab.style.display = 'none';
   }
 }
-</script>
-<div id="skjema-bakgrunn" style="display:none; position:fixed; top:0; left:0;
-  width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:100;"
-  onclick="lukkSkjema()">
-</div>
 
-<div id="booking-skjema" style="display:none; position:fixed; top:50%;
-  left:50%; transform:translate(-50%,-50%); background:#fff;
-  border-radius:16px; padding:32px; width:90%; max-width:400px;
-  z-index:101;">
-  <h2 id="skjema-tittel" style="margin-bottom:16px; font-size:18px;"></h2>
-  <input id="b-navn" type="text" placeholder="Ditt navn"
-    style="width:100%; border:1px solid #ccc; border-radius:8px;
-    padding:10px; font-size:14px; margin-bottom:10px;"><br>
-  <input id="b-epost" type="email" placeholder="Din e-post"
-    style="width:100%; border:1px solid #ccc; border-radius:8px;
-    padding:10px; font-size:14px; margin-bottom:10px;"><br>
-  <input id="b-dato" type="date"
-    style="width:100%; border:1px solid #ccc; border-radius:8px;
-    padding:10px; font-size:14px; margin-bottom:10px;"><br>
-  <textarea id="b-melding" placeholder="Melding til utleier"
-    style="width:100%; border:1px solid #ccc; border-radius:8px;
-    padding:10px; font-size:14px; margin-bottom:10px;
-    height:80px;"></textarea><br>
-  <button onclick="sendBooking()"
-    style="background:#1a5c3a; color:#fff; border:none;
-    border-radius:8px; padding:10px 24px; font-size:14px;
-    cursor:pointer; width:100%;">Send forespørsel</button>
-  <button onclick="lukkSkjema()"
-    style="background:none; border:none; color:#888;
-    font-size:13px; margin-top:10px; cursor:pointer; width:100%;">
-    Avbryt</button>
-</div>
-
-<script>
-let valgtTing = '';
-
-function visSkjema(ting) {
+// BOOKING
+function visBooking(ting) {
   valgtTing = ting;
-  document.getElementById('skjema-tittel').textContent = 'Leie: ' + ting;
-  document.getElementById('skjema-bakgrunn').style.display = 'block';
-  document.getElementById('booking-skjema').style.display = 'block';
-}
-
-function lukkSkjema() {
-  document.getElementById('skjema-bakgrunn').style.display = 'none';
-  document.getElementById('booking-skjema').style.display = 'none';
+  document.getElementById('booking-tittel').textContent = 'Leie: ' + ting;
+  document.getElementById('modal-bg').style.display = 'block';
+  document.getElementById('booking-modal').style.display = 'block';
 }
 
 async function sendBooking() {
@@ -415,127 +508,134 @@ async function sendBooking() {
   const epost = document.getElementById('b-epost').value;
   const dato = document.getElementById('b-dato').value;
   const melding = document.getElementById('b-melding').value;
-
-  if (!navn || !epost || !dato) {
-    alert('Fyll inn navn, e-post og dato!');
-    return;
-  }
-
-  const { error } = await sb.from('bookinger').insert([{
-    navn: navn,
-    epost: epost,
-    ting: valgtTing,
-    dato: dato,
-    melding: melding
-  }]);
-
-  if (error) {
-    alert('Noe gikk galt: ' + error.message);
-  } else {
-    alert('Forespørsel sendt! Vi tar kontakt snart.');
-    lukkSkjema();
-  }
+  if (!navn || !epost || !dato) { alert('Fyll inn navn, e-post og dato!'); return; }
+  const { error } = await sb.from('bookinger').insert([{ navn, epost, ting: valgtTing, dato, melding }]);
+  if (error) alert('Feil: ' + error.message);
+  else { alert('Forespørsel sendt!'); lukkAlleModaler(); }
 }
+
+// LEGG UT ANNONSE
 function visLeggUt() {
-  document.getElementById('skjema-bakgrunn').style.display = 'block';
-  document.getElementById('leggut-skjema').style.display = 'block';
-}
-
-function lukkLeggUt() {
-  document.getElementById('skjema-bakgrunn').style.display = 'none';
-  document.getElementById('leggut-skjema').style.display = 'none';
+  if (!innloggetBruker) { alert('Du må logge inn først!'); byttSide('profil'); return; }
+  document.getElementById('modal-bg').style.display = 'block';
+  document.getElementById('leggut-modal').style.display = 'block';
 }
 
 async function publiserAnnonse() {
-  const bruker = await sb.auth.getUser();
-  if (!bruker.data.user) {
-    alert('Du må være innlogget for å legge ut annonse!');
-    return;
-  }
-
   const tittel = document.getElementById('a-tittel').value;
   const beskrivelse = document.getElementById('a-beskrivelse').value;
   const pris = document.getElementById('a-pris').value;
   const kategori = document.getElementById('a-kategori').value;
   const sted = document.getElementById('a-sted').value;
   const bilderInput = document.getElementById('a-bilder');
-
-  if (!tittel || !pris || !kategori || !sted) {
-    alert('Fyll inn alle feltene!');
-    return;
-  }
+  if (!tittel || !pris || !kategori || !sted) { alert('Fyll inn alle feltene!'); return; }
 
   let bildeUrler = [];
   if (bilderInput.files.length > 0) {
     const filer = Array.from(bilderInput.files).slice(0, 5);
     for (const fil of filer) {
       const filNavn = Date.now() + '_' + fil.name;
-      const { error } = await sb.storage
-        .from('bilder')
-        .upload(filNavn, fil);
+      const { error } = await sb.storage.from('bilder').upload(filNavn, fil);
       if (!error) {
-        const { data } = sb.storage
-          .from('bilder')
-          .getPublicUrl(filNavn);
+        const { data } = sb.storage.from('bilder').getPublicUrl(filNavn);
         bildeUrler.push(data.publicUrl);
       }
     }
   }
 
   const { error } = await sb.from('annonser').insert([{
-    tittel: tittel,
-    beskrivelse: beskrivelse,
-    pris: pris,
-    kategori: kategori,
-    sted: sted,
-    epost: bruker.data.user.email,
+    tittel, beskrivelse, pris, kategori, sted,
+    epost: innloggetBruker.email,
     bilder: bildeUrler.join(',')
   }]);
 
-  if (error) {
-    alert('Noe gikk galt: ' + error.message);
-  } else {
-    alert('Annonsen er publisert!');
-    lukkLeggUt();
-    hentAnnonser();
-  }
+  if (error) alert('Feil: ' + error.message);
+  else { alert('Annonsen er publisert!'); lukkAlleModaler(); hentAnnonser(); }
 }
 
+// HENT ANNONSER
 async function hentAnnonser() {
   const { data, error } = await sb.from('annonser').select('*');
-  if (error || !data.length) return;
-
-  const grid = document.querySelector('.grid');
-  const nyeKort = data.map(a => {
-    const bilder = a.bilder ? a.bilder.split(',') : [];
-    const bildeSrc = bilder.length > 0
-      ? `<img src="${bilder[0]}" style="width:100%; height:100%; object-fit:cover;">`
-      : '📦';
-    const ekstraBilder = bilder.slice(1).map(b =>
-      `<img src="${b}" style="width:48px; height:48px; object-fit:cover; border-radius:6px;">`
-    ).join('');
-
-    return `
-      <div class="kort" data-kategori="${a.kategori}">
-        <div class="kort-bilde" style="background:#e8f0dc; font-size:48px; padding:0; overflow:hidden;">
-          ${bildeSrc}
-        </div>
-        ${ekstraBilder ? `<div style="display:flex; gap:4px; padding:6px 12px; flex-wrap:wrap;">${ekstraBilder}</div>` : ''}
-        <div class="kort-info">
-          <h2>${a.tittel}</h2>
-          <p class="sted">📍 ${a.sted}</p>
-          <p class="pris">${a.pris}</p>
-          <a href="#" class="knapp"
-            onclick="visSkjema('${a.tittel}'); return false;">
-            Kontakt utleier</a>
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  grid.innerHTML += nyeKort;
+  if (error || !data || !data.length) return;
+  const grid = document.getElementById('utforsk-grid');
+  data.forEach(a => grid.innerHTML += lagKort(a, false));
 }
 
+async function hentForDeg() {
+  const grid = document.getElementById('fordeg-grid');
+  grid.innerHTML = '';
+  const { data, error } = await sb.from('annonser').select('*').limit(6);
+  if (error || !data || !data.length) {
+    grid.innerHTML = '<div class="tom"><span>⭐</span>Ingen annonser ennå</div>';
+    return;
+  }
+  data.forEach(a => grid.innerHTML += lagKort(a, false));
+}
+
+async function hentMineAnnonser() {
+  const grid = document.getElementById('mine-grid');
+  grid.innerHTML = '';
+  if (!innloggetBruker) {
+    grid.innerHTML = '<div class="tom"><span>👤</span>Logg inn for å se dine annonser</div>';
+    return;
+  }
+  const { data, error } = await sb.from('annonser').select('*').eq('epost', innloggetBruker.email);
+  if (error || !data || !data.length) {
+    grid.innerHTML = '<div class="tom"><span>📋</span>Du har ingen annonser ennå<br><br><button class="knapp" style="max-width:200px; margin:0 auto;" onclick="byttSide(\'utforsk\')">Legg ut din første</button></div>';
+    return;
+  }
+  grid.innerHTML = '<div class="grid">' + data.map(a => lagKort(a, true)).join('') + '</div>';
+}
+
+async function slettAnnonse(id) {
+  if (!confirm('Er du sikker?')) return;
+  const { error } = await sb.from('annonser').delete().eq('id', id);
+  if (error) alert('Feil: ' + error.message);
+  else { document.getElementById('kort-' + id).remove(); }
+}
+
+function lagKort(a, visSlett) {
+  const bilder = a.bilder ? a.bilder.split(',') : [];
+  const bildeSrc = bilder.length > 0
+    ? `<img src="${bilder[0]}" style="width:100%; height:100%; object-fit:cover;">`
+    : '📦';
+  const slettKnapp = visSlett
+    ? `<button class="knapp rod" style="margin-top:6px;" onclick="slettAnnonse(${a.id})">🗑 Slett</button>`
+    : '';
+  return `
+    <div class="kort" data-kategori="${a.kategori}" id="kort-${a.id}">
+      <div class="kort-bilde" style="background:#e8f0dc;">${bildeSrc}</div>
+      <div class="kort-info">
+        <h2>${a.tittel}</h2>
+        <p class="sted">📍 ${a.sted}</p>
+        <p class="pris">${a.pris}</p>
+        <a href="#" class="knapp" onclick="visBooking('${a.tittel}'); return false;">Kontakt utleier</a>
+        ${slettKnapp}
+      </div>
+    </div>`;
+}
+
+// SØK OG FILTER
+function filtrer() {
+  const sok = document.getElementById('sok').value.toLowerCase();
+  const kat = document.getElementById('kategori').value;
+  document.querySelectorAll('#utforsk-grid .kort').forEach(k => {
+    const tittel = k.querySelector('h2').textContent.toLowerCase();
+    const kategori = k.getAttribute('data-kategori');
+    k.style.display = tittel.includes(sok) && (kat === '' || kategori === kat) ? 'block' : 'none';
+  });
+}
+
+function lukkAlleModaler() {
+  document.getElementById('modal-bg').style.display = 'none';
+  document.getElementById('booking-modal').style.display = 'none';
+  document.getElementById('leggut-modal').style.display = 'none';
+}
+
+// INIT
+sb.auth.getSession().then(({ data }) => {
+  if (data.session) oppdaterBruker(data.session.user);
+});
 hentAnnonser();
 </script>
 </body>
