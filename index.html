@@ -536,13 +536,66 @@ async function hentAnnonser() {
 
 async function hentForDeg() {
   const grid = document.getElementById('fordeg-grid');
-  grid.innerHTML = '';
-  const { data, error } = await sb.from('annonser').select('*').limit(6);
+  grid.innerHTML = '<div class="tom"><span>📍</span>Finner annonser nær deg...</div>';
+
+  const { data, error } = await sb.from('annonser').select('*');
   if (error || !data || !data.length) {
     grid.innerHTML = '<div class="tom"><span>⭐</span>Ingen annonser ennå</div>';
     return;
   }
-  data.forEach(a => grid.innerHTML += lagKort(a, false));
+
+  if (!navigator.geolocation) {
+    grid.innerHTML = '<div class="tom"><span>📍</span>Din nettleser støtter ikke posisjon</div>';
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    async (pos) => {
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+
+      const resp = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
+      );
+      const steds = await resp.json();
+      const by = steds.address.city || steds.address.town || steds.address.village || '';
+
+      grid.innerHTML = '';
+
+      if (by) {
+        const header = document.createElement('p');
+        header.style = 'font-size:13px; color:#888; margin-bottom:12px;';
+        header.textContent = '📍 Viser annonser nær ' + by;
+        grid.appendChild(header);
+      }
+
+      const naere = data.filter(a =>
+        a.sted && by && a.sted.toLowerCase().includes(by.toLowerCase())
+      );
+      const andre = data.filter(a =>
+        !a.sted || !by || !a.sted.toLowerCase().includes(by.toLowerCase())
+      );
+
+      const sortert = [...naere, ...andre];
+
+      if (sortert.length === 0) {
+        grid.innerHTML = '<div class="tom"><span>📍</span>Ingen annonser i nærheten</div>';
+        return;
+      }
+
+      const kortGrid = document.createElement('div');
+      kortGrid.className = 'grid';
+      sortert.forEach(a => kortGrid.innerHTML += lagKort(a, false));
+      grid.appendChild(kortGrid);
+    },
+    () => {
+      grid.innerHTML = '';
+      const kortGrid = document.createElement('div');
+      kortGrid.className = 'grid';
+      data.forEach(a => kortGrid.innerHTML += lagKort(a, false));
+      grid.appendChild(kortGrid);
+    }
+  );
 }
 
 async function hentMineAnnonser() {
