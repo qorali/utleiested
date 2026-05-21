@@ -115,6 +115,47 @@
     Logg inn
   </button>
   <span id="bruker" style="font-size:13px; color:#888;"></span>
+<button id="legg-ut-knapp" onclick="visLeggUt()"
+  style="display:none; background:#1a5c3a; color:#fff;
+  border:none; border-radius:8px; padding:8px 16px;
+  font-size:14px; cursor:pointer; margin-left:10px;">
+  + Legg ut annonse
+</button>
+<div id="leggut-skjema" style="display:none; position:fixed; top:50%;
+  left:50%; transform:translate(-50%,-50%); background:#fff;
+  border-radius:16px; padding:32px; width:90%; max-width:400px;
+  z-index:101; overflow-y:auto; max-height:90vh;">
+  <h2 style="margin-bottom:16px; font-size:18px;">Legg ut annonse</h2>
+  <input id="a-tittel" type="text" placeholder="Tittel (f.eks. Sykkel — trekkhjul)"
+    style="width:100%; border:1px solid #ccc; border-radius:8px;
+    padding:10px; font-size:14px; margin-bottom:10px;">
+  <textarea id="a-beskrivelse" placeholder="Beskrivelse"
+    style="width:100%; border:1px solid #ccc; border-radius:8px;
+    padding:10px; font-size:14px; margin-bottom:10px; height:80px;"></textarea>
+  <input id="a-pris" type="text" placeholder="Pris (f.eks. 150 kr / dag)"
+    style="width:100%; border:1px solid #ccc; border-radius:8px;
+    padding:10px; font-size:14px; margin-bottom:10px;">
+  <select id="a-kategori"
+    style="width:100%; border:1px solid #ccc; border-radius:8px;
+    padding:10px; font-size:14px; margin-bottom:10px;">
+    <option value="">Velg kategori</option>
+    <option value="sport">Sport og friluft</option>
+    <option value="verktoy">Verktøy</option>
+    <option value="elektronikk">Elektronikk</option>
+    <option value="annet">Annet</option>
+  </select>
+  <input id="a-sted" type="text" placeholder="Sted (f.eks. Mandal sentrum)"
+    style="width:100%; border:1px solid #ccc; border-radius:8px;
+    padding:10px; font-size:14px; margin-bottom:10px;">
+  <button onclick="publiserAnnonse()"
+    style="background:#1a5c3a; color:#fff; border:none;
+    border-radius:8px; padding:10px 24px; font-size:14px;
+    cursor:pointer; width:100%;">Publiser annonse</button>
+  <button onclick="lukkLeggUt()"
+    style="background:none; border:none; color:#888;
+    font-size:13px; margin-top:10px; cursor:pointer; width:100%;">
+    Avbryt</button>
+</div>
 </div>
 
 <div class="sokebar">
@@ -244,7 +285,8 @@ async function loggInn() {
     alert('Feil: ' + error.message);
   } else {
     document.getElementById('bruker').textContent =
-      'Innlogget: ' + data.user.email;
+  'Innlogget: ' + data.user.email;
+document.getElementById('legg-ut-knapp').style.display = 'block';
   }
 }
 </script>
@@ -322,6 +364,75 @@ async function sendBooking() {
     lukkSkjema();
   }
 }
+function visLeggUt() {
+  document.getElementById('skjema-bakgrunn').style.display = 'block';
+  document.getElementById('leggut-skjema').style.display = 'block';
+}
+
+function lukkLeggUt() {
+  document.getElementById('skjema-bakgrunn').style.display = 'none';
+  document.getElementById('leggut-skjema').style.display = 'none';
+}
+
+async function publiserAnnonse() {
+  const bruker = await sb.auth.getUser();
+  if (!bruker.data.user) {
+    alert('Du må være innlogget for å legge ut annonse!');
+    return;
+  }
+
+  const tittel = document.getElementById('a-tittel').value;
+  const beskrivelse = document.getElementById('a-beskrivelse').value;
+  const pris = document.getElementById('a-pris').value;
+  const kategori = document.getElementById('a-kategori').value;
+  const sted = document.getElementById('a-sted').value;
+
+  if (!tittel || !pris || !kategori || !sted) {
+    alert('Fyll inn alle feltene!');
+    return;
+  }
+
+  const { error } = await sb.from('annonser').insert([{
+    tittel: tittel,
+    beskrivelse: beskrivelse,
+    pris: pris,
+    kategori: kategori,
+    sted: sted,
+    epost: bruker.data.user.email
+  }]);
+
+  if (error) {
+    alert('Noe gikk galt: ' + error.message);
+  } else {
+    alert('Annonsen er publisert!');
+    lukkLeggUt();
+    hentAnnonser();
+  }
+}
+
+async function hentAnnonser() {
+  const { data, error } = await sb.from('annonser').select('*');
+  if (error || !data.length) return;
+
+  const grid = document.querySelector('.grid');
+  const nyeKort = data.map(a => `
+    <div class="kort" data-kategori="${a.kategori}">
+      <div class="kort-bilde" style="background:#e8f0dc; font-size:48px;">📦</div>
+      <div class="kort-info">
+        <h2>${a.tittel}</h2>
+        <p class="sted">📍 ${a.sted}</p>
+        <p class="pris">${a.pris}</p>
+        <a href="#" class="knapp"
+          onclick="visSkjema('${a.tittel}'); return false;">
+          Kontakt utleier</a>
+      </div>
+    </div>
+  `).join('');
+
+  grid.innerHTML += nyeKort;
+}
+
+hentAnnonser();
 </script>
 </body>
 </html>
