@@ -291,6 +291,24 @@
   <button style="background:none; border:none; color:#888; font-size:13px; cursor:pointer;" onclick="lukkAlleModaler()">Avbryt</button>
 </div>
 
+<!-- REDIGER MODAL -->
+<div class="modal" id="rediger-modal">
+  <h2>Rediger annonse</h2>
+  <input id="r-tittel" type="text" placeholder="Tittel">
+  <textarea id="r-beskrivelse" placeholder="Beskrivelse"></textarea>
+  <input id="r-pris" type="text" placeholder="Pris">
+  <select id="r-kategori">
+    <option value="">Velg kategori</option>
+    <option value="sport">Sport og friluft</option>
+    <option value="verktoy">Verktøy</option>
+    <option value="elektronikk">Elektronikk</option>
+    <option value="annet">Annet</option>
+  </select>
+  <input id="r-sted" type="text" placeholder="Sted">
+  <button class="btn-green" onclick="lagreRedigering()">Lagre endringer</button>
+  <button style="background:none; border:none; color:#888; font-size:13px; cursor:pointer;" onclick="lukkAlleModaler()">Avbryt</button>
+</div>
+
 <!-- FAB KNAPP -->
 <button class="fab" id="fab" onclick="visLeggUt()">+</button>
 
@@ -594,14 +612,42 @@ async function slettAnnonse(id) {
   else { document.getElementById('kort-' + id).remove(); }
 }
 
+let redigerId = null;
+
+function redigerAnnonse(id, tittel, beskrivelse, pris, kategori, sted) {
+  redigerId = id;
+  document.getElementById('r-tittel').value = tittel;
+  document.getElementById('r-beskrivelse').value = beskrivelse;
+  document.getElementById('r-pris').value = pris;
+  document.getElementById('r-kategori').value = kategori;
+  document.getElementById('r-sted').value = sted;
+  document.getElementById('modal-bg').style.display = 'block';
+  document.getElementById('rediger-modal').style.display = 'block';
+}
+
+async function lagreRedigering() {
+  const tittel = document.getElementById('r-tittel').value;
+  const beskrivelse = document.getElementById('r-beskrivelse').value;
+  const pris = document.getElementById('r-pris').value;
+  const kategori = document.getElementById('r-kategori').value;
+  const sted = document.getElementById('r-sted').value;
+  if (!tittel || !pris || !kategori || !sted) { alert('Fyll inn alle feltene!'); return; }
+  const { error } = await sb.from('annonser')
+    .update({ tittel, beskrivelse, pris, kategori, sted })
+    .eq('id', redigerId);
+  if (error) alert('Feil: ' + error.message);
+  else { alert('Annonsen er oppdatert!'); lukkAlleModaler(); hentMineAnnonser(); }
+}
+
 function lagKort(a, visSlett) {
   const bilder = a.bilder ? a.bilder.split(',') : [];
   const bildeSrc = bilder.length > 0
     ? `<img src="${bilder[0]}" style="width:100%; height:100%; object-fit:cover;">`
     : '📦';
-  const slettKnapp = visSlett
-    ? `<button class="knapp rod" style="margin-top:6px;" onclick="slettAnnonse(${a.id})">🗑 Slett</button>`
-    : '';
+  const slettOgRediger = visSlett ? `
+    <button class="knapp" style="margin-top:6px; background:#2471a3;" onclick="redigerAnnonse(${a.id}, '${a.tittel}', '${a.beskrivelse}', '${a.pris}', '${a.kategori}', '${a.sted}')">✏️ Rediger</button>
+    <button class="knapp rod" style="margin-top:6px;" onclick="slettAnnonse(${a.id})">🗑 Slett</button>
+  ` : '';
   return `
     <div class="kort" data-kategori="${a.kategori}" id="kort-${a.id}">
       <div class="kort-bilde" style="background:#e8f0dc;">${bildeSrc}</div>
@@ -610,7 +656,7 @@ function lagKort(a, visSlett) {
         <p class="sted">📍 ${a.sted}</p>
         <p class="pris">${a.pris}</p>
         <a href="#" class="knapp" onclick="visBooking('${a.tittel}'); return false;">Kontakt utleier</a>
-        ${slettKnapp}
+        ${slettOgRediger}
       </div>
     </div>`;
 }
