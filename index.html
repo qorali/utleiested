@@ -8,7 +8,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: sans-serif; background: #f5f5f0; color: #1a1a1a; padding-bottom: 70px; }
 
-    /* TOPBAR */
     .topbar {
       background: #1a5c3a;
       padding: 14px 20px;
@@ -31,14 +30,10 @@
       font-size: 13px;
       cursor: pointer;
     }
-    .topbar button:hover { background: rgba(255,255,255,0.25); }
 
-    /* BOTTOM NAV */
     .bottom-nav {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
       background: #fff;
       border-top: 1px solid #e0e0e0;
       display: flex;
@@ -60,54 +55,34 @@
     .nav-item.active { color: #1a5c3a; }
     .nav-item span { font-size: 22px; }
 
-    /* SIDER */
     .side { display: none; padding: 16px; max-width: 900px; margin: 0 auto; }
     .side.aktiv { display: block; }
 
-    /* SØKEBAR */
-    .sokebar {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-    }
+    .sokebar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
     .sokebar input {
-      flex: 1;
-      min-width: 150px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 14px;
-      background: #fff;
+      flex: 1; min-width: 150px;
+      border: 1px solid #ddd; border-radius: 10px;
+      padding: 10px 14px; font-size: 14px; background: #fff;
     }
     .sokebar select {
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 14px;
-      background: #fff;
+      border: 1px solid #ddd; border-radius: 10px;
+      padding: 10px 14px; font-size: 14px; background: #fff;
     }
 
-    /* GRID */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       gap: 14px;
     }
     .kort {
-      background: #fff;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid #e8e8e8;
+      background: #fff; border-radius: 14px;
+      overflow: hidden; border: 1px solid #e8e8e8;
       box-shadow: 0 1px 4px rgba(0,0,0,0.05);
     }
     .kort-bilde {
       height: 120px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 48px;
-      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 48px; overflow: hidden;
     }
     .kort-bilde img { width: 100%; height: 100%; object-fit: cover; }
     .kort-info { padding: 12px; }
@@ -115,129 +90,68 @@
     .kort-info .sted { font-size: 12px; color: #888; margin-bottom: 8px; }
     .kort-info .pris { font-size: 14px; font-weight: 700; color: #1a5c3a; margin-bottom: 8px; }
     .knapp {
-      display: block;
-      background: #1a5c3a;
-      color: #fff;
-      text-align: center;
-      padding: 8px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 13px;
-      border: none;
-      cursor: pointer;
-      width: 100%;
+      display: block; background: #1a5c3a; color: #fff;
+      text-align: center; padding: 8px; border-radius: 8px;
+      text-decoration: none; font-size: 13px;
+      border: none; cursor: pointer; width: 100%;
     }
     .knapp:hover { background: #144d30; }
     .knapp.rod { background: #c0392b; }
-    .knapp.rod:hover { background: #a93226; }
+    .knapp.bla { background: #2471a3; }
 
-    /* SEKSJONSTITTEL */
-    .sekstittel {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 16px;
-      color: #1a1a1a;
-    }
+    .sekstittel { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
 
-    /* INNLOGGING-SIDE */
     .innlogging-boks {
-      max-width: 360px;
-      margin: 40px auto;
-      background: #fff;
-      border-radius: 16px;
-      padding: 32px;
-      border: 1px solid #e8e8e8;
+      max-width: 360px; margin: 40px auto;
+      background: #fff; border-radius: 16px;
+      padding: 32px; border: 1px solid #e8e8e8;
     }
     .innlogging-boks h2 { font-size: 20px; margin-bottom: 20px; }
     .innlogging-boks input {
-      width: 100%;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 14px;
-      margin-bottom: 10px;
+      width: 100%; border: 1px solid #ddd; border-radius: 10px;
+      padding: 10px 14px; font-size: 14px; margin-bottom: 10px;
     }
     .innlogging-boks button {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      font-size: 14px;
-      cursor: pointer;
-      margin-bottom: 8px;
+      width: 100%; padding: 10px; border-radius: 10px;
+      border: none; font-size: 14px; cursor: pointer; margin-bottom: 8px;
     }
     .btn-green { background: #1a5c3a; color: #fff; }
     .btn-outline { background: #fff; color: #1a5c3a; border: 1px solid #1a5c3a !important; }
 
-    /* MODAL */
     .modal-bg {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 100;
+      display: none; position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); z-index: 100;
     }
     .modal {
-      display: none;
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: #fff;
-      border-radius: 16px;
-      padding: 28px;
-      width: 92%;
-      max-width: 420px;
-      z-index: 101;
-      max-height: 90vh;
-      overflow-y: auto;
+      display: none; position: fixed;
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: #fff; border-radius: 16px; padding: 28px;
+      width: 92%; max-width: 420px; z-index: 101;
+      max-height: 90vh; overflow-y: auto;
     }
     .modal h2 { font-size: 18px; margin-bottom: 16px; }
     .modal input, .modal textarea, .modal select {
-      width: 100%;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 14px;
-      margin-bottom: 10px;
+      width: 100%; border: 1px solid #ddd; border-radius: 10px;
+      padding: 10px 14px; font-size: 14px; margin-bottom: 10px;
     }
     .modal textarea { height: 80px; }
     .modal button {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      font-size: 14px;
-      cursor: pointer;
-      margin-bottom: 8px;
+      width: 100%; padding: 10px; border-radius: 10px;
+      border: none; font-size: 14px; cursor: pointer; margin-bottom: 8px;
     }
 
-    /* FAB */
     .fab {
-      position: fixed;
-      bottom: 80px;
-      right: 20px;
-      background: #1a5c3a;
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 56px;
-      height: 56px;
-      font-size: 28px;
-      cursor: pointer;
+      position: fixed; bottom: 80px; right: 20px;
+      background: #1a5c3a; color: #fff; border: none;
+      border-radius: 50%; width: 56px; height: 56px;
+      font-size: 28px; cursor: pointer;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      display: none;
-      align-items: center;
-      justify-content: center;
+      display: none; align-items: center; justify-content: center;
       z-index: 49;
     }
 
-    /* TOM TILSTAND */
-    .tom {
-      text-align: center;
-      padding: 40px 20px;
-      color: #888;
-    }
+    .tom { text-align: center; padding: 40px 20px; color: #888; }
     .tom span { font-size: 48px; display: block; margin-bottom: 12px; }
 
     @media (max-width: 600px) {
@@ -266,7 +180,7 @@
   <input id="b-dato" type="date">
   <textarea id="b-melding" placeholder="Melding til utleier"></textarea>
   <button class="btn-green" onclick="sendBooking()">Send forespørsel</button>
-  <button class="btn-outline" style="border:1px solid #ccc; color:#888;" onclick="lukkAlleModaler()">Avbryt</button>
+  <button style="background:none; border:1px solid #ccc; color:#888;" onclick="lukkAlleModaler()">Avbryt</button>
 </div>
 
 <!-- LEGG UT MODAL -->
@@ -309,10 +223,10 @@
   <button style="background:none; border:none; color:#888; font-size:13px; cursor:pointer;" onclick="lukkAlleModaler()">Avbryt</button>
 </div>
 
-<!-- FAB KNAPP -->
+<!-- FAB -->
 <button class="fab" id="fab" onclick="visLeggUt()">+</button>
 
-<!-- UTFORSK SIDE -->
+<!-- UTFORSK -->
 <div class="side aktiv" id="side-utforsk">
   <div class="sokebar">
     <input type="text" id="sok" placeholder="Søk etter ting..." oninput="filtrer()">
@@ -325,7 +239,6 @@
     </select>
   </div>
   <div class="grid" id="utforsk-grid">
-    <!-- Faste annonser -->
     <div class="kort" data-kategori="sport">
       <div class="kort-bilde" style="background:#d4eadc;">🚲</div>
       <div class="kort-info">
@@ -383,19 +296,19 @@
   </div>
 </div>
 
-<!-- FOR DEG SIDE -->
+<!-- FOR DEG -->
 <div class="side" id="side-fordeg">
   <p class="sekstittel">For deg</p>
   <div class="grid" id="fordeg-grid"></div>
 </div>
 
-<!-- MINE ANNONSER SIDE -->
+<!-- MINE ANNONSER -->
 <div class="side" id="side-mine">
   <p class="sekstittel">Mine annonser</p>
   <div id="mine-grid"></div>
 </div>
 
-<!-- PROFIL SIDE -->
+<!-- PROFIL -->
 <div class="side" id="side-profil">
   <div class="innlogging-boks">
     <h2 id="profil-tittel">Logg inn</h2>
@@ -412,7 +325,7 @@
   </div>
 </div>
 
-<!-- BUNN-NAVIGASJON -->
+<!-- NAVIGASJON -->
 <nav class="bottom-nav">
   <button class="nav-item active" id="nav-utforsk" onclick="byttSide('utforsk')">
     <span>🔍</span>Utforsk
@@ -439,23 +352,20 @@ const sb = createClient(
 let aktivSide = 'utforsk';
 let innloggetBruker = null;
 let valgtTing = '';
+let redigerId = null;
 
-// NAVIGASJON
 function byttSide(side) {
   document.querySelectorAll('.side').forEach(s => s.classList.remove('aktiv'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('side-' + side).classList.add('aktiv');
   document.getElementById('nav-' + side).classList.add('active');
   aktivSide = side;
-
   const fab = document.getElementById('fab');
   fab.style.display = innloggetBruker && side === 'utforsk' ? 'flex' : 'none';
-
   if (side === 'mine') hentMineAnnonser();
   if (side === 'fordeg') hentForDeg();
 }
 
-// INNLOGGING
 async function registrer() {
   const epost = document.getElementById('epost').value;
   const passord = document.getElementById('passord').value;
@@ -486,34 +396,27 @@ function oppdaterBruker(bruker) {
 }
 
 function oppdaterBrukerUI(bruker) {
-  const topbarBruker = document.getElementById('topbar-bruker');
-  const topbarBtn = document.getElementById('topbar-btn');
-  const profilInnlogging = document.getElementById('profil-innlogging');
-  const profilLoggetInn = document.getElementById('profil-logget-inn');
-  const profilTittel = document.getElementById('profil-tittel');
   const fab = document.getElementById('fab');
-
   if (bruker) {
-    topbarBruker.textContent = bruker.email.split('@')[0];
-    topbarBtn.textContent = 'Logg ut';
-    topbarBtn.onclick = loggUt;
-    profilInnlogging.style.display = 'none';
-    profilLoggetInn.style.display = 'block';
-    profilTittel.textContent = 'Min profil';
+    document.getElementById('topbar-bruker').textContent = bruker.email.split('@')[0];
+    document.getElementById('topbar-btn').textContent = 'Logg ut';
+    document.getElementById('topbar-btn').onclick = loggUt;
+    document.getElementById('profil-innlogging').style.display = 'none';
+    document.getElementById('profil-logget-inn').style.display = 'block';
+    document.getElementById('profil-tittel').textContent = 'Min profil';
     document.getElementById('profil-epost').textContent = '📧 ' + bruker.email;
     fab.style.display = aktivSide === 'utforsk' ? 'flex' : 'none';
   } else {
-    topbarBruker.textContent = '';
-    topbarBtn.textContent = 'Logg inn';
-    topbarBtn.onclick = () => byttSide('profil');
-    profilInnlogging.style.display = 'block';
-    profilLoggetInn.style.display = 'none';
-    profilTittel.textContent = 'Logg inn';
+    document.getElementById('topbar-bruker').textContent = '';
+    document.getElementById('topbar-btn').textContent = 'Logg inn';
+    document.getElementById('topbar-btn').onclick = () => byttSide('profil');
+    document.getElementById('profil-innlogging').style.display = 'block';
+    document.getElementById('profil-logget-inn').style.display = 'none';
+    document.getElementById('profil-tittel').textContent = 'Logg inn';
     fab.style.display = 'none';
   }
 }
 
-// BOOKING
 function visBooking(ting) {
   valgtTing = ting;
   document.getElementById('booking-tittel').textContent = 'Leie: ' + ting;
@@ -532,7 +435,6 @@ async function sendBooking() {
   else { alert('Forespørsel sendt!'); lukkAlleModaler(); }
 }
 
-// LEGG UT ANNONSE
 function visLeggUt() {
   if (!innloggetBruker) { alert('Du må logge inn først!'); byttSide('profil'); return; }
   document.getElementById('modal-bg').style.display = 'block';
@@ -571,7 +473,60 @@ async function publiserAnnonse() {
   else { alert('Annonsen er publisert!'); lukkAlleModaler(); hentAnnonser(); }
 }
 
-// HENT ANNONSER
+function redigerAnnonse(id, tittel, beskrivelse, pris, kategori, sted) {
+  redigerId = id;
+  document.getElementById('r-tittel').value = tittel;
+  document.getElementById('r-beskrivelse').value = beskrivelse || '';
+  document.getElementById('r-pris').value = pris;
+  document.getElementById('r-kategori').value = kategori;
+  document.getElementById('r-sted').value = sted;
+  document.getElementById('modal-bg').style.display = 'block';
+  document.getElementById('rediger-modal').style.display = 'block';
+}
+
+async function lagreRedigering() {
+  const tittel = document.getElementById('r-tittel').value;
+  const beskrivelse = document.getElementById('r-beskrivelse').value;
+  const pris = document.getElementById('r-pris').value;
+  const kategori = document.getElementById('r-kategori').value;
+  const sted = document.getElementById('r-sted').value;
+  if (!tittel || !pris || !kategori || !sted) { alert('Fyll inn alle feltene!'); return; }
+  const { error } = await sb.from('annonser')
+    .update({ tittel, beskrivelse, pris, kategori, sted })
+    .eq('id', redigerId);
+  if (error) alert('Feil: ' + error.message);
+  else { alert('Annonsen er oppdatert!'); lukkAlleModaler(); hentMineAnnonser(); }
+}
+
+async function slettAnnonse(id) {
+  if (!confirm('Er du sikker?')) return;
+  const { error } = await sb.from('annonser').delete().eq('id', id);
+  if (error) alert('Feil: ' + error.message);
+  else document.getElementById('kort-' + id).remove();
+}
+
+function lagKort(a, visSlett) {
+  const bilder = a.bilder ? a.bilder.split(',') : [];
+  const bildeSrc = bilder.length > 0
+    ? `<img src="${bilder[0]}" style="width:100%; height:100%; object-fit:cover;">`
+    : '📦';
+  const knapper = visSlett ? `
+    <button class="knapp bla" style="margin-top:6px;" onclick="redigerAnnonse(${a.id}, '${a.tittel}', '${a.beskrivelse||''}', '${a.pris}', '${a.kategori}', '${a.sted}')">✏️ Rediger</button>
+    <button class="knapp rod" style="margin-top:6px;" onclick="slettAnnonse(${a.id})">🗑 Slett</button>
+  ` : '';
+  return `
+    <div class="kort" data-kategori="${a.kategori}" id="kort-${a.id}">
+      <div class="kort-bilde" style="background:#e8f0dc;">${bildeSrc}</div>
+      <div class="kort-info">
+        <h2>${a.tittel}</h2>
+        <p class="sted">📍 ${a.sted}</p>
+        <p class="pris">${a.pris}</p>
+        <a href="#" class="knapp" onclick="visBooking('${a.tittel}'); return false;">Kontakt utleier</a>
+        ${knapper}
+      </div>
+    </div>`;
+}
+
 async function hentAnnonser() {
   const { data, error } = await sb.from('annonser').select('*');
   if (error || !data || !data.length) return;
@@ -599,69 +554,12 @@ async function hentMineAnnonser() {
   }
   const { data, error } = await sb.from('annonser').select('*').eq('epost', innloggetBruker.email);
   if (error || !data || !data.length) {
-    grid.innerHTML = '<div class="tom"><span>📋</span>Du har ingen annonser ennå<br><br><button class="knapp" style="max-width:200px; margin:0 auto;" onclick="byttSide(\'utforsk\')">Legg ut din første</button></div>';
+    grid.innerHTML = '<div class="tom"><span>📋</span>Du har ingen annonser ennå</div>';
     return;
   }
   grid.innerHTML = '<div class="grid">' + data.map(a => lagKort(a, true)).join('') + '</div>';
 }
 
-async function slettAnnonse(id) {
-  if (!confirm('Er du sikker?')) return;
-  const { error } = await sb.from('annonser').delete().eq('id', id);
-  if (error) alert('Feil: ' + error.message);
-  else { document.getElementById('kort-' + id).remove(); }
-}
-
-let redigerId = null;
-
-function redigerAnnonse(id, tittel, beskrivelse, pris, kategori, sted) {
-  redigerId = id;
-  document.getElementById('r-tittel').value = tittel;
-  document.getElementById('r-beskrivelse').value = beskrivelse;
-  document.getElementById('r-pris').value = pris;
-  document.getElementById('r-kategori').value = kategori;
-  document.getElementById('r-sted').value = sted;
-  document.getElementById('modal-bg').style.display = 'block';
-  document.getElementById('rediger-modal').style.display = 'block';
-}
-
-async function lagreRedigering() {
-  const tittel = document.getElementById('r-tittel').value;
-  const beskrivelse = document.getElementById('r-beskrivelse').value;
-  const pris = document.getElementById('r-pris').value;
-  const kategori = document.getElementById('r-kategori').value;
-  const sted = document.getElementById('r-sted').value;
-  if (!tittel || !pris || !kategori || !sted) { alert('Fyll inn alle feltene!'); return; }
-  const { error } = await sb.from('annonser')
-    .update({ tittel, beskrivelse, pris, kategori, sted })
-    .eq('id', redigerId);
-  if (error) alert('Feil: ' + error.message);
-  else { alert('Annonsen er oppdatert!'); lukkAlleModaler(); hentMineAnnonser(); }
-}
-
-function lagKort(a, visSlett) {
-  const bilder = a.bilder ? a.bilder.split(',') : [];
-  const bildeSrc = bilder.length > 0
-    ? `<img src="${bilder[0]}" style="width:100%; height:100%; object-fit:cover;">`
-    : '📦';
-  const slettOgRediger = visSlett ? `
-    <button class="knapp" style="margin-top:6px; background:#2471a3;" onclick="redigerAnnonse(${a.id}, '${a.tittel}', '${a.beskrivelse}', '${a.pris}', '${a.kategori}', '${a.sted}')">✏️ Rediger</button>
-    <button class="knapp rod" style="margin-top:6px;" onclick="slettAnnonse(${a.id})">🗑 Slett</button>
-  ` : '';
-  return `
-    <div class="kort" data-kategori="${a.kategori}" id="kort-${a.id}">
-      <div class="kort-bilde" style="background:#e8f0dc;">${bildeSrc}</div>
-      <div class="kort-info">
-        <h2>${a.tittel}</h2>
-        <p class="sted">📍 ${a.sted}</p>
-        <p class="pris">${a.pris}</p>
-        <a href="#" class="knapp" onclick="visBooking('${a.tittel}'); return false;">Kontakt utleier</a>
-        ${slettOgRediger}
-      </div>
-    </div>`;
-}
-
-// SØK OG FILTER
 function filtrer() {
   const sok = document.getElementById('sok').value.toLowerCase();
   const kat = document.getElementById('kategori').value;
@@ -679,7 +577,6 @@ function lukkAlleModaler() {
   document.getElementById('rediger-modal').style.display = 'none';
 }
 
-// INIT
 sb.auth.getSession().then(({ data }) => {
   if (data.session) oppdaterBruker(data.session.user);
 });
