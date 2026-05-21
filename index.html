@@ -325,6 +325,21 @@
   </div>
 </div>
 
+<!-- MELDINGER -->
+<div class="side" id="side-meldinger">
+  <p class="sekstittel">Meldinger</p>
+  <div id="samtaler-liste"></div>
+  <div id="chat-boks" style="display:none;">
+    <button onclick="lukkChat()" style="background:none; border:none; color:#1a5c3a; font-size:14px; cursor:pointer; margin-bottom:12px;">← Tilbake</button>
+    <p id="chat-tittel" style="font-size:15px; font-weight:600; margin-bottom:12px;"></p>
+    <div id="chat-meldinger" style="background:#fff; border-radius:12px; padding:16px; min-height:200px; max-height:400px; overflow-y:auto; margin-bottom:12px; border:1px solid #e8e8e8;"></div>
+    <div style="display:flex; gap:8px;">
+      <input id="melding-input" type="text" placeholder="Skriv en melding..." style="flex:1; border:1px solid #ddd; border-radius:10px; padding:10px 14px; font-size:14px;">
+      <button onclick="sendMelding()" style="background:#1a5c3a; color:#fff; border:none; border-radius:10px; padding:10px 16px; font-size:14px; cursor:pointer;">Send</button>
+    </div>
+  </div>
+</div>
+
 <!-- NAVIGASJON -->
 <nav class="bottom-nav">
   <button class="nav-item active" id="nav-utforsk" onclick="byttSide('utforsk')">
@@ -336,9 +351,12 @@
   <button class="nav-item" id="nav-mine" onclick="byttSide('mine')">
     <span>📋</span>Mine
   </button>
-  <button class="nav-item" id="nav-profil" onclick="byttSide('profil')">
-    <span>👤</span>Profil
-  </button>
+  <button class="nav-item" id="nav-meldinger" onclick="byttSide('meldinger')">
+  <span>💬</span>Meldinger
+</button>
+<button class="nav-item" id="nav-profil" onclick="byttSide('profil')">
+  <span>👤</span>Profil
+</button>
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -364,6 +382,7 @@ function byttSide(side) {
   fab.style.display = innloggetBruker && side === 'utforsk' ? 'flex' : 'none';
   if (side === 'mine') hentMineAnnonser();
   if (side === 'fordeg') hentForDeg();
+  if (side === 'meldinger') hentSamtaler();
 }
 
 async function registrer() {
@@ -521,7 +540,7 @@ function lagKort(a, visSlett) {
         <h2>${a.tittel}</h2>
         <p class="sted">📍 ${a.sted}</p>
         <p class="pris">${a.pris}</p>
-        <a href="#" class="knapp" onclick="visBooking('${a.tittel}'); return false;">Kontakt utleier</a>
+        <a href="#" class="knapp" onclick="startChat(${a.id}, '${a.epost}'); return false;">Kontakt utleier</a>
         ${knapper}
       </div>
     </div>`;
@@ -633,6 +652,109 @@ function lukkAlleModaler() {
 sb.auth.getSession().then(({ data }) => {
   if (data.session) oppdaterBruker(data.session.user);
 });
+let aktivSamtale = null;
+
+async function hentSamtaler() {
+  const liste = document.getElementById('samtaler-liste');
+  liste.innerHTML = '';
+  if (!innloggetBruker) {
+    liste.innerHTML = '<div class="tom"><span>💬</span>Logg inn for å se meldinger</div>';
+    return;
+  }
+
+  const { data, error } = await sb.from('meldinger')
+    .select('*')
+    .or(`fra.eq.${innloggetBruker.email},til.eq.${innloggetBruker.email}`)
+    .order('created_at', { ascending: false });
+
+  if (error || !data || !data.length) {
+    liste.innerHTML = '<div class="tom"><span>💬</span>Ingen meldinger ennå</div>';
+    return;
+  }
+
+  const samtaler = {};
+  data.forEach(m => {
+    const annen = m.fra === innloggetBruker.email ? m.til : m.fra;
+    const nokkel = m.annonse_id + '_' + annen;
+    if (!samtaler[nokkel]) samtaler[nokkel] = { ...m, annen };
+  });
+
+  Object.values(samtaler).forEach(s => {
+    const div = document.createElement('div');
+    div.style = 'background:#fff; border-radius:12px; padding:14px; margin-bottom:10px; border:1px solid #e8e8e8; cursor:pointer;';
+    div.innerHTML = `
+      <div style="font-size:14px; font-weight:600; margin-bottom:4px;">💬 ${s.annen}</div>
+      <div style="font-size:13px; color:#888;">${s.tekst.substring(0, 50)}...</div>
+    `;
+    div.onclick = () => apneChat(s.annonse_id, s.annen);
+    liste.appendChild(div);
+  });
+}
+
+async function apneChat(annonseId, annen) {
+  aktivSamtale = { annonseId, annen };
+  document.getElementById('samtaler-liste').style.display = 'none';
+  document.getElementById('chat-boks').style.display = 'block';
+  document.getElementById('chat-tittel').textContent = '💬 ' + annen;
+  await lastMeldinger();
+}
+
+function lukkChat() {
+  aktivSamtale = null;
+  document.getElementById('samtaler-liste').style.display = 'block';
+  document.getElementById('chat-boks').style.display = 'none';
+}
+
+async function lastMeldinger() {
+  const boks = document.getElementById('chat-meldinger');
+  boks.innerHTML = '';
+  const { data } = await sb.from('meldinger')
+    .select('*')
+    .eq('annonse_id', aktivSamtale.annonseId)
+    .or(`fra.eq.${innloggetBruker.email},til.eq.${innloggetBruker.email}`)
+    .order('created_at', { ascending: true });
+
+  if (!data || !data.length) {
+    boks.innerHTML = '<div style="text-align:center; color:#888; font-size:13px;">Ingen meldinger ennå</div>';
+    return;
+  }
+
+  data.forEach(m => {
+    const erMeg = m.fra === innloggetBruker.email;
+    const div = document.createElement('div');
+    div.style = `display:flex; justify-content:${erMeg ? 'flex-end' : 'flex-start'}; margin-bottom:8px;`;
+    div.innerHTML = `
+      <div style="background:${erMeg ? '#1a5c3a' : '#f0f0f0'}; color:${erMeg ? '#fff' : '#1a1a1a'}; padding:8px 12px; border-radius:12px; max-width:70%; font-size:14px;">
+        ${m.tekst}
+      </div>
+    `;
+    boks.appendChild(div);
+  });
+  boks.scrollTop = boks.scrollHeight;
+}
+
+async function sendMelding() {
+  const tekst = document.getElementById('melding-input').value.trim();
+  if (!tekst || !aktivSamtale) return;
+  const { error } = await sb.from('meldinger').insert([{
+    fra: innloggetBruker.email,
+    til: aktivSamtale.annen,
+    annonse_id: aktivSamtale.annonseId,
+    tekst: tekst,
+    lest: false
+  }]);
+  if (error) alert('Feil: ' + error.message);
+  else {
+    document.getElementById('melding-input').value = '';
+    await lastMeldinger();
+  }
+}
+function startChat(annonseId, utleierEpost) {
+  if (!innloggetBruker) { alert('Du må logge inn for å sende melding!'); byttSide('profil'); return; }
+  if (innloggetBruker.email === utleierEpost) { alert('Dette er din egen annonse!'); return; }
+  apneChat(annonseId, utleierEpost);
+  byttSide('meldinger');
+}
 hentAnnonser();
 </script>
 </body>
