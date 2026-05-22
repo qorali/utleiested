@@ -831,7 +831,7 @@ function oppdaterStjerneVelger() {
 async function sendVurdering() {
   if (valgtStjerner === 0) { alert('Velg antall stjerner!'); return; }
   const kommentar = document.getElementById('v-kommentar').value;
-  const { error } = await sb.from('vurderinger').insert([{
+  const { error } = await sb.from('vurdering').insert([{
     annonse_id: aktivVurderingId,
     fra: innloggetBruker.email,
     stjerner: valgtStjerner,
@@ -846,7 +846,7 @@ async function sendVurdering() {
 }
 
 async function hentStjerner(annonseId) {
-  const { data } = await sb.from('vurderinger')
+  const { data } = await sb.from('vurdering')
     .select('stjerner')
     .eq('annonse_id', annonseId);
   if (!data || !data.length) return;
@@ -859,7 +859,7 @@ async function hentStjerner(annonseId) {
 }
 
 async function hentAlleStjerner() {
-  const { data } = await sb.from('vurderinger').select('*');
+  const { data } = await sb.from('vurdering').select('*');
   if (!data || !data.length) return;
   const gruppert = {};
   data.forEach(v => {
