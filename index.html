@@ -427,21 +427,15 @@ function oppdaterBrukerUI(bruker) {
     document.getElementById('topbar-bruker').textContent = bruker.email.split('@')[0];
     document.getElementById('topbar-btn').textContent = 'Logg ut';
     document.getElementById('topbar-btn').onclick = loggUt;
-    document.getElementById('profil-innlogging').style.display = 'none';
-    document.getElementById('profil-logget-inn').style.display = 'block';
-    document.getElementById('profil-tittel').textContent = 'Min profil';
-    document.getElementById('profil-epost').textContent = '📧 ' + bruker.email;
     document.getElementById('profil-ikke-innlogget').style.display = 'none';
     document.getElementById('profil-innhold').style.display = 'block';
-    hentProfil();
+    document.getElementById('profil-epost-vis').value = bruker.email;
     fab.style.display = aktivSide === 'utforsk' ? 'flex' : 'none';
+    hentProfil();
   } else {
     document.getElementById('topbar-bruker').textContent = '';
     document.getElementById('topbar-btn').textContent = 'Logg inn';
     document.getElementById('topbar-btn').onclick = () => byttSide('profil');
-    document.getElementById('profil-innlogging').style.display = 'block';
-    document.getElementById('profil-logget-inn').style.display = 'none';
-    document.getElementById('profil-tittel').textContent = 'Logg inn';
     document.getElementById('profil-ikke-innlogget').style.display = 'block';
     document.getElementById('profil-innhold').style.display = 'none';
     fab.style.display = 'none';
