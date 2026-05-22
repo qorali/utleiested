@@ -223,6 +223,22 @@
   <button style="background:none; border:none; color:#888; font-size:13px; cursor:pointer;" onclick="lukkAlleModaler()">Avbryt</button>
 </div>
 
+  <!-- VURDERING MODAL -->
+<div class="modal" id="vurdering-modal">
+  <h2>Gi vurdering</h2>
+  <div id="stjerne-velger" style="display:flex; gap:8px; font-size:32px; margin-bottom:16px; cursor:pointer;">
+    <span onclick="velgStjerner(1)">⭐</span>
+    <span onclick="velgStjerner(2)">⭐</span>
+    <span onclick="velgStjerner(3)">⭐</span>
+    <span onclick="velgStjerner(4)">⭐</span>
+    <span onclick="velgStjerner(5)">⭐</span>
+  </div>
+  <p id="stjerne-valgt" style="font-size:13px; color:#888; margin-bottom:10px;">Ingen stjerner valgt</p>
+  <textarea id="v-kommentar" placeholder="Skriv en kommentar (valgfritt)"></textarea>
+  <button class="btn-green" onclick="sendVurdering()">Send vurdering</button>
+  <button style="background:none; border:none; color:#888; font-size:13px; cursor:pointer;" onclick="lukkAlleModaler()">Avbryt</button>
+</div>
+
 <!-- FAB -->
 <button class="fab" id="fab" onclick="visLeggUt()">+</button>
 
@@ -533,13 +549,16 @@ function lagKort(a, visSlett) {
   const knapper = visSlett ? `
     <button class="knapp bla" style="margin-top:6px;" onclick="redigerAnnonse(${a.id}, '${a.tittel}', '${a.beskrivelse||''}', '${a.pris}', '${a.kategori}', '${a.sted}')">✏️ Rediger</button>
     <button class="knapp rod" style="margin-top:6px;" onclick="slettAnnonse(${a.id})">🗑 Slett</button>
-  ` : '';
+  ` : `
+    <button class="knapp" style="margin-top:6px; background:#f39c12;" onclick="visVurdering(${a.id})">⭐ Gi vurdering</button>
+  `;
   return `
     <div class="kort" data-kategori="${a.kategori}" id="kort-${a.id}">
       <div class="kort-bilde" style="background:#e8f0dc;">${bildeSrc}</div>
       <div class="kort-info">
         <h2>${a.tittel}</h2>
         <p class="sted">📍 ${a.sted}</p>
+        <div id="stjerner-${a.id}" style="font-size:13px; color:#f39c12; margin-bottom:6px;"></div>
         <p class="pris">${a.pris}</p>
         <a href="#" class="knapp" onclick="startChat(${a.id}, '${a.epost}'); return false;">Kontakt utleier</a>
         ${knapper}
@@ -648,6 +667,7 @@ function lukkAlleModaler() {
   document.getElementById('booking-modal').style.display = 'none';
   document.getElementById('leggut-modal').style.display = 'none';
   document.getElementById('rediger-modal').style.display = 'none';
+  document.getElementById('vurdering-modal').style.display = 'none';
 }
 
 sb.auth.getSession().then(({ data }) => {
@@ -780,6 +800,81 @@ async function sjekkUlesteMeldinger() {
 setInterval(() => {
   if (innloggetBruker) sjekkUlesteMeldinger();
 }, 10000);
+
+let aktivVurderingId = null;
+let valgtStjerner = 0;
+
+function visVurdering(annonseId) {
+  if (!innloggetBruker) { alert('Du må logge inn for å gi vurdering!'); return; }
+  aktivVurderingId = annonseId;
+  valgtStjerner = 0;
+  document.getElementById('stjerne-valgt').textContent = 'Ingen stjerner valgt';
+  document.getElementById('v-kommentar').value = '';
+  oppdaterStjerneVelger();
+  document.getElementById('modal-bg').style.display = 'block';
+  document.getElementById('vurdering-modal').style.display = 'block';
+}
+
+function velgStjerner(antall) {
+  valgtStjerner = antall;
+  document.getElementById('stjerne-valgt').textContent = antall + ' av 5 stjerner';
+  oppdaterStjerneVelger();
+}
+
+function oppdaterStjerneVelger() {
+  const stjerner = document.querySelectorAll('#stjerne-velger span');
+  stjerner.forEach((s, i) => {
+    s.style.opacity = i < valgtStjerner ? '1' : '0.3';
+  });
+}
+
+async function sendVurdering() {
+  if (valgtStjerner === 0) { alert('Velg antall stjerner!'); return; }
+  const kommentar = document.getElementById('v-kommentar').value;
+  const { error } = await sb.from('vurderinger').insert([{
+    annonse_id: aktivVurderingId,
+    fra: innloggetBruker.email,
+    stjerner: valgtStjerner,
+    kommentar: kommentar
+  }]);
+  if (error) alert('Feil: ' + error.message);
+  else {
+    alert('Takk for vurderingen!');
+    lukkAlleModaler();
+    hentStjerner(aktivVurderingId);
+  }
+}
+
+async function hentStjerner(annonseId) {
+  const { data } = await sb.from('vurderinger')
+    .select('stjerner')
+    .eq('annonse_id', annonseId);
+  if (!data || !data.length) return;
+  const snitt = data.reduce((sum, v) => sum + v.stjerner, 0) / data.length;
+  const element = document.getElementById('stjerner-' + annonseId);
+  if (element) {
+    const fulle = Math.round(snitt);
+    element.textContent = '⭐'.repeat(fulle) + ' (' + data.length + ')';
+  }
+}
+
+async function hentAlleStjerner() {
+  const { data } = await sb.from('vurderinger').select('*');
+  if (!data || !data.length) return;
+  const gruppert = {};
+  data.forEach(v => {
+    if (!gruppert[v.annonse_id]) gruppert[v.annonse_id] = [];
+    gruppert[v.annonse_id].push(v.stjerner);
+  });
+  Object.entries(gruppert).forEach(([id, stjerner]) => {
+    const snitt = stjerner.reduce((a, b) => a + b, 0) / stjerner.length;
+    const element = document.getElementById('stjerner-' + id);
+    if (element) {
+      element.textContent = '⭐'.repeat(Math.round(snitt)) + ' (' + stjerner.length + ')';
+    }
+  });
+}
+
 hentAnnonser();
 </script>
 </body>
