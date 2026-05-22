@@ -264,6 +264,40 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a;
   <div id="mine-grid"></div>
 </div>
 
+<!-- VILKÅR -->
+<div class="side" id="side-vilkar">
+  <div style="max-width:700px; margin:0 auto;">
+    <h2 style="font-size:22px; font-weight:700; margin-bottom:20px;">Vilkår og personvern</h2>
+
+    <div style="background:#fff; border-radius:16px; padding:24px; margin-bottom:16px; border:1px solid #ececec;">
+      <h3 style="font-size:16px; font-weight:600; margin-bottom:10px;">Om Leieting</h3>
+      <p style="font-size:14px; color:#555; line-height:1.7;">Leieting er en plattform der privatpersoner og bedrifter kan leie ut og leie ting av hverandre. Vi er kun et mellomledd og er ikke ansvarlig for selve leieavtalen mellom partene.</p>
+    </div>
+
+    <div style="background:#fff; border-radius:16px; padding:24px; margin-bottom:16px; border:1px solid #ececec;">
+      <h3 style="font-size:16px; font-weight:600; margin-bottom:10px;">Brukerens ansvar</h3>
+      <p style="font-size:14px; color:#555; line-height:1.7;">Som bruker av Leieting er du selv ansvarlig for å sikre at tingene du leier ut er i god stand, at du har rett til å leie dem ut, og at du behandler andres eiendeler med respekt. Vi oppfordrer alle til å tegne forsikring ved utleie av verdifulle gjenstander.</p>
+    </div>
+
+    <div style="background:#fff; border-radius:16px; padding:24px; margin-bottom:16px; border:1px solid #ececec;">
+      <h3 style="font-size:16px; font-weight:600; margin-bottom:10px;">Personvern</h3>
+      <p style="font-size:14px; color:#555; line-height:1.7;">Vi lagrer e-postadressen din, profilinformasjon og annonsene dine i vår database. Vi deler ikke informasjonen din med tredjeparter. Du kan når som helst be om å få slettet kontoen din ved å kontakte oss.</p>
+    </div>
+
+    <div style="background:#fff; border-radius:16px; padding:24px; margin-bottom:16px; border:1px solid #ececec;">
+      <h3 style="font-size:16px; font-weight:600; margin-bottom:10px;">Cookies</h3>
+      <p style="font-size:14px; color:#555; line-height:1.7;">Vi bruker kun nødvendige cookies for innlogging og sikkerhet. Vi bruker ikke cookies til markedsføring eller sporing.</p>
+    </div>
+
+    <div style="background:#fff; border-radius:16px; padding:24px; margin-bottom:16px; border:1px solid #ececec;">
+      <h3 style="font-size:16px; font-weight:600; margin-bottom:10px;">Kontakt</h3>
+      <p style="font-size:14px; color:#555; line-height:1.7;">Har du spørsmål om vilkår eller personvern? Ta kontakt med oss på <strong>hei@leieting.no</strong></p>
+    </div>
+
+    <p style="font-size:12px; color:#aaa; text-align:center; margin-top:20px;">Sist oppdatert: Mai 2026</p>
+  </div>
+</div>
+
 <!-- PROFIL -->
 <div class="side" id="side-profil">
   <div id="profil-ikke-innlogget" style="display:none;">
@@ -273,6 +307,10 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a;
       <input id="passord" type="password" placeholder="Passord (min. 6 tegn)">
       <button class="btn-green" onclick="loggInn()">Logg inn</button>
       <button class="btn-outline" onclick="registrer()">Registrer deg</button>
+      <p style="font-size:12px; color:#aaa; text-align:center; margin-top:8px;">
+  Ved å registrere deg godtar du våre 
+  <a href="#" onclick="byttSide('vilkar')" style="color:#1a5c3a;">vilkår og personvern</a>
+</p>
     </div>
   </div>
 
@@ -356,6 +394,9 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a;
   <button class="nav-item" id="nav-profil" onclick="byttSide('profil')">
     <span>👤</span>Profil
   </button>
+  <button class="nav-item" id="nav-vilkar" onclick="byttSide('vilkar')" style="font-size:10px; color:#aaa;">
+  <span style="font-size:16px;">📄</span>Vilkår
+</button>
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
