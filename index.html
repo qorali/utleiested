@@ -356,6 +356,12 @@
   </div>
 </div>
 
+<!-- PRODUKT SIDE -->
+<div class="side" id="side-produkt">
+  <button onclick="byttSide('utforsk')" style="background:none; border:none; color:#1a5c3a; font-size:14px; cursor:pointer; margin-bottom:16px;">← Tilbake</button>
+  <div id="produkt-innhold"></div>
+</div>
+
 <!-- NAVIGASJON -->
 <nav class="bottom-nav">
   <button class="nav-item active" id="nav-utforsk" onclick="byttSide('utforsk')">
@@ -393,8 +399,17 @@ function byttSide(side) {
   document.querySelectorAll('.side').forEach(s => s.classList.remove('aktiv'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('side-' + side).classList.add('aktiv');
-  document.getElementById('nav-' + side).classList.add('active');
+  if (side !== 'produkt') {
+    const navEl = document.getElementById('nav-' + side);
+    if (navEl) navEl.classList.add('active');
+  }
   aktivSide = side;
+  const fab = document.getElementById('fab');
+  fab.style.display = innloggetBruker && side === 'utforsk' ? 'flex' : 'none';
+  if (side === 'mine') hentMineAnnonser();
+  if (side === 'fordeg') hentForDeg();
+  if (side === 'meldinger') hentSamtaler();
+}
   const fab = document.getElementById('fab');
   fab.style.display = innloggetBruker && side === 'utforsk' ? 'flex' : 'none';
   if (side === 'mine') hentMineAnnonser();
@@ -553,7 +568,7 @@ function lagKort(a, visSlett) {
     <button class="knapp" style="margin-top:6px; background:#f39c12;" onclick="visVurdering(${a.id})">⭐ Gi vurdering</button>
   `;
   return `
-    <div class="kort" data-kategori="${a.kategori}" id="kort-${a.id}">
+    <div class="kort" data-kategori="${a.kategori}" id="kort-${a.id}" onclick="visProdukt(${a.id})" style="cursor:pointer;">
       <div class="kort-bilde" style="background:#e8f0dc;">${bildeSrc}</div>
       <div class="kort-info">
         <h2>${a.tittel}</h2>
@@ -873,6 +888,54 @@ async function hentAlleStjerner() {
       element.textContent = '⭐'.repeat(Math.round(snitt)) + ' (' + stjerner.length + ')';
     }
   });
+}
+
+async function visProdukt(id) {
+  const { data, error } = await sb.from('annonser').select('*').eq('id', id).single();
+  if (error || !data) return;
+
+  const { data: vurderinger } = await sb.from('vurdering').select('*').eq('annonse_id', id);
+
+  const bilder = data.bilder ? data.bilder.split(',') : [];
+  const snitt = vurderinger && vurderinger.length
+    ? vurderinger.reduce((s, v) => s + v.stjerner, 0) / vurderinger.length
+    : 0;
+
+  const bildeHTML = bilder.length > 0
+    ? `<div style="display:flex; gap:8px; overflow-x:auto; margin-bottom:16px;">
+        ${bilder.map(b => `<img src="${b}" style="height:220px; border-radius:12px; object-fit:cover; flex-shrink:0;">`).join('')}
+       </div>`
+    : `<div style="height:200px; background:#e8f0dc; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:64px; margin-bottom:16px;">📦</div>`;
+
+  const vurderingHTML = vurderinger && vurderinger.length
+    ? vurderinger.map(v => `
+        <div style="background:#fff; border-radius:12px; padding:14px; margin-bottom:10px; border:1px solid #e8e8e8;">
+          <div style="color:#f39c12; font-size:16px; margin-bottom:4px;">${'⭐'.repeat(v.stjerner)}</div>
+          <div style="font-size:13px; color:#555; margin-bottom:4px;">${v.kommentar || ''}</div>
+          <div style="font-size:12px; color:#aaa;">${v.fra}</div>
+        </div>`).join('')
+    : '<div style="color:#888; font-size:13px;">Ingen vurderinger ennå</div>';
+
+  document.getElementById('produkt-innhold').innerHTML = `
+    ${bildeHTML}
+    <div style="background:#fff; border-radius:14px; padding:20px; margin-bottom:16px; border:1px solid #e8e8e8;">
+      <h2 style="font-size:20px; margin-bottom:8px;">${data.tittel}</h2>
+      <p style="font-size:13px; color:#888; margin-bottom:8px;">📍 ${data.sted}</p>
+      ${snitt > 0 ? `<p style="color:#f39c12; font-size:14px; margin-bottom:8px;">${'⭐'.repeat(Math.round(snitt))} (${vurderinger.length} vurderinger)</p>` : ''}
+      <p style="font-size:22px; font-weight:700; color:#1a5c3a; margin-bottom:12px;">${data.pris}</p>
+      <p style="font-size:14px; color:#555; margin-bottom:16px; line-height:1.6;">${data.beskrivelse || ''}</p>
+      <button class="knapp" onclick="startChat(${data.id}, '${data.epost}'); return false;" style="margin-bottom:8px;">💬 Kontakt utleier</button>
+      ${innloggetBruker && innloggetBruker.email !== data.epost
+        ? `<button class="knapp" style="background:#f39c12;" onclick="visVurdering(${data.id})">⭐ Gi vurdering</button>`
+        : ''}
+    </div>
+    <div style="margin-bottom:16px;">
+      <p style="font-size:16px; font-weight:600; margin-bottom:12px;">Vurderinger</p>
+      ${vurderingHTML}
+    </div>
+  `;
+
+  byttSide('produkt');
 }
 
 hentAnnonser();
