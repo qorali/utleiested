@@ -266,18 +266,54 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a;
 
 <!-- PROFIL -->
 <div class="side" id="side-profil">
-  <div class="innlogging-boks">
-    <h2 id="profil-tittel">Logg inn</h2>
-    <div id="profil-innlogging">
+  <div id="profil-ikke-innlogget" style="display:none;">
+    <div class="innlogging-boks">
+      <h2>Logg inn</h2>
       <input id="epost" type="email" placeholder="E-post">
       <input id="passord" type="password" placeholder="Passord (min. 6 tegn)">
       <button class="btn-green" onclick="loggInn()">Logg inn</button>
       <button class="btn-outline" onclick="registrer()">Registrer deg</button>
     </div>
-    <div id="profil-logget-inn" style="display:none;">
-      <p style="font-size:14px; color:#555; margin-bottom:16px;" id="profil-epost"></p>
-      <button class="btn-outline" onclick="loggUt()">Logg ut</button>
+  </div>
+
+  <div id="profil-innhold" style="display:none;">
+    <!-- PROFILBILDE -->
+    <div style="text-align:center; margin-bottom:24px;">
+      <div id="profil-bilde-visning" style="width:100px; height:100px; border-radius:50%; background:#e8f0dc; margin:0 auto 12px; overflow:hidden; display:flex; align-items:center; justify-content:center; font-size:48px; border:3px solid #1a5c3a;">
+        👤
+      </div>
+      <input type="file" id="bilde-input" accept="image/*" style="display:none;" onchange="lastOppBilde()">
+      <button onclick="document.getElementById('bilde-input').click()" style="background:none; border:1px solid #1a5c3a; color:#1a5c3a; border-radius:8px; padding:6px 14px; font-size:13px; cursor:pointer;">
+        Endre bilde
+      </button>
     </div>
+
+    <!-- PROFIL INFO -->
+    <div style="background:#fff; border-radius:16px; padding:20px; margin-bottom:16px; border:1px solid #ececec;">
+      <h2 style="font-size:18px; margin-bottom:16px;">Min profil</h2>
+      <label style="font-size:13px; color:#888; margin-bottom:4px; display:block;">Navn</label>
+      <input id="profil-navn" type="text" placeholder="Ditt navn" style="width:100%; border:1.5px solid #e0e0e0; border-radius:10px; padding:10px 14px; font-size:14px; margin-bottom:12px;">
+      <label style="font-size:13px; color:#888; margin-bottom:4px; display:block;">Bio</label>
+      <textarea id="profil-bio" placeholder="Fortell litt om deg selv..." style="width:100%; border:1.5px solid #e0e0e0; border-radius:10px; padding:10px 14px; font-size:14px; height:80px; margin-bottom:12px;"></textarea>
+      <label style="font-size:13px; color:#888; margin-bottom:4px; display:block;">E-post</label>
+      <input id="profil-epost-vis" type="text" disabled style="width:100%; border:1.5px solid #e0e0e0; border-radius:10px; padding:10px 14px; font-size:14px; background:#f9f9f9; margin-bottom:16px;">
+      <button class="btn-green" onclick="lagreProfil()">Lagre profil</button>
+    </div>
+
+    <!-- STATISTIKK -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
+      <div style="background:#fff; border-radius:16px; padding:16px; text-align:center; border:1px solid #ececec;">
+        <div id="antall-annonser" style="font-size:28px; font-weight:700; color:#1a5c3a;">0</div>
+        <div style="font-size:13px; color:#888;">Annonser</div>
+      </div>
+      <div style="background:#fff; border-radius:16px; padding:16px; text-align:center; border:1px solid #ececec;">
+        <div id="snitt-vurdering" style="font-size:28px; font-weight:700; color:#f39c12;">—</div>
+        <div style="font-size:13px; color:#888;">Snittkarakter</div>
+      </div>
+    </div>
+
+    <!-- LOGG UT -->
+    <button class="knapp rod" onclick="loggUt()">Logg ut</button>
   </div>
 </div>
 
@@ -352,6 +388,7 @@ function byttSide(side) {
   if (side === 'mine') hentMineAnnonser();
   if (side === 'fordeg') hentForDeg();
   if (side === 'meldinger') hentSamtaler();
+  if (side === 'profil') hentProfil();
 }
 
 async function registrer() {
@@ -394,6 +431,9 @@ function oppdaterBrukerUI(bruker) {
     document.getElementById('profil-logget-inn').style.display = 'block';
     document.getElementById('profil-tittel').textContent = 'Min profil';
     document.getElementById('profil-epost').textContent = '📧 ' + bruker.email;
+    document.getElementById('profil-ikke-innlogget').style.display = 'none';
+    document.getElementById('profil-innhold').style.display = 'block';
+    hentProfil();
     fab.style.display = aktivSide === 'utforsk' ? 'flex' : 'none';
   } else {
     document.getElementById('topbar-bruker').textContent = '';
@@ -402,6 +442,8 @@ function oppdaterBrukerUI(bruker) {
     document.getElementById('profil-innlogging').style.display = 'block';
     document.getElementById('profil-logget-inn').style.display = 'none';
     document.getElementById('profil-tittel').textContent = 'Logg inn';
+    document.getElementById('profil-ikke-innlogget').style.display = 'block';
+    document.getElementById('profil-innhold').style.display = 'none';
     fab.style.display = 'none';
   }
 }
@@ -791,6 +833,54 @@ setInterval(() => { if (innloggetBruker) sjekkUlesteMeldinger(); }, 10000);
 sb.auth.getSession().then(({ data }) => {
   if (data.session) oppdaterBruker(data.session.user);
 });
+
+async function hentProfil() {
+  if (!innloggetBruker) return;
+  const { data } = await sb.from('profiler').select('*').eq('epost', innloggetBruker.email).single();
+  if (data) {
+    document.getElementById('profil-navn').value = data.navn || '';
+    document.getElementById('profil-bio').value = data.bio || '';
+    if (data.bilde) {
+      document.getElementById('profil-bilde-visning').innerHTML = `<img src="${data.bilde}" style="width:100%; height:100%; object-fit:cover;">`;
+    }
+  }
+  document.getElementById('profil-epost-vis').value = innloggetBruker.email;
+
+  const { data: annonser } = await sb.from('annonser').select('id').eq('epost', innloggetBruker.email);
+  document.getElementById('antall-annonser').textContent = annonser ? annonser.length : 0;
+
+  const { data: vurderinger } = await sb.from('vurdering').select('stjerner').eq('fra', innloggetBruker.email);
+  if (vurderinger && vurderinger.length) {
+    const snitt = vurderinger.reduce((s, v) => s + v.stjerner, 0) / vurderinger.length;
+    document.getElementById('snitt-vurdering').textContent = snitt.toFixed(1) + ' ⭐';
+  }
+}
+
+async function lagreProfil() {
+  const navn = document.getElementById('profil-navn').value;
+  const bio = document.getElementById('profil-bio').value;
+  const { data: eksisterende } = await sb.from('profiler').select('*').eq('epost', innloggetBruker.email).single();
+  
+  if (eksisterende) {
+    await sb.from('profiler').update({ navn, bio }).eq('epost', innloggetBruker.email);
+  } else {
+    await sb.from('profiler').insert([{ epost: innloggetBruker.email, navn, bio }]);
+  }
+  alert('Profilen er lagret!');
+}
+
+async function lastOppBilde() {
+  const fil = document.getElementById('bilde-input').files[0];
+  if (!fil) return;
+  const filNavn = 'profil_' + innloggetBruker.email + '_' + Date.now();
+  const { error } = await sb.storage.from('bilder').upload(filNavn, fil);
+  if (error) { alert('Feil: ' + error.message); return; }
+  const { data } = sb.storage.from('bilder').getPublicUrl(filNavn);
+  await sb.from('profiler').upsert([{ epost: innloggetBruker.email, bilde: data.publicUrl }]);
+  document.getElementById('profil-bilde-visning').innerHTML = `<img src="${data.publicUrl}" style="width:100%; height:100%; object-fit:cover;">`;
+  alert('Profilbilde oppdatert!');
+}
+
 hentAnnonser();
 hentAlleStjerner();
 </script>
