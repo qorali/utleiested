@@ -562,10 +562,10 @@ function lagKort(a, visSlett) {
     ? `<img src="${bilder[0]}" style="width:100%; height:100%; object-fit:cover;">`
     : '📦';
   const knapper = visSlett ? `
-    <button class="knapp bla" style="margin-top:6px;" onclick="redigerAnnonse(${a.id}, '${a.tittel}', '${a.beskrivelse||''}', '${a.pris}', '${a.kategori}', '${a.sted}')">✏️ Rediger</button>
-    <button class="knapp rod" style="margin-top:6px;" onclick="slettAnnonse(${a.id})">🗑 Slett</button>
+    <button class="knapp bla" style="margin-top:6px;" onclick="event.stopPropagation(); redigerAnnonse(${a.id}, '${a.tittel}', '${a.beskrivelse||''}', '${a.pris}', '${a.kategori}', '${a.sted}')">✏️ Rediger</button>
+    <button class="knapp rod" style="margin-top:6px;" onclick="event.stopPropagation(); slettAnnonse(${a.id})">🗑 Slett</button>
   ` : `
-    <button class="knapp" style="margin-top:6px; background:#f39c12;" onclick="visVurdering(${a.id})">⭐ Gi vurdering</button>
+    <button class="knapp" style="margin-top:6px; background:#f39c12;" onclick="event.stopPropagation(); visVurdering(${a.id})">⭐ Gi vurdering</button>
   `;
   return `
     <div class="kort" data-kategori="${a.kategori}" id="kort-${a.id}" onclick="visProdukt(${a.id})" style="cursor:pointer;">
@@ -575,7 +575,7 @@ function lagKort(a, visSlett) {
         <p class="sted">📍 ${a.sted}</p>
         <div id="stjerner-${a.id}" style="font-size:13px; color:#f39c12; margin-bottom:6px;"></div>
         <p class="pris">${a.pris}</p>
-        <a href="#" class="knapp" onclick="startChat(${a.id}, '${a.epost}'); return false;">Kontakt utleier</a>
+        <a href="#" class="knapp" onclick="event.stopPropagation(); startChat(${a.id}, '${a.epost}'); return false;">Kontakt utleier</a>
         ${knapper}
       </div>
     </div>`;
