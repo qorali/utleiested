@@ -351,8 +351,9 @@
   <button class="nav-item" id="nav-mine" onclick="byttSide('mine')">
     <span>📋</span>Mine
   </button>
-  <button class="nav-item" id="nav-meldinger" onclick="byttSide('meldinger')">
+<button class="nav-item" id="nav-meldinger" onclick="byttSide('meldinger')" style="position:relative;">
   <span>💬</span>Meldinger
+  <div id="melding-badge" style="display:none; position:absolute; top:6px; right:18px; background:#e74c3c; color:#fff; border-radius:50%; width:18px; height:18px; font-size:11px; font-weight:600; align-items:center; justify-content:center;">0</div>
 </button>
 <button class="nav-item" id="nav-profil" onclick="byttSide('profil')">
   <span>👤</span>Profil
@@ -697,6 +698,11 @@ async function apneChat(annonseId, annen) {
   document.getElementById('chat-boks').style.display = 'block';
   document.getElementById('chat-tittel').textContent = '💬 ' + annen;
   await lastMeldinger();
+  await sb.from('meldinger')
+  .update({ lest: true })
+  .eq('til', innloggetBruker.email)
+  .eq('annonse_id', annonseId);
+sjekkUlesteMeldinger();
 }
 
 function lukkChat() {
@@ -755,6 +761,25 @@ function startChat(annonseId, utleierEpost) {
   apneChat(annonseId, utleierEpost);
   byttSide('meldinger');
 }
+async function sjekkUlesteMeldinger() {
+  if (!innloggetBruker) return;
+  const { data } = await sb.from('meldinger')
+    .select('*')
+    .eq('til', innloggetBruker.email)
+    .eq('lest', false);
+
+  const badge = document.getElementById('melding-badge');
+  if (data && data.length > 0) {
+    badge.textContent = data.length;
+    badge.style.display = 'flex';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+setInterval(() => {
+  if (innloggetBruker) sjekkUlesteMeldinger();
+}, 10000);
 hentAnnonser();
 </script>
 </body>
