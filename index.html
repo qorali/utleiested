@@ -169,6 +169,19 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a;
 <!-- FAB -->
 <button class="fab" id="fab" onclick="visLeggUt()">+</button>
 
+<div class="hero">
+  <h2>Lei og lån ting nær deg</h2>
+  <p>Finn det du trenger — legg ut det du ikke bruker</p>
+</div>
+
+<div class="kategorier">
+  <button class="kat-knapp aktiv" onclick="filtrerKat(this, '')">🌟 Alle</button>
+  <button class="kat-knapp" onclick="filtrerKat(this, 'sport')">⚽ Sport</button>
+  <button class="kat-knapp" onclick="filtrerKat(this, 'verktoy')">🔧 Verktøy</button>
+  <button class="kat-knapp" onclick="filtrerKat(this, 'elektronikk')">📷 Elektronikk</button>
+  <button class="kat-knapp" onclick="filtrerKat(this, 'annet')">📦 Annet</button>
+</div>
+
 <!-- UTFORSK -->
 <div class="side aktiv" id="side-utforsk">
   <div class="sokebar">
@@ -756,6 +769,13 @@ function filtrer() {
     const kategori = k.getAttribute('data-kategori');
     k.style.display = tittel.includes(sok) && (kat === '' || kategori === kat) ? 'block' : 'none';
   });
+}
+
+function filtrerKat(el, kat) {
+  document.querySelectorAll('.kat-knapp').forEach(k => k.classList.remove('aktiv'));
+  el.classList.add('aktiv');
+  document.getElementById('kategori').value = kat;
+  filtrer();
 }
 
 function lukkAlleModaler() {
