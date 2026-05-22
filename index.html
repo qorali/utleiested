@@ -7,153 +7,49 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: sans-serif; background: #f5f5f0; color: #1a1a1a; padding-bottom: 70px; }
-
-    .topbar {
-      background: #1a5c3a;
-      padding: 14px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
+    .topbar { background: #1a5c3a; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; }
     .topbar h1 { color: #fff; font-size: 20px; }
     .topbar-right { display: flex; align-items: center; gap: 10px; }
     .topbar span { color: #a8d5b8; font-size: 13px; }
-    .topbar button {
-      background: rgba(255,255,255,0.15);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-size: 13px;
-      cursor: pointer;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: #fff;
-      border-top: 1px solid #e0e0e0;
-      display: flex;
-      z-index: 50;
-    }
-    .nav-item {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 10px 0;
-      cursor: pointer;
-      color: #888;
-      font-size: 11px;
-      gap: 4px;
-      border: none;
-      background: none;
-    }
+    .topbar button { background: rgba(255,255,255,0.15); color: #fff; border: none; border-radius: 8px; padding: 6px 12px; font-size: 13px; cursor: pointer; }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #e0e0e0; display: flex; z-index: 50; }
+    .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0; cursor: pointer; color: #888; font-size: 11px; gap: 4px; border: none; background: none; position: relative; }
     .nav-item.active { color: #1a5c3a; }
     .nav-item span { font-size: 22px; }
-
     .side { display: none; padding: 16px; max-width: 900px; margin: 0 auto; }
     .side.aktiv { display: block; }
-
     .sokebar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-    .sokebar input {
-      flex: 1; min-width: 150px;
-      border: 1px solid #ddd; border-radius: 10px;
-      padding: 10px 14px; font-size: 14px; background: #fff;
-    }
-    .sokebar select {
-      border: 1px solid #ddd; border-radius: 10px;
-      padding: 10px 14px; font-size: 14px; background: #fff;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 14px;
-    }
-    .kort {
-      background: #fff; border-radius: 14px;
-      overflow: hidden; border: 1px solid #e8e8e8;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-    }
-    .kort-bilde {
-      height: 120px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 48px; overflow: hidden;
-    }
+    .sokebar input { flex: 1; min-width: 150px; border: 1px solid #ddd; border-radius: 10px; padding: 10px 14px; font-size: 14px; background: #fff; }
+    .sokebar select { border: 1px solid #ddd; border-radius: 10px; padding: 10px 14px; font-size: 14px; background: #fff; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+    .kort { background: #fff; border-radius: 14px; overflow: hidden; border: 1px solid #e8e8e8; box-shadow: 0 1px 4px rgba(0,0,0,0.05); cursor: pointer; }
+    .kort-bilde { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 48px; overflow: hidden; }
     .kort-bilde img { width: 100%; height: 100%; object-fit: cover; }
     .kort-info { padding: 12px; }
     .kort-info h2 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
     .kort-info .sted { font-size: 12px; color: #888; margin-bottom: 8px; }
     .kort-info .pris { font-size: 14px; font-weight: 700; color: #1a5c3a; margin-bottom: 8px; }
-    .knapp {
-      display: block; background: #1a5c3a; color: #fff;
-      text-align: center; padding: 8px; border-radius: 8px;
-      text-decoration: none; font-size: 13px;
-      border: none; cursor: pointer; width: 100%;
-    }
+    .knapp { display: block; background: #1a5c3a; color: #fff; text-align: center; padding: 8px; border-radius: 8px; text-decoration: none; font-size: 13px; border: none; cursor: pointer; width: 100%; }
     .knapp:hover { background: #144d30; }
     .knapp.rod { background: #c0392b; }
     .knapp.bla { background: #2471a3; }
-
     .sekstittel { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
-
-    .innlogging-boks {
-      max-width: 360px; margin: 40px auto;
-      background: #fff; border-radius: 16px;
-      padding: 32px; border: 1px solid #e8e8e8;
-    }
+    .innlogging-boks { max-width: 360px; margin: 40px auto; background: #fff; border-radius: 16px; padding: 32px; border: 1px solid #e8e8e8; }
     .innlogging-boks h2 { font-size: 20px; margin-bottom: 20px; }
-    .innlogging-boks input {
-      width: 100%; border: 1px solid #ddd; border-radius: 10px;
-      padding: 10px 14px; font-size: 14px; margin-bottom: 10px;
-    }
-    .innlogging-boks button {
-      width: 100%; padding: 10px; border-radius: 10px;
-      border: none; font-size: 14px; cursor: pointer; margin-bottom: 8px;
-    }
+    .innlogging-boks input { width: 100%; border: 1px solid #ddd; border-radius: 10px; padding: 10px 14px; font-size: 14px; margin-bottom: 10px; }
+    .innlogging-boks button { width: 100%; padding: 10px; border-radius: 10px; border: none; font-size: 14px; cursor: pointer; margin-bottom: 8px; }
     .btn-green { background: #1a5c3a; color: #fff; }
     .btn-outline { background: #fff; color: #1a5c3a; border: 1px solid #1a5c3a !important; }
-
-    .modal-bg {
-      display: none; position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5); z-index: 100;
-    }
-    .modal {
-      display: none; position: fixed;
-      top: 50%; left: 50%; transform: translate(-50%, -50%);
-      background: #fff; border-radius: 16px; padding: 28px;
-      width: 92%; max-width: 420px; z-index: 101;
-      max-height: 90vh; overflow-y: auto;
-    }
+    .modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; }
+    .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; border-radius: 16px; padding: 28px; width: 92%; max-width: 420px; z-index: 101; max-height: 90vh; overflow-y: auto; }
     .modal h2 { font-size: 18px; margin-bottom: 16px; }
-    .modal input, .modal textarea, .modal select {
-      width: 100%; border: 1px solid #ddd; border-radius: 10px;
-      padding: 10px 14px; font-size: 14px; margin-bottom: 10px;
-    }
+    .modal input, .modal textarea, .modal select { width: 100%; border: 1px solid #ddd; border-radius: 10px; padding: 10px 14px; font-size: 14px; margin-bottom: 10px; }
     .modal textarea { height: 80px; }
-    .modal button {
-      width: 100%; padding: 10px; border-radius: 10px;
-      border: none; font-size: 14px; cursor: pointer; margin-bottom: 8px;
-    }
-
-    .fab {
-      position: fixed; bottom: 80px; right: 20px;
-      background: #1a5c3a; color: #fff; border: none;
-      border-radius: 50%; width: 56px; height: 56px;
-      font-size: 28px; cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      display: none; align-items: center; justify-content: center;
-      z-index: 49;
-    }
-
+    .modal button { width: 100%; padding: 10px; border-radius: 10px; border: none; font-size: 14px; cursor: pointer; margin-bottom: 8px; }
+    .fab { position: fixed; bottom: 80px; right: 20px; background: #1a5c3a; color: #fff; border: none; border-radius: 50%; width: 56px; height: 56px; font-size: 28px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); display: none; align-items: center; justify-content: center; z-index: 49; }
     .tom { text-align: center; padding: 40px 20px; color: #888; }
     .tom span { font-size: 48px; display: block; margin-bottom: 12px; }
-
+    .badge { display: none; position: absolute; top: 6px; right: 18px; background: #e74c3c; color: #fff; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; font-weight: 600; align-items: center; justify-content: center; }
     @media (max-width: 600px) {
       .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .kort-bilde { height: 100px; }
@@ -223,7 +119,7 @@
   <button style="background:none; border:none; color:#888; font-size:13px; cursor:pointer;" onclick="lukkAlleModaler()">Avbryt</button>
 </div>
 
-  <!-- VURDERING MODAL -->
+<!-- VURDERING MODAL -->
 <div class="modal" id="vurdering-modal">
   <h2>Gi vurdering</h2>
   <div id="stjerne-velger" style="display:flex; gap:8px; font-size:32px; margin-bottom:16px; cursor:pointer;">
@@ -255,58 +151,58 @@
     </select>
   </div>
   <div class="grid" id="utforsk-grid">
-    <div class="kort" data-kategori="sport">
+    <div class="kort" data-kategori="sport" onclick="visProduktFast('Sykkel — trekkhjul', '150 kr / dag', 'Mandal sentrum', 'sport', '')">
       <div class="kort-bilde" style="background:#d4eadc;">🚲</div>
       <div class="kort-info">
         <h2>Sykkel — trekkhjul</h2>
         <p class="sted">📍 Mandal sentrum</p>
         <p class="pris">150 kr / dag</p>
-        <a href="#" class="knapp" onclick="visBooking('Sykkel — trekkhjul'); return false;">Kontakt utleier</a>
+        <a href="#" class="knapp" onclick="event.stopPropagation(); visBooking('Sykkel — trekkhjul'); return false;">Kontakt utleier</a>
       </div>
     </div>
-    <div class="kort" data-kategori="verktoy">
+    <div class="kort" data-kategori="verktoy" onclick="visProduktFast('Drill med bits', '100 kr / dag', 'Mandal sentrum', 'verktoy', '')">
       <div class="kort-bilde" style="background:#dce8f5;">🔧</div>
       <div class="kort-info">
         <h2>Drill med bits</h2>
         <p class="sted">📍 Mandal sentrum</p>
         <p class="pris">100 kr / dag</p>
-        <a href="#" class="knapp" onclick="visBooking('Drill med bits'); return false;">Kontakt utleier</a>
+        <a href="#" class="knapp" onclick="event.stopPropagation(); visBooking('Drill med bits'); return false;">Kontakt utleier</a>
       </div>
     </div>
-    <div class="kort" data-kategori="sport">
+    <div class="kort" data-kategori="sport" onclick="visProduktFast('Telt — 4 personer', '200 kr / dag', 'Mandal', 'sport', '')">
       <div class="kort-bilde" style="background:#f5e8d4;">⛺</div>
       <div class="kort-info">
         <h2>Telt — 4 personer</h2>
         <p class="sted">📍 Mandal</p>
         <p class="pris">200 kr / dag</p>
-        <a href="#" class="knapp" onclick="visBooking('Telt — 4 personer'); return false;">Kontakt utleier</a>
+        <a href="#" class="knapp" onclick="event.stopPropagation(); visBooking('Telt — 4 personer'); return false;">Kontakt utleier</a>
       </div>
     </div>
-    <div class="kort" data-kategori="elektronikk">
+    <div class="kort" data-kategori="elektronikk" onclick="visProduktFast('Kamera — Canon', '250 kr / dag', 'Mandal', 'elektronikk', '')">
       <div class="kort-bilde" style="background:#f0dce8;">📷</div>
       <div class="kort-info">
         <h2>Kamera — Canon</h2>
         <p class="sted">📍 Mandal</p>
         <p class="pris">250 kr / dag</p>
-        <a href="#" class="knapp" onclick="visBooking('Kamera — Canon'); return false;">Kontakt utleier</a>
+        <a href="#" class="knapp" onclick="event.stopPropagation(); visBooking('Kamera — Canon'); return false;">Kontakt utleier</a>
       </div>
     </div>
-    <div class="kort" data-kategori="annet">
+    <div class="kort" data-kategori="annet" onclick="visProduktFast('Luftmadrass — dobbel', '80 kr / dag', 'Mandal', 'annet', '')">
       <div class="kort-bilde" style="background:#e8f0dc;">🏕️</div>
       <div class="kort-info">
         <h2>Luftmadrass — dobbel</h2>
         <p class="sted">📍 Mandal</p>
         <p class="pris">80 kr / dag</p>
-        <a href="#" class="knapp" onclick="visBooking('Luftmadrass — dobbel'); return false;">Kontakt utleier</a>
+        <a href="#" class="knapp" onclick="event.stopPropagation(); visBooking('Luftmadrass — dobbel'); return false;">Kontakt utleier</a>
       </div>
     </div>
-    <div class="kort" data-kategori="sport">
+    <div class="kort" data-kategori="sport" onclick="visProduktFast('Kano med årer', '350 kr / dag', 'Mandal', 'sport', '')">
       <div class="kort-bilde" style="background:#dce8f5;">🛶</div>
       <div class="kort-info">
         <h2>Kano med årer</h2>
         <p class="sted">📍 Mandal</p>
         <p class="pris">350 kr / dag</p>
-        <a href="#" class="knapp" onclick="visBooking('Kano med årer'); return false;">Kontakt utleier</a>
+        <a href="#" class="knapp" onclick="event.stopPropagation(); visBooking('Kano med årer'); return false;">Kontakt utleier</a>
       </div>
     </div>
   </div>
@@ -350,13 +246,13 @@
     <p id="chat-tittel" style="font-size:15px; font-weight:600; margin-bottom:12px;"></p>
     <div id="chat-meldinger" style="background:#fff; border-radius:12px; padding:16px; min-height:200px; max-height:400px; overflow-y:auto; margin-bottom:12px; border:1px solid #e8e8e8;"></div>
     <div style="display:flex; gap:8px;">
-      <input id="melding-input" type="text" placeholder="Skriv en melding..." style="flex:1; border:1px solid #ddd; border-radius:10px; padding:10px 14px; font-size:14px;">
+      <input id="melding-input" type="text" placeholder="Skriv en melding..." style="flex:1; border:1px solid #ddd; border-radius:10px; padding:10px 14px; font-size:14px;" autocomplete="off">
       <button onclick="sendMelding()" style="background:#1a5c3a; color:#fff; border:none; border-radius:10px; padding:10px 16px; font-size:14px; cursor:pointer;">Send</button>
     </div>
   </div>
 </div>
 
-<!-- PRODUKT SIDE -->
+<!-- PRODUKT -->
 <div class="side" id="side-produkt">
   <button onclick="byttSide('utforsk')" style="background:none; border:none; color:#1a5c3a; font-size:14px; cursor:pointer; margin-bottom:16px;">← Tilbake</button>
   <div id="produkt-innhold"></div>
@@ -373,13 +269,13 @@
   <button class="nav-item" id="nav-mine" onclick="byttSide('mine')">
     <span>📋</span>Mine
   </button>
-<button class="nav-item" id="nav-meldinger" onclick="byttSide('meldinger')" style="position:relative;">
-  <span>💬</span>Meldinger
-  <div id="melding-badge" style="display:none; position:absolute; top:6px; right:18px; background:#e74c3c; color:#fff; border-radius:50%; width:18px; height:18px; font-size:11px; font-weight:600; align-items:center; justify-content:center;">0</div>
-</button>
-<button class="nav-item" id="nav-profil" onclick="byttSide('profil')">
-  <span>👤</span>Profil
-</button>
+  <button class="nav-item" id="nav-meldinger" onclick="byttSide('meldinger')" style="position:relative;">
+    <span>💬</span>Meldinger
+    <div class="badge" id="melding-badge">0</div>
+  </button>
+  <button class="nav-item" id="nav-profil" onclick="byttSide('profil')">
+    <span>👤</span>Profil
+  </button>
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -394,6 +290,9 @@ let aktivSide = 'utforsk';
 let innloggetBruker = null;
 let valgtTing = '';
 let redigerId = null;
+let aktivSamtale = null;
+let valgtStjerner = 0;
+let aktivVurderingId = null;
 
 function byttSide(side) {
   document.querySelectorAll('.side').forEach(s => s.classList.remove('aktiv'));
@@ -404,12 +303,6 @@ function byttSide(side) {
     if (navEl) navEl.classList.add('active');
   }
   aktivSide = side;
-  const fab = document.getElementById('fab');
-  fab.style.display = innloggetBruker && side === 'utforsk' ? 'flex' : 'none';
-  if (side === 'mine') hentMineAnnonser();
-  if (side === 'fordeg') hentForDeg();
-  if (side === 'meldinger') hentSamtaler();
-}
   const fab = document.getElementById('fab');
   fab.style.display = innloggetBruker && side === 'utforsk' ? 'flex' : 'none';
   if (side === 'mine') hentMineAnnonser();
@@ -443,6 +336,7 @@ async function loggUt() {
 function oppdaterBruker(bruker) {
   innloggetBruker = bruker;
   oppdaterBrukerUI(bruker);
+  sjekkUlesteMeldinger();
   byttSide('utforsk');
 }
 
@@ -500,7 +394,6 @@ async function publiserAnnonse() {
   const sted = document.getElementById('a-sted').value;
   const bilderInput = document.getElementById('a-bilder');
   if (!tittel || !pris || !kategori || !sted) { alert('Fyll inn alle feltene!'); return; }
-
   let bildeUrler = [];
   if (bilderInput.files.length > 0) {
     const filer = Array.from(bilderInput.files).slice(0, 5);
@@ -513,13 +406,7 @@ async function publiserAnnonse() {
       }
     }
   }
-
-  const { error } = await sb.from('annonser').insert([{
-    tittel, beskrivelse, pris, kategori, sted,
-    epost: innloggetBruker.email,
-    bilder: bildeUrler.join(',')
-  }]);
-
+  const { error } = await sb.from('annonser').insert([{ tittel, beskrivelse, pris, kategori, sted, epost: innloggetBruker.email, bilder: bildeUrler.join(',') }]);
   if (error) alert('Feil: ' + error.message);
   else { alert('Annonsen er publisert!'); lukkAlleModaler(); hentAnnonser(); }
 }
@@ -542,9 +429,7 @@ async function lagreRedigering() {
   const kategori = document.getElementById('r-kategori').value;
   const sted = document.getElementById('r-sted').value;
   if (!tittel || !pris || !kategori || !sted) { alert('Fyll inn alle feltene!'); return; }
-  const { error } = await sb.from('annonser')
-    .update({ tittel, beskrivelse, pris, kategori, sted })
-    .eq('id', redigerId);
+  const { error } = await sb.from('annonser').update({ tittel, beskrivelse, pris, kategori, sted }).eq('id', redigerId);
   if (error) alert('Feil: ' + error.message);
   else { alert('Annonsen er oppdatert!'); lukkAlleModaler(); hentMineAnnonser(); }
 }
@@ -568,7 +453,7 @@ function lagKort(a, visSlett) {
     <button class="knapp" style="margin-top:6px; background:#f39c12;" onclick="event.stopPropagation(); visVurdering(${a.id})">⭐ Gi vurdering</button>
   `;
   return `
-    <div class="kort" data-kategori="${a.kategori}" id="kort-${a.id}" onclick="visProdukt(${a.id})" style="cursor:pointer;">
+    <div class="kort" data-kategori="${a.kategori}" id="kort-${a.id}" onclick="visProdukt(${a.id})">
       <div class="kort-bilde" style="background:#e8f0dc;">${bildeSrc}</div>
       <div class="kort-info">
         <h2>${a.tittel}</h2>
@@ -586,57 +471,42 @@ async function hentAnnonser() {
   if (error || !data || !data.length) return;
   const grid = document.getElementById('utforsk-grid');
   data.forEach(a => grid.innerHTML += lagKort(a, false));
+  hentAlleStjerner();
 }
 
 async function hentForDeg() {
   const grid = document.getElementById('fordeg-grid');
   grid.innerHTML = '<div class="tom"><span>📍</span>Finner annonser nær deg...</div>';
-
   const { data, error } = await sb.from('annonser').select('*');
   if (error || !data || !data.length) {
     grid.innerHTML = '<div class="tom"><span>⭐</span>Ingen annonser ennå</div>';
     return;
   }
-
   if (!navigator.geolocation) {
     grid.innerHTML = '<div class="tom"><span>📍</span>Din nettleser støtter ikke posisjon</div>';
     return;
   }
-
   navigator.geolocation.getCurrentPosition(
     async (pos) => {
       const lat = pos.coords.latitude;
       const lon = pos.coords.longitude;
-
-      const resp = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
-      );
+      const resp = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
       const steds = await resp.json();
       const by = steds.address.city || steds.address.town || steds.address.village || '';
-
       grid.innerHTML = '';
-
       if (by) {
         const header = document.createElement('p');
         header.style = 'font-size:13px; color:#888; margin-bottom:12px;';
         header.textContent = '📍 Viser annonser nær ' + by;
         grid.appendChild(header);
       }
-
-      const naere = data.filter(a =>
-        a.sted && by && a.sted.toLowerCase().includes(by.toLowerCase())
-      );
-      const andre = data.filter(a =>
-        !a.sted || !by || !a.sted.toLowerCase().includes(by.toLowerCase())
-      );
-
+      const naere = data.filter(a => a.sted && by && a.sted.toLowerCase().includes(by.toLowerCase()));
+      const andre = data.filter(a => !a.sted || !by || !a.sted.toLowerCase().includes(by.toLowerCase()));
       const sortert = [...naere, ...andre];
-
-      if (sortert.length === 0) {
+      if (!sortert.length) {
         grid.innerHTML = '<div class="tom"><span>📍</span>Ingen annonser i nærheten</div>';
         return;
       }
-
       const kortGrid = document.createElement('div');
       kortGrid.className = 'grid';
       sortert.forEach(a => kortGrid.innerHTML += lagKort(a, false));
@@ -667,28 +537,59 @@ async function hentMineAnnonser() {
   grid.innerHTML = '<div class="grid">' + data.map(a => lagKort(a, true)).join('') + '</div>';
 }
 
-function filtrer() {
-  const sok = document.getElementById('sok').value.toLowerCase();
-  const kat = document.getElementById('kategori').value;
-  document.querySelectorAll('#utforsk-grid .kort').forEach(k => {
-    const tittel = k.querySelector('h2').textContent.toLowerCase();
-    const kategori = k.getAttribute('data-kategori');
-    k.style.display = tittel.includes(sok) && (kat === '' || kategori === kat) ? 'block' : 'none';
-  });
+async function visProdukt(id) {
+  const { data, error } = await sb.from('annonser').select('*').eq('id', id).single();
+  if (error || !data) return;
+  const { data: vurderinger } = await sb.from('vurdering').select('*').eq('annonse_id', id);
+  const bilder = data.bilder ? data.bilder.split(',') : [];
+  const snitt = vurderinger && vurderinger.length ? vurderinger.reduce((s, v) => s + v.stjerner, 0) / vurderinger.length : 0;
+  const bildeHTML = bilder.length > 0
+    ? `<div style="display:flex; gap:8px; overflow-x:auto; margin-bottom:16px;">${bilder.map(b => `<img src="${b}" style="height:220px; border-radius:12px; object-fit:cover; flex-shrink:0;">`).join('')}</div>`
+    : `<div style="height:200px; background:#e8f0dc; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:64px; margin-bottom:16px;">📦</div>`;
+  const vurderingHTML = vurderinger && vurderinger.length
+    ? vurderinger.map(v => `
+        <div style="background:#fff; border-radius:12px; padding:14px; margin-bottom:10px; border:1px solid #e8e8e8;">
+          <div style="color:#f39c12; font-size:16px; margin-bottom:4px;">${'⭐'.repeat(v.stjerner)}</div>
+          <div style="font-size:13px; color:#555; margin-bottom:4px;">${v.kommentar || ''}</div>
+          <div style="font-size:12px; color:#aaa;">${v.fra}</div>
+        </div>`).join('')
+    : '<div style="color:#888; font-size:13px;">Ingen vurderinger ennå</div>';
+  document.getElementById('produkt-innhold').innerHTML = `
+    ${bildeHTML}
+    <div style="background:#fff; border-radius:14px; padding:20px; margin-bottom:16px; border:1px solid #e8e8e8;">
+      <h2 style="font-size:20px; margin-bottom:8px;">${data.tittel}</h2>
+      <p style="font-size:13px; color:#888; margin-bottom:8px;">📍 ${data.sted}</p>
+      ${snitt > 0 ? `<p style="color:#f39c12; font-size:14px; margin-bottom:8px;">${'⭐'.repeat(Math.round(snitt))} (${vurderinger.length} vurderinger)</p>` : ''}
+      <p style="font-size:22px; font-weight:700; color:#1a5c3a; margin-bottom:12px;">${data.pris}</p>
+      <p style="font-size:14px; color:#555; margin-bottom:16px; line-height:1.6;">${data.beskrivelse || ''}</p>
+      <button class="knapp" onclick="startChat(${data.id}, '${data.epost}')" style="margin-bottom:8px;">💬 Kontakt utleier</button>
+      ${innloggetBruker && innloggetBruker.email !== data.epost ? `<button class="knapp" style="background:#f39c12;" onclick="visVurdering(${data.id})">⭐ Gi vurdering</button>` : ''}
+    </div>
+    <div style="margin-bottom:16px;">
+      <p style="font-size:16px; font-weight:600; margin-bottom:12px;">Vurderinger</p>
+      ${vurderingHTML}
+    </div>`;
+  byttSide('produkt');
 }
 
-function lukkAlleModaler() {
-  document.getElementById('modal-bg').style.display = 'none';
-  document.getElementById('booking-modal').style.display = 'none';
-  document.getElementById('leggut-modal').style.display = 'none';
-  document.getElementById('rediger-modal').style.display = 'none';
-  document.getElementById('vurdering-modal').style.display = 'none';
+function visProduktFast(tittel, pris, sted, kategori, beskrivelse) {
+  document.getElementById('produkt-innhold').innerHTML = `
+    <div style="background:#fff; border-radius:14px; padding:20px; margin-bottom:16px; border:1px solid #e8e8e8;">
+      <h2 style="font-size:20px; margin-bottom:8px;">${tittel}</h2>
+      <p style="font-size:13px; color:#888; margin-bottom:8px;">📍 ${sted}</p>
+      <p style="font-size:22px; font-weight:700; color:#1a5c3a; margin-bottom:12px;">${pris}</p>
+      <p style="font-size:14px; color:#555; margin-bottom:16px;">${beskrivelse}</p>
+      <button class="knapp" onclick="visBooking('${tittel}')">📅 Send leieforespørsel</button>
+    </div>`;
+  byttSide('produkt');
 }
 
-sb.auth.getSession().then(({ data }) => {
-  if (data.session) oppdaterBruker(data.session.user);
-});
-let aktivSamtale = null;
+function startChat(annonseId, utleierEpost) {
+  if (!innloggetBruker) { alert('Du må logge inn for å sende melding!'); byttSide('profil'); return; }
+  if (innloggetBruker.email === utleierEpost) { alert('Dette er din egen annonse!'); return; }
+  apneChat(annonseId, utleierEpost);
+  byttSide('meldinger');
+}
 
 async function hentSamtaler() {
   const liste = document.getElementById('samtaler-liste');
@@ -697,31 +598,21 @@ async function hentSamtaler() {
     liste.innerHTML = '<div class="tom"><span>💬</span>Logg inn for å se meldinger</div>';
     return;
   }
-
-  const { data, error } = await sb.from('meldinger')
-    .select('*')
-    .or(`fra.eq.${innloggetBruker.email},til.eq.${innloggetBruker.email}`)
-    .order('created_at', { ascending: false });
-
+  const { data, error } = await sb.from('meldinger').select('*').or(`fra.eq.${innloggetBruker.email},til.eq.${innloggetBruker.email}`).order('created_at', { ascending: false });
   if (error || !data || !data.length) {
     liste.innerHTML = '<div class="tom"><span>💬</span>Ingen meldinger ennå</div>';
     return;
   }
-
   const samtaler = {};
   data.forEach(m => {
     const annen = m.fra === innloggetBruker.email ? m.til : m.fra;
     const nokkel = m.annonse_id + '_' + annen;
     if (!samtaler[nokkel]) samtaler[nokkel] = { ...m, annen };
   });
-
   Object.values(samtaler).forEach(s => {
     const div = document.createElement('div');
     div.style = 'background:#fff; border-radius:12px; padding:14px; margin-bottom:10px; border:1px solid #e8e8e8; cursor:pointer;';
-    div.innerHTML = `
-      <div style="font-size:14px; font-weight:600; margin-bottom:4px;">💬 ${s.annen}</div>
-      <div style="font-size:13px; color:#888;">${s.tekst.substring(0, 50)}...</div>
-    `;
+    div.innerHTML = `<div style="font-size:14px; font-weight:600; margin-bottom:4px;">💬 ${s.annen}</div><div style="font-size:13px; color:#888;">${s.tekst.substring(0, 50)}...</div>`;
     div.onclick = () => apneChat(s.annonse_id, s.annen);
     liste.appendChild(div);
   });
@@ -733,11 +624,8 @@ async function apneChat(annonseId, annen) {
   document.getElementById('chat-boks').style.display = 'block';
   document.getElementById('chat-tittel').textContent = '💬 ' + annen;
   await lastMeldinger();
-  await sb.from('meldinger')
-  .update({ lest: true })
-  .eq('til', innloggetBruker.email)
-  .eq('annonse_id', annonseId);
-sjekkUlesteMeldinger();
+  await sb.from('meldinger').update({ lest: true }).eq('til', innloggetBruker.email).eq('annonse_id', annonseId);
+  sjekkUlesteMeldinger();
 }
 
 function lukkChat() {
@@ -749,26 +637,16 @@ function lukkChat() {
 async function lastMeldinger() {
   const boks = document.getElementById('chat-meldinger');
   boks.innerHTML = '';
-  const { data } = await sb.from('meldinger')
-    .select('*')
-    .eq('annonse_id', aktivSamtale.annonseId)
-    .or(`fra.eq.${innloggetBruker.email},til.eq.${innloggetBruker.email}`)
-    .order('created_at', { ascending: true });
-
+  const { data } = await sb.from('meldinger').select('*').eq('annonse_id', aktivSamtale.annonseId).or(`fra.eq.${innloggetBruker.email},til.eq.${innloggetBruker.email}`).order('created_at', { ascending: true });
   if (!data || !data.length) {
     boks.innerHTML = '<div style="text-align:center; color:#888; font-size:13px;">Ingen meldinger ennå</div>';
     return;
   }
-
   data.forEach(m => {
     const erMeg = m.fra === innloggetBruker.email;
     const div = document.createElement('div');
     div.style = `display:flex; justify-content:${erMeg ? 'flex-end' : 'flex-start'}; margin-bottom:8px;`;
-    div.innerHTML = `
-      <div style="background:${erMeg ? '#1a5c3a' : '#f0f0f0'}; color:${erMeg ? '#fff' : '#1a1a1a'}; padding:8px 12px; border-radius:12px; max-width:70%; font-size:14px;">
-        ${m.tekst}
-      </div>
-    `;
+    div.innerHTML = `<div style="background:${erMeg ? '#1a5c3a' : '#f0f0f0'}; color:${erMeg ? '#fff' : '#1a1a1a'}; padding:8px 12px; border-radius:12px; max-width:70%; font-size:14px;">${m.tekst}</div>`;
     boks.appendChild(div);
   });
   boks.scrollTop = boks.scrollHeight;
@@ -777,47 +655,10 @@ async function lastMeldinger() {
 async function sendMelding() {
   const tekst = document.getElementById('melding-input').value.trim();
   if (!tekst || !aktivSamtale) return;
-  const { error } = await sb.from('meldinger').insert([{
-    fra: innloggetBruker.email,
-    til: aktivSamtale.annen,
-    annonse_id: aktivSamtale.annonseId,
-    tekst: tekst,
-    lest: false
-  }]);
+  const { error } = await sb.from('meldinger').insert([{ fra: innloggetBruker.email, til: aktivSamtale.annen, annonse_id: aktivSamtale.annonseId, tekst, lest: false }]);
   if (error) alert('Feil: ' + error.message);
-  else {
-    document.getElementById('melding-input').value = '';
-    await lastMeldinger();
-  }
+  else { document.getElementById('melding-input').value = ''; await lastMeldinger(); }
 }
-function startChat(annonseId, utleierEpost) {
-  if (!innloggetBruker) { alert('Du må logge inn for å sende melding!'); byttSide('profil'); return; }
-  if (innloggetBruker.email === utleierEpost) { alert('Dette er din egen annonse!'); return; }
-  apneChat(annonseId, utleierEpost);
-  byttSide('meldinger');
-}
-async function sjekkUlesteMeldinger() {
-  if (!innloggetBruker) return;
-  const { data } = await sb.from('meldinger')
-    .select('*')
-    .eq('til', innloggetBruker.email)
-    .eq('lest', false);
-
-  const badge = document.getElementById('melding-badge');
-  if (data && data.length > 0) {
-    badge.textContent = data.length;
-    badge.style.display = 'flex';
-  } else {
-    badge.style.display = 'none';
-  }
-}
-
-setInterval(() => {
-  if (innloggetBruker) sjekkUlesteMeldinger();
-}, 10000);
-
-let aktivVurderingId = null;
-let valgtStjerner = 0;
 
 function visVurdering(annonseId) {
   if (!innloggetBruker) { alert('Du må logge inn for å gi vurdering!'); return; }
@@ -838,39 +679,15 @@ function velgStjerner(antall) {
 
 function oppdaterStjerneVelger() {
   const stjerner = document.querySelectorAll('#stjerne-velger span');
-  stjerner.forEach((s, i) => {
-    s.style.opacity = i < valgtStjerner ? '1' : '0.3';
-  });
+  stjerner.forEach((s, i) => { s.style.opacity = i < valgtStjerner ? '1' : '0.3'; });
 }
 
 async function sendVurdering() {
   if (valgtStjerner === 0) { alert('Velg antall stjerner!'); return; }
   const kommentar = document.getElementById('v-kommentar').value;
-  const { error } = await sb.from('vurdering').insert([{
-    annonse_id: aktivVurderingId,
-    fra: innloggetBruker.email,
-    stjerner: valgtStjerner,
-    kommentar: kommentar
-  }]);
+  const { error } = await sb.from('vurdering').insert([{ annonse_id: aktivVurderingId, fra: innloggetBruker.email, stjerner: valgtStjerner, kommentar }]);
   if (error) alert('Feil: ' + error.message);
-  else {
-    alert('Takk for vurderingen!');
-    lukkAlleModaler();
-    hentStjerner(aktivVurderingId);
-  }
-}
-
-async function hentStjerner(annonseId) {
-  const { data } = await sb.from('vurdering')
-    .select('stjerner')
-    .eq('annonse_id', annonseId);
-  if (!data || !data.length) return;
-  const snitt = data.reduce((sum, v) => sum + v.stjerner, 0) / data.length;
-  const element = document.getElementById('stjerner-' + annonseId);
-  if (element) {
-    const fulle = Math.round(snitt);
-    element.textContent = '⭐'.repeat(fulle) + ' (' + data.length + ')';
-  }
+  else { alert('Takk for vurderingen!'); lukkAlleModaler(); }
 }
 
 async function hentAlleStjerner() {
@@ -884,61 +701,47 @@ async function hentAlleStjerner() {
   Object.entries(gruppert).forEach(([id, stjerner]) => {
     const snitt = stjerner.reduce((a, b) => a + b, 0) / stjerner.length;
     const element = document.getElementById('stjerner-' + id);
-    if (element) {
-      element.textContent = '⭐'.repeat(Math.round(snitt)) + ' (' + stjerner.length + ')';
-    }
+    if (element) element.textContent = '⭐'.repeat(Math.round(snitt)) + ' (' + stjerner.length + ')';
   });
 }
 
-async function visProdukt(id) {
-  const { data, error } = await sb.from('annonser').select('*').eq('id', id).single();
-  if (error || !data) return;
-
-  const { data: vurderinger } = await sb.from('vurdering').select('*').eq('annonse_id', id);
-
-  const bilder = data.bilder ? data.bilder.split(',') : [];
-  const snitt = vurderinger && vurderinger.length
-    ? vurderinger.reduce((s, v) => s + v.stjerner, 0) / vurderinger.length
-    : 0;
-
-  const bildeHTML = bilder.length > 0
-    ? `<div style="display:flex; gap:8px; overflow-x:auto; margin-bottom:16px;">
-        ${bilder.map(b => `<img src="${b}" style="height:220px; border-radius:12px; object-fit:cover; flex-shrink:0;">`).join('')}
-       </div>`
-    : `<div style="height:200px; background:#e8f0dc; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:64px; margin-bottom:16px;">📦</div>`;
-
-  const vurderingHTML = vurderinger && vurderinger.length
-    ? vurderinger.map(v => `
-        <div style="background:#fff; border-radius:12px; padding:14px; margin-bottom:10px; border:1px solid #e8e8e8;">
-          <div style="color:#f39c12; font-size:16px; margin-bottom:4px;">${'⭐'.repeat(v.stjerner)}</div>
-          <div style="font-size:13px; color:#555; margin-bottom:4px;">${v.kommentar || ''}</div>
-          <div style="font-size:12px; color:#aaa;">${v.fra}</div>
-        </div>`).join('')
-    : '<div style="color:#888; font-size:13px;">Ingen vurderinger ennå</div>';
-
-  document.getElementById('produkt-innhold').innerHTML = `
-    ${bildeHTML}
-    <div style="background:#fff; border-radius:14px; padding:20px; margin-bottom:16px; border:1px solid #e8e8e8;">
-      <h2 style="font-size:20px; margin-bottom:8px;">${data.tittel}</h2>
-      <p style="font-size:13px; color:#888; margin-bottom:8px;">📍 ${data.sted}</p>
-      ${snitt > 0 ? `<p style="color:#f39c12; font-size:14px; margin-bottom:8px;">${'⭐'.repeat(Math.round(snitt))} (${vurderinger.length} vurderinger)</p>` : ''}
-      <p style="font-size:22px; font-weight:700; color:#1a5c3a; margin-bottom:12px;">${data.pris}</p>
-      <p style="font-size:14px; color:#555; margin-bottom:16px; line-height:1.6;">${data.beskrivelse || ''}</p>
-      <button class="knapp" onclick="startChat(${data.id}, '${data.epost}'); return false;" style="margin-bottom:8px;">💬 Kontakt utleier</button>
-      ${innloggetBruker && innloggetBruker.email !== data.epost
-        ? `<button class="knapp" style="background:#f39c12;" onclick="visVurdering(${data.id})">⭐ Gi vurdering</button>`
-        : ''}
-    </div>
-    <div style="margin-bottom:16px;">
-      <p style="font-size:16px; font-weight:600; margin-bottom:12px;">Vurderinger</p>
-      ${vurderingHTML}
-    </div>
-  `;
-
-  byttSide('produkt');
+async function sjekkUlesteMeldinger() {
+  if (!innloggetBruker) return;
+  const { data } = await sb.from('meldinger').select('*').eq('til', innloggetBruker.email).eq('lest', false);
+  const badge = document.getElementById('melding-badge');
+  if (data && data.length > 0) {
+    badge.textContent = data.length;
+    badge.style.display = 'flex';
+  } else {
+    badge.style.display = 'none';
+  }
 }
 
+function filtrer() {
+  const sok = document.getElementById('sok').value.toLowerCase();
+  const kat = document.getElementById('kategori').value;
+  document.querySelectorAll('#utforsk-grid .kort').forEach(k => {
+    const tittel = k.querySelector('h2').textContent.toLowerCase();
+    const kategori = k.getAttribute('data-kategori');
+    k.style.display = tittel.includes(sok) && (kat === '' || kategori === kat) ? 'block' : 'none';
+  });
+}
+
+function lukkAlleModaler() {
+  document.getElementById('modal-bg').style.display = 'none';
+  document.getElementById('booking-modal').style.display = 'none';
+  document.getElementById('leggut-modal').style.display = 'none';
+  document.getElementById('rediger-modal').style.display = 'none';
+  document.getElementById('vurdering-modal').style.display = 'none';
+}
+
+setInterval(() => { if (innloggetBruker) sjekkUlesteMeldinger(); }, 10000);
+
+sb.auth.getSession().then(({ data }) => {
+  if (data.session) oppdaterBruker(data.session.user);
+});
 hentAnnonser();
+hentAlleStjerner();
 </script>
 </body>
 </html>
