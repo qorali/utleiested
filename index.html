@@ -458,6 +458,7 @@ async function loggUt() {
 function oppdaterBruker(bruker) {
   innloggetBruker = bruker;
   oppdaterBrukerUI(bruker);
+  await hentFavoritter(); oppdaterHjerteknappe();
   sjekkUlesteMeldinger();
   byttSide('utforsk');
 }
@@ -562,7 +563,7 @@ async function slettAnnonse(id) {
   else document.getElementById('kort-' + id).remove();
 }
 
-function lagKort(a, visSlett) {
+async function lagKort(a, visSlett) {
   const bilder = a.bilder ? a.bilder.split(',') : [];
   const bildeSrc = bilder.length > 0
     ? `<img src="${bilder[0]}" style="width:100%; height:100%; object-fit:cover;">`
@@ -575,7 +576,14 @@ function lagKort(a, visSlett) {
   `;
   return `
     <div class="kort" data-kategori="${a.kategori}" id="kort-${a.id}" onclick="visProdukt(${a.id})">
-      <div class="kort-bilde" style="background:#e8f0dc;">${bildeSrc}</div>
+      <div class="kort-bilde" style="background:#e8f0dc; position:relative;">
+        ${bildeSrc}
+        <button id="hjerte-${a.id}" onclick="event.stopPropagation(); toggleFavoritt(${a.id})"
+          style="position:absolute; top:8px; right:8px; background:rgba(255,255,255,0.9);
+          border:none; border-radius:50%; width:32px; height:32px; font-size:16px;
+          cursor:pointer; display:flex; align-items:center; justify-content:center;
+          box-shadow:0 2px 6px rgba(0,0,0,0.15);">🤍</button>
+      </div>
       <div class="kort-info">
         <h2>${a.tittel}</h2>
         <p class="sted">📍 ${a.sted}</p>
@@ -916,7 +924,71 @@ async function lastOppBilde() {
   alert('Profilbilde oppdatert!');
 }
 
+let mineFavoritter = [];
+
+async function hentFavoritter() {
+  if (!innloggetBruker) return;
+  const { data } = await sb.from('favoritter').select('*').eq('epost', innloggetBruker.email);
+  if (data) {
+    mineFavoritter = data.map(f => f.annonse_id);
+    oppdaterHjerteknappe();
+  }
+}
+
+function oppdaterHjerteknappe() {
+  mineFavoritter.forEach(id => {
+    const knapp = document.getElementById('hjerte-' + id);
+    if (knapp) knapp.textContent = '❤️';
+  });
+}
+
+async function toggleFavoritt(annonseId) {
+  if (!innloggetBruker) {
+    alert('Du må logge inn for å lagre favoritter!');
+    byttSide('profil');
+    return;
+  }
+  const erFavoritt = mineFavoritter.includes(annonseId);
+  const knapp = document.getElementById('hjerte-' + annonseId);
+
+  if (erFavoritt) {
+    await sb.from('favoritter').delete()
+      .eq('epost', innloggetBruker.email)
+      .eq('annonse_id', annonseId);
+    mineFavoritter = mineFavoritter.filter(id => id !== annonseId);
+    if (knapp) knapp.textContent = '🤍';
+  } else {
+    await sb.from('favoritter').insert([{
+      epost: innloggetBruker.email,
+      annonse_id: annonseId
+    }]);
+    mineFavoritter.push(annonseId);
+    if (knapp) knapp.textContent = '❤️';
+  }
+}
+
+async function hentFavorittAnnonser() {
+  const grid = document.getElementById('fordeg-grid');
+  if (!innloggetBruker || mineFavoritter.length === 0) return;
+
+  const { data } = await sb.from('annonser').select('*').in('id', mineFavoritter);
+  if (!data || !data.length) return;
+
+  const header = document.createElement('p');
+  header.style = 'font-size:14px; font-weight:600; margin-bottom:12px; margin-top:20px;';
+  header.textContent = '❤️ Dine favoritter';
+  grid.parentElement.insertBefore(header, grid);
+
+  const kortGrid = document.createElement('div');
+  kortGrid.className = 'grid';
+  kortGrid.style = 'margin-bottom:20px;';
+  for (const a of data) kortGrid.innerHTML += await lagKort(a, false);
+  grid.parentElement.insertBefore(kortGrid, grid);
+}
+
 hentAnnonser();
+hentFavoritter();
+hentFavorittAnnonser();
 hentAlleStjerner();
 </script>
 </body>
