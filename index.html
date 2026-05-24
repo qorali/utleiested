@@ -455,7 +455,7 @@ async function loggUt() {
   byttSide('utforsk');
 }
 
-function oppdaterBruker(bruker) {
+async function oppdaterBruker(bruker) {
   innloggetBruker = bruker;
   oppdaterBrukerUI(bruker);
   await hentFavoritter(); oppdaterHjerteknappe();
