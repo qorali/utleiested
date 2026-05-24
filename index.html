@@ -5,86 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Leieting</title>
   <style>
-   * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a; padding-bottom: 70px; }
-
-.topbar { background: #1a5c3a; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-.topbar h1 { color: #fff; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
-.topbar-right { display: flex; align-items: center; gap: 10px; }
-.topbar span { color: #a8d5b8; font-size: 13px; }
-.topbar button { background: rgba(255,255,255,0.15); color: #fff; border: none; border-radius: 8px; padding: 6px 14px; font-size: 13px; cursor: pointer; transition: background 0.2s; }
-.topbar button:hover { background: rgba(255,255,255,0.25); }
-
-.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #e0e0e0; display: flex; z-index: 50; box-shadow: 0 -2px 10px rgba(0,0,0,0.06); }
-.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0; cursor: pointer; color: #aaa; font-size: 11px; gap: 3px; border: none; background: none; position: relative; transition: color 0.2s; }
-.nav-item.active { color: #1a5c3a; }
-.nav-item span { font-size: 22px; }
-
-.hero { background: linear-gradient(135deg, #1a5c3a 0%, #2d8a5e 100%); padding: 28px 20px; text-align: center; }
-.hero h2 { color: #fff; font-size: 22px; font-weight: 700; margin-bottom: 6px; }
-.hero p { color: #a8d5b8; font-size: 14px; }
-
-.kategorier { display: flex; gap: 8px; overflow-x: auto; padding: 14px 16px; background: #fff; border-bottom: 1px solid #f0f0f0; scrollbar-width: none; }
-.kategorier::-webkit-scrollbar { display: none; }
-.kat-knapp { background: #f0f7f3; color: #1a5c3a; border: 1.5px solid #c8e6d4; border-radius: 20px; padding: 6px 14px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
-.kat-knapp:hover, .kat-knapp.aktiv { background: #1a5c3a; color: #fff; border-color: #1a5c3a; }
-
-.side { display: none; padding: 16px; max-width: 900px; margin: 0 auto; }
-.side.aktiv { display: block; }
-
-.sokebar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-.sokebar input { flex: 1; min-width: 150px; border: 1.5px solid #e0e0e0; border-radius: 12px; padding: 10px 16px; font-size: 14px; background: #fff; transition: border-color 0.2s; }
-.sokebar input:focus { outline: none; border-color: #1a5c3a; }
-.sokebar select { border: 1.5px solid #e0e0e0; border-radius: 12px; padding: 10px 14px; font-size: 14px; background: #fff; }
-
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
-.kort { background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid #ececec; box-shadow: 0 2px 8px rgba(0,0,0,0.06); cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
-.kort:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.1); }
-.kort-bilde { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 48px; overflow: hidden; }
-.kort-bilde img { width: 100%; height: 100%; object-fit: cover; }
-.kort-info { padding: 12px; }
-.kort-info h2 { font-size: 14px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
-.kort-info .sted { font-size: 12px; color: #aaa; margin-bottom: 6px; }
-.kort-info .pris { font-size: 15px; font-weight: 700; color: #1a5c3a; margin-bottom: 8px; }
-
-.knapp { display: block; background: #1a5c3a; color: #fff; text-align: center; padding: 9px; border-radius: 10px; text-decoration: none; font-size: 13px; font-weight: 500; border: none; cursor: pointer; width: 100%; transition: background 0.2s; }
-.knapp:hover { background: #144d30; }
-.knapp.rod { background: #e74c3c; }
-.knapp.rod:hover { background: #c0392b; }
-.knapp.bla { background: #2980b9; }
-.knapp.bla:hover { background: #2471a3; }
-
-.sekstittel { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
-
-.innlogging-boks { max-width: 360px; margin: 40px auto; background: #fff; border-radius: 20px; padding: 32px; border: 1px solid #ececec; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-.innlogging-boks h2 { font-size: 22px; font-weight: 700; margin-bottom: 20px; }
-.innlogging-boks input { width: 100%; border: 1.5px solid #e0e0e0; border-radius: 12px; padding: 12px 14px; font-size: 14px; margin-bottom: 10px; transition: border-color 0.2s; }
-.innlogging-boks input:focus { outline: none; border-color: #1a5c3a; }
-.innlogging-boks button { width: 100%; padding: 12px; border-radius: 12px; border: none; font-size: 14px; font-weight: 500; cursor: pointer; margin-bottom: 8px; transition: background 0.2s; }
-.btn-green { background: #1a5c3a; color: #fff; }
-.btn-green:hover { background: #144d30; }
-.btn-outline { background: #fff; color: #1a5c3a; border: 1.5px solid #1a5c3a !important; }
-
-.modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; backdrop-filter: blur(2px); }
-.modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; border-radius: 20px; padding: 28px; width: 92%; max-width: 420px; z-index: 101; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
-.modal h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
-.modal input, .modal textarea, .modal select { width: 100%; border: 1.5px solid #e0e0e0; border-radius: 12px; padding: 10px 14px; font-size: 14px; margin-bottom: 10px; }
-.modal textarea { height: 80px; }
-.modal button { width: 100%; padding: 11px; border-radius: 12px; border: none; font-size: 14px; font-weight: 500; cursor: pointer; margin-bottom: 8px; }
-
-.fab { position: fixed; bottom: 80px; right: 20px; background: #1a5c3a; color: #fff; border: none; border-radius: 50%; width: 58px; height: 58px; font-size: 28px; cursor: pointer; box-shadow: 0 4px 16px rgba(26,92,58,0.4); display: none; align-items: center; justify-content: center; z-index: 49; transition: transform 0.2s; }
-.fab:hover { transform: scale(1.1); }
-
-.tom { text-align: center; padding: 40px 20px; color: #aaa; }
-.tom span { font-size: 48px; display: block; margin-bottom: 12px; }
-
-.badge { display: none; position: absolute; top: 6px; right: 14px; background: #e74c3c; color: #fff; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; font-weight: 600; align-items: center; justify-content: center; }
-
-@media (max-width: 600px) {
-  .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .kort-bilde { height: 100px; }
-  .hero h2 { font-size: 18px; }
-}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a; padding-bottom: 70px; }
+    .topbar { background: #1a5c3a; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .topbar h1 { color: #fff; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+    .topbar span { color: #a8d5b8; font-size: 13px; }
+    .topbar button { background: rgba(255,255,255,0.15); color: #fff; border: none; border-radius: 8px; padding: 6px 14px; font-size: 13px; cursor: pointer; transition: background 0.2s; }
+    .topbar button:hover { background: rgba(255,255,255,0.25); }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #e0e0e0; display: flex; z-index: 50; box-shadow: 0 -2px 10px rgba(0,0,0,0.06); }
+    .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0; cursor: pointer; color: #aaa; font-size: 11px; gap: 3px; border: none; background: none; position: relative; transition: color 0.2s; }
+    .nav-item.active { color: #1a5c3a; }
+    .nav-item span { font-size: 20px; }
+    .hero { background: linear-gradient(135deg, #1a5c3a 0%, #2d8a5e 100%); padding: 28px 20px; text-align: center; }
+    .hero h2 { color: #fff; font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .hero p { color: #a8d5b8; font-size: 14px; }
+    .kategorier { display: flex; gap: 8px; overflow-x: auto; padding: 14px 16px; background: #fff; border-bottom: 1px solid #f0f0f0; scrollbar-width: none; }
+    .kategorier::-webkit-scrollbar { display: none; }
+    .kat-knapp { background: #f0f7f3; color: #1a5c3a; border: 1.5px solid #c8e6d4; border-radius: 20px; padding: 6px 14px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+    .kat-knapp:hover, .kat-knapp.aktiv { background: #1a5c3a; color: #fff; border-color: #1a5c3a; }
+    .side { display: none; padding: 16px; max-width: 900px; margin: 0 auto; }
+    .side.aktiv { display: block; }
+    .sokebar { display: flex; gap: 8px; margin-bottom: 16px; }
+    .sokebar input { flex: 1; border: 1.5px solid #e0e0e0; border-radius: 12px; padding: 10px 16px; font-size: 14px; background: #fff; }
+    .sokebar input:focus { outline: none; border-color: #1a5c3a; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+    .kort { background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid #ececec; box-shadow: 0 2px 8px rgba(0,0,0,0.06); cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+    .kort:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.1); }
+    .kort-bilde { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 48px; overflow: hidden; position: relative; }
+    .kort-bilde img { width: 100%; height: 100%; object-fit: cover; }
+    .kort-info { padding: 12px; }
+    .kort-info h2 { font-size: 14px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
+    .kort-info .sted { font-size: 12px; color: #aaa; margin-bottom: 6px; }
+    .kort-info .pris { font-size: 15px; font-weight: 700; color: #1a5c3a; margin-bottom: 8px; }
+    .knapp { display: block; background: #1a5c3a; color: #fff; text-align: center; padding: 9px; border-radius: 10px; text-decoration: none; font-size: 13px; font-weight: 500; border: none; cursor: pointer; width: 100%; transition: background 0.2s; }
+    .knapp:hover { background: #144d30; }
+    .knapp.rod { background: #e74c3c; }
+    .knapp.bla { background: #2980b9; }
+    .sekstittel { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+    .innlogging-boks { max-width: 360px; margin: 40px auto; background: #fff; border-radius: 20px; padding: 32px; border: 1px solid #ececec; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .innlogging-boks h2 { font-size: 22px; font-weight: 700; margin-bottom: 20px; }
+    .innlogging-boks input { width: 100%; border: 1.5px solid #e0e0e0; border-radius: 12px; padding: 12px 14px; font-size: 14px; margin-bottom: 10px; }
+    .innlogging-boks button { width: 100%; padding: 12px; border-radius: 12px; border: none; font-size: 14px; font-weight: 500; cursor: pointer; margin-bottom: 8px; }
+    .btn-green { background: #1a5c3a; color: #fff; }
+    .btn-outline { background: #fff; color: #1a5c3a; border: 1.5px solid #1a5c3a !important; }
+    .modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; backdrop-filter: blur(2px); }
+    .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; border-radius: 20px; padding: 28px; width: 92%; max-width: 420px; z-index: 101; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+    .modal h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+    .modal input, .modal textarea, .modal select { width: 100%; border: 1.5px solid #e0e0e0; border-radius: 12px; padding: 10px 14px; font-size: 14px; margin-bottom: 10px; }
+    .modal textarea { height: 80px; }
+    .modal button { width: 100%; padding: 11px; border-radius: 12px; border: none; font-size: 14px; font-weight: 500; cursor: pointer; margin-bottom: 8px; }
+    .fab { position: fixed; bottom: 80px; right: 20px; background: #1a5c3a; color: #fff; border: none; border-radius: 50%; width: 58px; height: 58px; font-size: 28px; cursor: pointer; box-shadow: 0 4px 16px rgba(26,92,58,0.4); display: none; align-items: center; justify-content: center; z-index: 49; transition: transform 0.2s; }
+    .fab:hover { transform: scale(1.1); }
+    .tom { text-align: center; padding: 40px 20px; color: #aaa; }
+    .tom span { font-size: 48px; display: block; margin-bottom: 12px; }
+    .badge { display: none; position: absolute; top: 6px; right: 14px; background: #e74c3c; color: #fff; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; font-weight: 600; align-items: center; justify-content: center; }
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .kort-bilde { height: 100px; }
+      .hero h2 { font-size: 18px; }
+    }
   </style>
 </head>
 <body>
@@ -169,11 +149,11 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a;
 <!-- FAB -->
 <button class="fab" id="fab" onclick="visLeggUt()">+</button>
 
+<!-- HERO OG KATEGORIER -->
 <div class="hero">
   <h2>Lei og lån ting nær deg</h2>
   <p>Finn det du trenger — legg ut det du ikke bruker</p>
 </div>
-
 <div class="kategorier">
   <button class="kat-knapp aktiv" onclick="filtrerKat(this, '')">🌟 Alle</button>
   <button class="kat-knapp" onclick="filtrerKat(this, 'sport')">⚽ Sport</button>
@@ -195,8 +175,10 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a;
     </select>
   </div>
   <div class="grid" id="utforsk-grid">
-    <div class="kort" data-kategori="sport" onclick="visProduktFast('Sykkel — trekkhjul', '150 kr / dag', 'Mandal sentrum', 'sport', '')">
-      <div class="kort-bilde" style="background:#d4eadc;">🚲</div>
+    <div class="kort" data-kategori="sport" onclick="visProduktFast('Sykkel — trekkhjul', '150 kr / dag', 'Mandal sentrum', '')">
+      <div class="kort-bilde" style="background:#d4eadc;">🚲
+        <button onclick="event.stopPropagation(); toggleFavorittFast('sykkel')" id="hjerte-sykkel" style="position:absolute; top:8px; right:8px; background:rgba(255,255,255,0.9); border:none; border-radius:50%; width:32px; height:32px; font-size:16px; cursor:pointer;">🤍</button>
+      </div>
       <div class="kort-info">
         <h2>Sykkel — trekkhjul</h2>
         <p class="sted">📍 Mandal sentrum</p>
@@ -204,8 +186,10 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a;
         <a href="#" class="knapp" onclick="event.stopPropagation(); visBooking('Sykkel — trekkhjul'); return false;">Kontakt utleier</a>
       </div>
     </div>
-    <div class="kort" data-kategori="verktoy" onclick="visProduktFast('Drill med bits', '100 kr / dag', 'Mandal sentrum', 'verktoy', '')">
-      <div class="kort-bilde" style="background:#dce8f5;">🔧</div>
+    <div class="kort" data-kategori="verktoy" onclick="visProduktFast('Drill med bits', '100 kr / dag', 'Mandal sentrum', '')">
+      <div class="kort-bilde" style="background:#dce8f5;">🔧
+        <button onclick="event.stopPropagation(); toggleFavorittFast('drill')" id="hjerte-drill" style="position:absolute; top:8px; right:8px; background:rgba(255,255,255,0.9); border:none; border-radius:50%; width:32px; height:32px; font-size:16px; cursor:pointer;">🤍</button>
+      </div>
       <div class="kort-info">
         <h2>Drill med bits</h2>
         <p class="sted">📍 Mandal sentrum</p>
@@ -213,8 +197,10 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a;
         <a href="#" class="knapp" onclick="event.stopPropagation(); visBooking('Drill med bits'); return false;">Kontakt utleier</a>
       </div>
     </div>
-    <div class="kort" data-kategori="sport" onclick="visProduktFast('Telt — 4 personer', '200 kr / dag', 'Mandal', 'sport', '')">
-      <div class="kort-bilde" style="background:#f5e8d4;">⛺</div>
+    <div class="kort" data-kategori="sport" onclick="visProduktFast('Telt — 4 personer', '200 kr / dag', 'Mandal', '')">
+      <div class="kort-bilde" style="background:#f5e8d4;">⛺
+        <button onclick="event.stopPropagation(); toggleFavorittFast('telt')" id="hjerte-telt" style="position:absolute; top:8px; right:8px; background:rgba(255,255,255,0.9); border:none; border-radius:50%; width:32px; height:32px; font-size:16px; cursor:pointer;">🤍</button>
+      </div>
       <div class="kort-info">
         <h2>Telt — 4 personer</h2>
         <p class="sted">📍 Mandal</p>
@@ -222,8 +208,10 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a;
         <a href="#" class="knapp" onclick="event.stopPropagation(); visBooking('Telt — 4 personer'); return false;">Kontakt utleier</a>
       </div>
     </div>
-    <div class="kort" data-kategori="elektronikk" onclick="visProduktFast('Kamera — Canon', '250 kr / dag', 'Mandal', 'elektronikk', '')">
-      <div class="kort-bilde" style="background:#f0dce8;">📷</div>
+    <div class="kort" data-kategori="elektronikk" onclick="visProduktFast('Kamera — Canon', '250 kr / dag', 'Mandal', '')">
+      <div class="kort-bilde" style="background:#f0dce8;">📷
+        <button onclick="event.stopPropagation(); toggleFavorittFast('kamera')" id="hjerte-kamera" style="position:absolute; top:8px; right:8px; background:rgba(255,255,255,0.9); border:none; border-radius:50%; width:32px; height:32px; font-size:16px; cursor:pointer;">🤍</button>
+      </div>
       <div class="kort-info">
         <h2>Kamera — Canon</h2>
         <p class="sted">📍 Mandal</p>
@@ -231,8 +219,10 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a;
         <a href="#" class="knapp" onclick="event.stopPropagation(); visBooking('Kamera — Canon'); return false;">Kontakt utleier</a>
       </div>
     </div>
-    <div class="kort" data-kategori="annet" onclick="visProduktFast('Luftmadrass — dobbel', '80 kr / dag', 'Mandal', 'annet', '')">
-      <div class="kort-bilde" style="background:#e8f0dc;">🏕️</div>
+    <div class="kort" data-kategori="annet" onclick="visProduktFast('Luftmadrass — dobbel', '80 kr / dag', 'Mandal', '')">
+      <div class="kort-bilde" style="background:#e8f0dc;">🏕️
+        <button onclick="event.stopPropagation(); toggleFavorittFast('luftmadrass')" id="hjerte-luftmadrass" style="position:absolute; top:8px; right:8px; background:rgba(255,255,255,0.9); border:none; border-radius:50%; width:32px; height:32px; font-size:16px; cursor:pointer;">🤍</button>
+      </div>
       <div class="kort-info">
         <h2>Luftmadrass — dobbel</h2>
         <p class="sted">📍 Mandal</p>
@@ -240,8 +230,10 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a;
         <a href="#" class="knapp" onclick="event.stopPropagation(); visBooking('Luftmadrass — dobbel'); return false;">Kontakt utleier</a>
       </div>
     </div>
-    <div class="kort" data-kategori="sport" onclick="visProduktFast('Kano med årer', '350 kr / dag', 'Mandal', 'sport', '')">
-      <div class="kort-bilde" style="background:#dce8f5;">🛶</div>
+    <div class="kort" data-kategori="sport" onclick="visProduktFast('Kano med årer', '350 kr / dag', 'Mandal', '')">
+      <div class="kort-bilde" style="background:#dce8f5;">🛶
+        <button onclick="event.stopPropagation(); toggleFavorittFast('kano')" id="hjerte-kano" style="position:absolute; top:8px; right:8px; background:rgba(255,255,255,0.9); border:none; border-radius:50%; width:32px; height:32px; font-size:16px; cursor:pointer;">🤍</button>
+      </div>
       <div class="kort-info">
         <h2>Kano med årer</h2>
         <p class="sted">📍 Mandal</p>
@@ -255,7 +247,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a;
 <!-- FOR DEG -->
 <div class="side" id="side-fordeg">
   <p class="sekstittel">For deg</p>
-  <div class="grid" id="fordeg-grid"></div>
+  <div id="fordeg-grid" class="grid"></div>
 </div>
 
 <!-- MINE ANNONSER -->
@@ -268,65 +260,44 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a;
 <div class="side" id="side-vilkar">
   <div style="max-width:700px; margin:0 auto;">
     <h2 style="font-size:22px; font-weight:700; margin-bottom:20px;">Vilkår og personvern</h2>
-
     <div style="background:#fff; border-radius:16px; padding:24px; margin-bottom:16px; border:1px solid #ececec;">
       <h3 style="font-size:16px; font-weight:600; margin-bottom:10px;">Om Leieting</h3>
       <p style="font-size:14px; color:#555; line-height:1.7;">Leieting er en plattform der privatpersoner og bedrifter kan leie ut og leie ting av hverandre. Vi er kun et mellomledd og er ikke ansvarlig for selve leieavtalen mellom partene.</p>
     </div>
-
     <div style="background:#fff; border-radius:16px; padding:24px; margin-bottom:16px; border:1px solid #ececec;">
       <h3 style="font-size:16px; font-weight:600; margin-bottom:10px;">Brukerens ansvar</h3>
-      <p style="font-size:14px; color:#555; line-height:1.7;">Som bruker av Leieting er du selv ansvarlig for å sikre at tingene du leier ut er i god stand, at du har rett til å leie dem ut, og at du behandler andres eiendeler med respekt. Vi oppfordrer alle til å tegne forsikring ved utleie av verdifulle gjenstander.</p>
+      <p style="font-size:14px; color:#555; line-height:1.7;">Som bruker av Leieting er du selv ansvarlig for å sikre at tingene du leier ut er i god stand, at du har rett til å leie dem ut, og at du behandler andres eiendeler med respekt.</p>
     </div>
-
     <div style="background:#fff; border-radius:16px; padding:24px; margin-bottom:16px; border:1px solid #ececec;">
       <h3 style="font-size:16px; font-weight:600; margin-bottom:10px;">Personvern</h3>
-      <p style="font-size:14px; color:#555; line-height:1.7;">Vi lagrer e-postadressen din, profilinformasjon og annonsene dine i vår database. Vi deler ikke informasjonen din med tredjeparter. Du kan når som helst be om å få slettet kontoen din ved å kontakte oss.</p>
+      <p style="font-size:14px; color:#555; line-height:1.7;">Vi lagrer e-postadressen din, profilinformasjon og annonsene dine i vår database. Vi deler ikke informasjonen din med tredjeparter.</p>
     </div>
-
-    <div style="background:#fff; border-radius:16px; padding:24px; margin-bottom:16px; border:1px solid #ececec;">
-      <h3 style="font-size:16px; font-weight:600; margin-bottom:10px;">Cookies</h3>
-      <p style="font-size:14px; color:#555; line-height:1.7;">Vi bruker kun nødvendige cookies for innlogging og sikkerhet. Vi bruker ikke cookies til markedsføring eller sporing.</p>
-    </div>
-
     <div style="background:#fff; border-radius:16px; padding:24px; margin-bottom:16px; border:1px solid #ececec;">
       <h3 style="font-size:16px; font-weight:600; margin-bottom:10px;">Kontakt</h3>
-      <p style="font-size:14px; color:#555; line-height:1.7;">Har du spørsmål om vilkår eller personvern? Ta kontakt med oss på <strong>hei@leieting.no</strong></p>
+      <p style="font-size:14px; color:#555; line-height:1.7;">Spørsmål? Kontakt oss på <strong>hei@leieting.no</strong></p>
     </div>
-
     <p style="font-size:12px; color:#aaa; text-align:center; margin-top:20px;">Sist oppdatert: Mai 2026</p>
   </div>
 </div>
 
 <!-- PROFIL -->
 <div class="side" id="side-profil">
-  <div id="profil-ikke-innlogget" style="display:none;">
+  <div id="profil-ikke-innlogget">
     <div class="innlogging-boks">
       <h2>Logg inn</h2>
       <input id="epost" type="email" placeholder="E-post">
       <input id="passord" type="password" placeholder="Passord (min. 6 tegn)">
       <button class="btn-green" onclick="loggInn()">Logg inn</button>
       <button class="btn-outline" onclick="registrer()">Registrer deg</button>
-      <p style="font-size:12px; color:#aaa; text-align:center; margin-top:8px;">
-  Ved å registrere deg godtar du våre 
-  <a href="#" onclick="byttSide('vilkar')" style="color:#1a5c3a;">vilkår og personvern</a>
-</p>
+      <p style="font-size:12px; color:#aaa; text-align:center; margin-top:8px;">Ved å registrere deg godtar du våre <a href="#" onclick="byttSide('vilkar')" style="color:#1a5c3a;">vilkår og personvern</a></p>
     </div>
   </div>
-
   <div id="profil-innhold" style="display:none;">
-    <!-- PROFILBILDE -->
     <div style="text-align:center; margin-bottom:24px;">
-      <div id="profil-bilde-visning" style="width:100px; height:100px; border-radius:50%; background:#e8f0dc; margin:0 auto 12px; overflow:hidden; display:flex; align-items:center; justify-content:center; font-size:48px; border:3px solid #1a5c3a;">
-        👤
-      </div>
+      <div id="profil-bilde-visning" style="width:100px; height:100px; border-radius:50%; background:#e8f0dc; margin:0 auto 12px; overflow:hidden; display:flex; align-items:center; justify-content:center; font-size:48px; border:3px solid #1a5c3a;">👤</div>
       <input type="file" id="bilde-input" accept="image/*" style="display:none;" onchange="lastOppBilde()">
-      <button onclick="document.getElementById('bilde-input').click()" style="background:none; border:1px solid #1a5c3a; color:#1a5c3a; border-radius:8px; padding:6px 14px; font-size:13px; cursor:pointer;">
-        Endre bilde
-      </button>
+      <button onclick="document.getElementById('bilde-input').click()" style="background:none; border:1px solid #1a5c3a; color:#1a5c3a; border-radius:8px; padding:6px 14px; font-size:13px; cursor:pointer;">Endre bilde</button>
     </div>
-
-    <!-- PROFIL INFO -->
     <div style="background:#fff; border-radius:16px; padding:20px; margin-bottom:16px; border:1px solid #ececec;">
       <h2 style="font-size:18px; margin-bottom:16px;">Min profil</h2>
       <label style="font-size:13px; color:#888; margin-bottom:4px; display:block;">Navn</label>
@@ -337,8 +308,6 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a;
       <input id="profil-epost-vis" type="text" disabled style="width:100%; border:1.5px solid #e0e0e0; border-radius:10px; padding:10px 14px; font-size:14px; background:#f9f9f9; margin-bottom:16px;">
       <button class="btn-green" onclick="lagreProfil()">Lagre profil</button>
     </div>
-
-    <!-- STATISTIKK -->
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
       <div style="background:#fff; border-radius:16px; padding:16px; text-align:center; border:1px solid #ececec;">
         <div id="antall-annonser" style="font-size:28px; font-weight:700; color:#1a5c3a;">0</div>
@@ -349,8 +318,6 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a;
         <div style="font-size:13px; color:#888;">Snittkarakter</div>
       </div>
     </div>
-
-    <!-- LOGG UT -->
     <button class="knapp rod" onclick="loggUt()">Logg ut</button>
   </div>
 </div>
@@ -378,25 +345,12 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a;
 
 <!-- NAVIGASJON -->
 <nav class="bottom-nav">
-  <button class="nav-item active" id="nav-utforsk" onclick="byttSide('utforsk')">
-    <span>🔍</span>Utforsk
-  </button>
-  <button class="nav-item" id="nav-fordeg" onclick="byttSide('fordeg')">
-    <span>⭐</span>For deg
-  </button>
-  <button class="nav-item" id="nav-mine" onclick="byttSide('mine')">
-    <span>📋</span>Mine
-  </button>
-  <button class="nav-item" id="nav-meldinger" onclick="byttSide('meldinger')" style="position:relative;">
-    <span>💬</span>Meldinger
-    <div class="badge" id="melding-badge">0</div>
-  </button>
-  <button class="nav-item" id="nav-profil" onclick="byttSide('profil')">
-    <span>👤</span>Profil
-  </button>
-  <button class="nav-item" id="nav-vilkar" onclick="byttSide('vilkar')" style="font-size:10px; color:#aaa;">
-  <span style="font-size:16px;">📄</span>Vilkår
-</button>
+  <button class="nav-item active" id="nav-utforsk" onclick="byttSide('utforsk')"><span>🔍</span>Utforsk</button>
+  <button class="nav-item" id="nav-fordeg" onclick="byttSide('fordeg')"><span>⭐</span>For deg</button>
+  <button class="nav-item" id="nav-mine" onclick="byttSide('mine')"><span>📋</span>Mine</button>
+  <button class="nav-item" id="nav-meldinger" onclick="byttSide('meldinger')" style="position:relative;"><span>💬</span>Meldinger<div class="badge" id="melding-badge">0</div></button>
+  <button class="nav-item" id="nav-profil" onclick="byttSide('profil')"><span>👤</span>Profil</button>
+  <button class="nav-item" id="nav-vilkar" onclick="byttSide('vilkar')"><span>📄</span>Vilkår</button>
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -414,6 +368,7 @@ let redigerId = null;
 let aktivSamtale = null;
 let valgtStjerner = 0;
 let aktivVurderingId = null;
+let mineFavoritter = [];
 
 function byttSide(side) {
   document.querySelectorAll('.side').forEach(s => s.classList.remove('aktiv'));
@@ -445,12 +400,13 @@ async function loggInn() {
   const passord = document.getElementById('passord').value;
   const { data, error } = await sb.auth.signInWithPassword({ email: epost, password: passord });
   if (error) alert('Feil: ' + error.message);
-  else oppdaterBruker(data.user);
+  else await oppdaterBruker(data.user);
 }
 
 async function loggUt() {
   await sb.auth.signOut();
   innloggetBruker = null;
+  mineFavoritter = [];
   oppdaterBrukerUI(null);
   byttSide('utforsk');
 }
@@ -458,8 +414,10 @@ async function loggUt() {
 async function oppdaterBruker(bruker) {
   innloggetBruker = bruker;
   oppdaterBrukerUI(bruker);
-  await hentFavoritter(); oppdaterHjerteknappe();
-  sjekkUlesteMeldinger();
+  if (bruker) {
+    await hentFavoritter();
+    sjekkUlesteMeldinger();
+  }
   byttSide('utforsk');
 }
 
@@ -473,7 +431,6 @@ function oppdaterBrukerUI(bruker) {
     document.getElementById('profil-innhold').style.display = 'block';
     document.getElementById('profil-epost-vis').value = bruker.email;
     fab.style.display = aktivSide === 'utforsk' ? 'flex' : 'none';
-    hentProfil();
   } else {
     document.getElementById('topbar-bruker').textContent = '';
     document.getElementById('topbar-btn').textContent = 'Logg inn';
@@ -568,22 +525,18 @@ function lagKort(a, visSlett) {
   const bildeSrc = bilder.length > 0
     ? `<img src="${bilder[0]}" style="width:100%; height:100%; object-fit:cover;">`
     : '📦';
+  const erFavoritt = mineFavoritter.includes(a.id);
+  const hjerte = `<button id="hjerte-${a.id}" onclick="event.stopPropagation(); toggleFavoritt(${a.id})"
+    style="position:absolute; top:8px; right:8px; background:rgba(255,255,255,0.9);
+    border:none; border-radius:50%; width:32px; height:32px; font-size:16px;
+    cursor:pointer;">${erFavoritt ? '❤️' : '🤍'}</button>`;
   const knapper = visSlett ? `
     <button class="knapp bla" style="margin-top:6px;" onclick="event.stopPropagation(); redigerAnnonse(${a.id}, '${a.tittel}', '${a.beskrivelse||''}', '${a.pris}', '${a.kategori}', '${a.sted}')">✏️ Rediger</button>
     <button class="knapp rod" style="margin-top:6px;" onclick="event.stopPropagation(); slettAnnonse(${a.id})">🗑 Slett</button>
-  ` : `
-    <button class="knapp" style="margin-top:6px; background:#f39c12;" onclick="event.stopPropagation(); visVurdering(${a.id})">⭐ Gi vurdering</button>
-  `;
+  ` : `<button class="knapp" style="margin-top:6px; background:#f39c12;" onclick="event.stopPropagation(); visVurdering(${a.id})">⭐ Gi vurdering</button>`;
   return `
     <div class="kort" data-kategori="${a.kategori}" id="kort-${a.id}" onclick="visProdukt(${a.id})">
-      <div class="kort-bilde" style="background:#e8f0dc; position:relative;">
-        ${bildeSrc}
-        <button id="hjerte-${a.id}" onclick="event.stopPropagation(); toggleFavoritt(${a.id})"
-          style="position:absolute; top:8px; right:8px; background:rgba(255,255,255,0.9);
-          border:none; border-radius:50%; width:32px; height:32px; font-size:16px;
-          cursor:pointer; display:flex; align-items:center; justify-content:center;
-          box-shadow:0 2px 6px rgba(0,0,0,0.15);">🤍</button>
-      </div>
+      <div class="kort-bilde" style="background:#e8f0dc;">${bildeSrc}${hjerte}</div>
       <div class="kort-info">
         <h2>${a.tittel}</h2>
         <p class="sted">📍 ${a.sted}</p>
@@ -612,41 +565,36 @@ async function hentForDeg() {
     return;
   }
   if (!navigator.geolocation) {
-    grid.innerHTML = '<div class="tom"><span>📍</span>Din nettleser støtter ikke posisjon</div>';
+    grid.innerHTML = '';
+    data.forEach(a => grid.innerHTML += lagKort(a, false));
     return;
   }
   navigator.geolocation.getCurrentPosition(
     async (pos) => {
       const lat = pos.coords.latitude;
       const lon = pos.coords.longitude;
-      const resp = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
-      const steds = await resp.json();
-      const by = steds.address.city || steds.address.town || steds.address.village || '';
-      grid.innerHTML = '';
-      if (by) {
-        const header = document.createElement('p');
-        header.style = 'font-size:13px; color:#888; margin-bottom:12px;';
-        header.textContent = '📍 Viser annonser nær ' + by;
-        grid.appendChild(header);
+      try {
+        const resp = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+        const steds = await resp.json();
+        const by = steds.address.city || steds.address.town || steds.address.village || '';
+        grid.innerHTML = '';
+        if (by) {
+          const header = document.createElement('p');
+          header.style = 'font-size:13px; color:#888; margin-bottom:12px;';
+          header.textContent = '📍 Viser annonser nær ' + by;
+          grid.appendChild(header);
+        }
+        const naere = data.filter(a => a.sted && by && a.sted.toLowerCase().includes(by.toLowerCase()));
+        const andre = data.filter(a => !naere.includes(a));
+        [...naere, ...andre].forEach(a => grid.innerHTML += lagKort(a, false));
+      } catch(e) {
+        grid.innerHTML = '';
+        data.forEach(a => grid.innerHTML += lagKort(a, false));
       }
-      const naere = data.filter(a => a.sted && by && a.sted.toLowerCase().includes(by.toLowerCase()));
-      const andre = data.filter(a => !a.sted || !by || !a.sted.toLowerCase().includes(by.toLowerCase()));
-      const sortert = [...naere, ...andre];
-      if (!sortert.length) {
-        grid.innerHTML = '<div class="tom"><span>📍</span>Ingen annonser i nærheten</div>';
-        return;
-      }
-      const kortGrid = document.createElement('div');
-      kortGrid.className = 'grid';
-      sortert.forEach(a => kortGrid.innerHTML += lagKort(a, false));
-      grid.appendChild(kortGrid);
     },
     () => {
       grid.innerHTML = '';
-      const kortGrid = document.createElement('div');
-      kortGrid.className = 'grid';
-      data.forEach(a => kortGrid.innerHTML += lagKort(a, false));
-      grid.appendChild(kortGrid);
+      data.forEach(a => grid.innerHTML += lagKort(a, false));
     }
   );
 }
@@ -676,12 +624,7 @@ async function visProdukt(id) {
     ? `<div style="display:flex; gap:8px; overflow-x:auto; margin-bottom:16px;">${bilder.map(b => `<img src="${b}" style="height:220px; border-radius:12px; object-fit:cover; flex-shrink:0;">`).join('')}</div>`
     : `<div style="height:200px; background:#e8f0dc; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:64px; margin-bottom:16px;">📦</div>`;
   const vurderingHTML = vurderinger && vurderinger.length
-    ? vurderinger.map(v => `
-        <div style="background:#fff; border-radius:12px; padding:14px; margin-bottom:10px; border:1px solid #e8e8e8;">
-          <div style="color:#f39c12; font-size:16px; margin-bottom:4px;">${'⭐'.repeat(v.stjerner)}</div>
-          <div style="font-size:13px; color:#555; margin-bottom:4px;">${v.kommentar || ''}</div>
-          <div style="font-size:12px; color:#aaa;">${v.fra}</div>
-        </div>`).join('')
+    ? vurderinger.map(v => `<div style="background:#fff; border-radius:12px; padding:14px; margin-bottom:10px; border:1px solid #e8e8e8;"><div style="color:#f39c12; font-size:16px; margin-bottom:4px;">${'⭐'.repeat(v.stjerner)}</div><div style="font-size:13px; color:#555; margin-bottom:4px;">${v.kommentar || ''}</div><div style="font-size:12px; color:#aaa;">${v.fra}</div></div>`).join('')
     : '<div style="color:#888; font-size:13px;">Ingen vurderinger ennå</div>';
   document.getElementById('produkt-innhold').innerHTML = `
     ${bildeHTML}
@@ -701,7 +644,7 @@ async function visProdukt(id) {
   byttSide('produkt');
 }
 
-function visProduktFast(tittel, pris, sted, kategori, beskrivelse) {
+function visProduktFast(tittel, pris, sted, beskrivelse) {
   document.getElementById('produkt-innhold').innerHTML = `
     <div style="background:#fff; border-radius:14px; padding:20px; margin-bottom:16px; border:1px solid #e8e8e8;">
       <h2 style="font-size:20px; margin-bottom:8px;">${tittel}</h2>
@@ -807,8 +750,9 @@ function velgStjerner(antall) {
 }
 
 function oppdaterStjerneVelger() {
-  const stjerner = document.querySelectorAll('#stjerne-velger span');
-  stjerner.forEach((s, i) => { s.style.opacity = i < valgtStjerner ? '1' : '0.3'; });
+  document.querySelectorAll('#stjerne-velger span').forEach((s, i) => {
+    s.style.opacity = i < valgtStjerner ? '1' : '0.3';
+  });
 }
 
 async function sendVurdering() {
@@ -829,21 +773,83 @@ async function hentAlleStjerner() {
   });
   Object.entries(gruppert).forEach(([id, stjerner]) => {
     const snitt = stjerner.reduce((a, b) => a + b, 0) / stjerner.length;
-    const element = document.getElementById('stjerner-' + id);
-    if (element) element.textContent = '⭐'.repeat(Math.round(snitt)) + ' (' + stjerner.length + ')';
+    const el = document.getElementById('stjerner-' + id);
+    if (el) el.textContent = '⭐'.repeat(Math.round(snitt)) + ' (' + stjerner.length + ')';
   });
+}
+
+async function hentFavoritter() {
+  if (!innloggetBruker) return;
+  const { data } = await sb.from('favoritter').select('*').eq('epost', innloggetBruker.email);
+  if (data) mineFavoritter = data.map(f => f.annonse_id);
+}
+
+async function toggleFavoritt(annonseId) {
+  if (!innloggetBruker) { alert('Du må logge inn for å lagre favoritter!'); byttSide('profil'); return; }
+  const erFavoritt = mineFavoritter.includes(annonseId);
+  const knapp = document.getElementById('hjerte-' + annonseId);
+  if (erFavoritt) {
+    await sb.from('favoritter').delete().eq('epost', innloggetBruker.email).eq('annonse_id', annonseId);
+    mineFavoritter = mineFavoritter.filter(id => id !== annonseId);
+    if (knapp) knapp.textContent = '🤍';
+  } else {
+    await sb.from('favoritter').insert([{ epost: innloggetBruker.email, annonse_id: annonseId }]);
+    mineFavoritter.push(annonseId);
+    if (knapp) knapp.textContent = '❤️';
+  }
+}
+
+function toggleFavorittFast(navn) {
+  if (!innloggetBruker) { alert('Du må logge inn for å lagre favoritter!'); byttSide('profil'); return; }
+  const knapp = document.getElementById('hjerte-' + navn);
+  if (knapp) knapp.textContent = knapp.textContent === '❤️' ? '🤍' : '❤️';
 }
 
 async function sjekkUlesteMeldinger() {
   if (!innloggetBruker) return;
   const { data } = await sb.from('meldinger').select('*').eq('til', innloggetBruker.email).eq('lest', false);
   const badge = document.getElementById('melding-badge');
-  if (data && data.length > 0) {
-    badge.textContent = data.length;
-    badge.style.display = 'flex';
-  } else {
-    badge.style.display = 'none';
+  if (data && data.length > 0) { badge.textContent = data.length; badge.style.display = 'flex'; }
+  else badge.style.display = 'none';
+}
+
+async function hentProfil() {
+  if (!innloggetBruker) return;
+  const { data } = await sb.from('profiler').select('*').eq('epost', innloggetBruker.email).single();
+  if (data) {
+    document.getElementById('profil-navn').value = data.navn || '';
+    document.getElementById('profil-bio').value = data.bio || '';
+    if (data.bilde) document.getElementById('profil-bilde-visning').innerHTML = `<img src="${data.bilde}" style="width:100%; height:100%; object-fit:cover;">`;
   }
+  document.getElementById('profil-epost-vis').value = innloggetBruker.email;
+  const { data: annonser } = await sb.from('annonser').select('id').eq('epost', innloggetBruker.email);
+  document.getElementById('antall-annonser').textContent = annonser ? annonser.length : 0;
+  const { data: vurderinger } = await sb.from('vurdering').select('stjerner').eq('fra', innloggetBruker.email);
+  if (vurderinger && vurderinger.length) {
+    const snitt = vurderinger.reduce((s, v) => s + v.stjerner, 0) / vurderinger.length;
+    document.getElementById('snitt-vurdering').textContent = snitt.toFixed(1) + ' ⭐';
+  }
+}
+
+async function lagreProfil() {
+  const navn = document.getElementById('profil-navn').value;
+  const bio = document.getElementById('profil-bio').value;
+  const { data: eksisterende } = await sb.from('profiler').select('*').eq('epost', innloggetBruker.email).single();
+  if (eksisterende) await sb.from('profiler').update({ navn, bio }).eq('epost', innloggetBruker.email);
+  else await sb.from('profiler').insert([{ epost: innloggetBruker.email, navn, bio }]);
+  alert('Profilen er lagret!');
+}
+
+async function lastOppBilde() {
+  const fil = document.getElementById('bilde-input').files[0];
+  if (!fil) return;
+  const filNavn = 'profil_' + innloggetBruker.email + '_' + Date.now();
+  const { error } = await sb.storage.from('bilder').upload(filNavn, fil);
+  if (error) { alert('Feil: ' + error.message); return; }
+  const { data } = sb.storage.from('bilder').getPublicUrl(filNavn);
+  await sb.from('profiler').upsert([{ epost: innloggetBruker.email, bilde: data.publicUrl }]);
+  document.getElementById('profil-bilde-visning').innerHTML = `<img src="${data.publicUrl}" style="width:100%; height:100%; object-fit:cover;">`;
+  alert('Profilbilde oppdatert!');
 }
 
 function filtrer() {
@@ -876,99 +882,7 @@ setInterval(() => { if (innloggetBruker) sjekkUlesteMeldinger(); }, 10000);
 sb.auth.getSession().then(({ data }) => {
   if (data.session) oppdaterBruker(data.session.user);
 });
-
-async function hentProfil() {
-  if (!innloggetBruker) return;
-  const { data } = await sb.from('profiler').select('*').eq('epost', innloggetBruker.email).single();
-  if (data) {
-    document.getElementById('profil-navn').value = data.navn || '';
-    document.getElementById('profil-bio').value = data.bio || '';
-    if (data.bilde) {
-      document.getElementById('profil-bilde-visning').innerHTML = `<img src="${data.bilde}" style="width:100%; height:100%; object-fit:cover;">`;
-    }
-  }
-  document.getElementById('profil-epost-vis').value = innloggetBruker.email;
-
-  const { data: annonser } = await sb.from('annonser').select('id').eq('epost', innloggetBruker.email);
-  document.getElementById('antall-annonser').textContent = annonser ? annonser.length : 0;
-
-  const { data: vurderinger } = await sb.from('vurdering').select('stjerner').eq('fra', innloggetBruker.email);
-  if (vurderinger && vurderinger.length) {
-    const snitt = vurderinger.reduce((s, v) => s + v.stjerner, 0) / vurderinger.length;
-    document.getElementById('snitt-vurdering').textContent = snitt.toFixed(1) + ' ⭐';
-  }
-}
-
-async function lagreProfil() {
-  const navn = document.getElementById('profil-navn').value;
-  const bio = document.getElementById('profil-bio').value;
-  const { data: eksisterende } = await sb.from('profiler').select('*').eq('epost', innloggetBruker.email).single();
-  
-  if (eksisterende) {
-    await sb.from('profiler').update({ navn, bio }).eq('epost', innloggetBruker.email);
-  } else {
-    await sb.from('profiler').insert([{ epost: innloggetBruker.email, navn, bio }]);
-  }
-  alert('Profilen er lagret!');
-}
-
-async function lastOppBilde() {
-  const fil = document.getElementById('bilde-input').files[0];
-  if (!fil) return;
-  const filNavn = 'profil_' + innloggetBruker.email + '_' + Date.now();
-  const { error } = await sb.storage.from('bilder').upload(filNavn, fil);
-  if (error) { alert('Feil: ' + error.message); return; }
-  const { data } = sb.storage.from('bilder').getPublicUrl(filNavn);
-  await sb.from('profiler').upsert([{ epost: innloggetBruker.email, bilde: data.publicUrl }]);
-  document.getElementById('profil-bilde-visning').innerHTML = `<img src="${data.publicUrl}" style="width:100%; height:100%; object-fit:cover;">`;
-  alert('Profilbilde oppdatert!');
-}
-
-let mineFavoritter = [];
-
-async function hentFavoritter() {
-  if (!innloggetBruker) return;
-  const { data } = await sb.from('favoritter').select('*').eq('epost', innloggetBruker.email);
-  if (data) {
-    mineFavoritter = data.map(f => f.annonse_id);
-    oppdaterHjerteknappe();
-  }
-}
-
-function oppdaterHjerteknappe() {
-  mineFavoritter.forEach(id => {
-    const knapp = document.getElementById('hjerte-' + id);
-    if (knapp) knapp.textContent = '❤️';
-  });
-}
-
-async function toggleFavoritt(annonseId) {
-  if (!innloggetBruker) {
-    alert('Du må logge inn for å lagre favoritter!');
-    byttSide('profil');
-    return;
-  }
-  const erFavoritt = mineFavoritter.includes(annonseId);
-  const knapp = document.getElementById('hjerte-' + annonseId);
-
-  if (erFavoritt) {
-    await sb.from('favoritter').delete()
-      .eq('epost', innloggetBruker.email)
-      .eq('annonse_id', annonseId);
-    mineFavoritter = mineFavoritter.filter(id => id !== annonseId);
-    if (knapp) knapp.textContent = '🤍';
-  } else {
-    await sb.from('favoritter').insert([{
-      epost: innloggetBruker.email,
-      annonse_id: annonseId
-    }]);
-    mineFavoritter.push(annonseId);
-    if (knapp) knapp.textContent = '❤️';
-  }
-}
-
 hentAnnonser();
-hentFavoritter();
 hentAlleStjerner();
 </script>
 </body>
