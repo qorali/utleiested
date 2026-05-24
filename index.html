@@ -557,45 +557,59 @@ async function hentAnnonser() {
 }
 
 async function hentForDeg() {
+  const container = document.getElementById('side-fordeg');
+  container.innerHTML = '<p class="sekstittel">For deg</p><div id="fordeg-grid" class="grid"></div>';
   const grid = document.getElementById('fordeg-grid');
-  grid.innerHTML = '<div class="tom"><span>📍</span>Finner annonser nær deg...</div>';
+
+  // Vis favoritter øverst
+  if (innloggetBruker && mineFavoritter.length > 0) {
+    const { data: favData } = await sb.from('annonser').select('*').in('id', [...mineFavoritter]);
+    if (favData && favData.length) {
+      const favHeader = document.createElement('p');
+      favHeader.style = 'font-size:15px; font-weight:600; margin-bottom:12px;';
+      favHeader.textContent = '❤️ Dine favoritter';
+      container.insertBefore(favHeader, grid);
+      const favGrid = document.createElement('div');
+      favGrid.className = 'grid';
+      favGrid.style = 'margin-bottom:24px;';
+      favData.forEach(a => favGrid.innerHTML += lagKort(a, false));
+      container.insertBefore(favGrid, grid);
+    }
+  }
+
+  // Vis annonser nær deg
   const { data, error } = await sb.from('annonser').select('*');
   if (error || !data || !data.length) {
     grid.innerHTML = '<div class="tom"><span>⭐</span>Ingen annonser ennå</div>';
     return;
   }
+
   if (!navigator.geolocation) {
-    grid.innerHTML = '';
     data.forEach(a => grid.innerHTML += lagKort(a, false));
     return;
   }
+
+  const stedHeader = document.createElement('p');
+  stedHeader.id = 'sted-header';
+  stedHeader.style = 'font-size:15px; font-weight:600; margin-bottom:12px;';
+  stedHeader.textContent = '📍 Nær deg';
+  container.insertBefore(stedHeader, grid);
+
   navigator.geolocation.getCurrentPosition(
     async (pos) => {
-      const lat = pos.coords.latitude;
-      const lon = pos.coords.longitude;
       try {
-        const resp = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+        const resp = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
         const steds = await resp.json();
         const by = steds.address.city || steds.address.town || steds.address.village || '';
-        grid.innerHTML = '';
-        if (by) {
-          const header = document.createElement('p');
-          header.style = 'font-size:13px; color:#888; margin-bottom:12px;';
-          header.textContent = '📍 Viser annonser nær ' + by;
-          grid.appendChild(header);
-        }
+        if (by) stedHeader.textContent = '📍 Nær ' + by;
         const naere = data.filter(a => a.sted && by && a.sted.toLowerCase().includes(by.toLowerCase()));
         const andre = data.filter(a => !naere.includes(a));
         [...naere, ...andre].forEach(a => grid.innerHTML += lagKort(a, false));
       } catch(e) {
-        grid.innerHTML = '';
         data.forEach(a => grid.innerHTML += lagKort(a, false));
       }
     },
-    () => {
-      grid.innerHTML = '';
-      data.forEach(a => grid.innerHTML += lagKort(a, false));
-    }
+    () => { data.forEach(a => grid.innerHTML += lagKort(a, false)); }
   );
 }
 
