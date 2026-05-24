@@ -967,25 +967,8 @@ async function toggleFavoritt(annonseId) {
   }
 }
 
-async function hentFavorittAnnonser() {
-  if (!innloggetBruker || mineFavoritter.length === 0) return;
-  const { data } = await sb.from('annonser').select('*').in('id', mineFavoritter);
-  if (!data || !data.length) return;
-  const grid = document.getElementById('fordeg-grid');
-  const header = document.createElement('p');
-  header.style = 'font-size:14px; font-weight:600; margin-bottom:12px; margin-top:20px;';
-  header.textContent = '❤️ Dine favoritter';
-  grid.parentElement.insertBefore(header, grid);
-  const kortGrid = document.createElement('div');
-  kortGrid.className = 'grid';
-  kortGrid.style = 'margin-bottom:20px;';
-  data.forEach(a => kortGrid.innerHTML += lagKort(a, false));
-  grid.parentElement.insertBefore(kortGrid, grid);
-}
-
 hentAnnonser();
 hentFavoritter();
-hentFavorittAnnonser();
 hentAlleStjerner();
 </script>
 </body>
