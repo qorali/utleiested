@@ -563,7 +563,7 @@ async function slettAnnonse(id) {
   else document.getElementById('kort-' + id).remove();
 }
 
-async function lagKort(a, visSlett) {
+function lagKort(a, visSlett) {
   const bilder = a.bilder ? a.bilder.split(',') : [];
   const bildeSrc = bilder.length > 0
     ? `<img src="${bilder[0]}" style="width:100%; height:100%; object-fit:cover;">`
