@@ -557,6 +557,7 @@ async function hentAnnonser() {
 }
 
 async function hentForDeg() {
+  if (innloggetBruker) await hentFavoritter();
   const container = document.getElementById('side-fordeg');
   container.innerHTML = '<p class="sekstittel">For deg</p><div id="fordeg-grid" class="grid"></div>';
   const grid = document.getElementById('fordeg-grid');
