@@ -146,6 +146,23 @@
   <button style="background:none; border:none; color:#888; font-size:13px; cursor:pointer;" onclick="lukkAlleModaler()">Avbryt</button>
 </div>
 
+<!-- ØNSKE MODAL -->
+<div class="modal" id="oenske-modal">
+  <h2>Legg ut ønske</h2>
+  <input id="o-tittel" type="text" placeholder="Hva leter du etter? (f.eks. Stige)">
+  <textarea id="o-beskrivelse" placeholder="Beskriv hva du trenger..."></textarea>
+  <select id="o-kategori">
+    <option value="">Velg kategori</option>
+    <option value="sport">Sport og friluft</option>
+    <option value="verktoy">Verktøy</option>
+    <option value="elektronikk">Elektronikk</option>
+    <option value="annet">Annet</option>
+  </select>
+  <input id="o-sted" type="text" placeholder="Sted (f.eks. Mandal)">
+  <button class="btn-green" onclick="publiserOenske()">Publiser ønske</button>
+  <button style="background:none; border:none; color:#888; font-size:13px; cursor:pointer;" onclick="lukkAlleModaler()">Avbryt</button>
+</div>
+
 <!-- FAB -->
 <button class="fab" id="fab" onclick="visLeggUt()">+</button>
 
@@ -343,6 +360,15 @@
   <div id="produkt-innhold"></div>
 </div>
 
+<!-- ØNSKER -->
+<div class="side" id="side-oensker">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+    <p class="sekstittel" style="margin-bottom:0;">Ønsker</p>
+    <button class="knapp" style="width:auto; padding:8px 16px;" onclick="visOenske()">+ Legg ut ønske</button>
+  </div>
+  <div id="oensker-liste"></div>
+</div>
+
 <!-- NAVIGASJON -->
 <nav class="bottom-nav">
   <button class="nav-item active" id="nav-utforsk" onclick="byttSide('utforsk')"><span>🔍</span>Utforsk</button>
@@ -351,6 +377,9 @@
   <button class="nav-item" id="nav-meldinger" onclick="byttSide('meldinger')" style="position:relative;"><span>💬</span>Meldinger<div class="badge" id="melding-badge">0</div></button>
   <button class="nav-item" id="nav-profil" onclick="byttSide('profil')"><span>👤</span>Profil</button>
   <button class="nav-item" id="nav-vilkar" onclick="byttSide('vilkar')"><span>📄</span>Vilkår</button>
+  <button class="nav-item" id="nav-oensker" onclick="byttSide('oensker')">
+  <span>🙋</span>Ønsker
+</button>
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -385,6 +414,7 @@ function byttSide(side) {
   if (side === 'fordeg') hentForDeg();
   if (side === 'meldinger') hentSamtaler();
   if (side === 'profil') hentProfil();
+  if (side === 'oensker') hentOensker();
 }
 
 async function registrer() {
@@ -890,6 +920,7 @@ function lukkAlleModaler() {
   document.getElementById('leggut-modal').style.display = 'none';
   document.getElementById('rediger-modal').style.display = 'none';
   document.getElementById('vurdering-modal').style.display = 'none';
+  document.getElementById('oenske-modal').style.display = 'none';
 }
 
 setInterval(() => { if (innloggetBruker) sjekkUlesteMeldinger(); }, 10000);
@@ -897,6 +928,61 @@ setInterval(() => { if (innloggetBruker) sjekkUlesteMeldinger(); }, 10000);
 sb.auth.getSession().then(({ data }) => {
   if (data.session) oppdaterBruker(data.session.user);
 });
+
+function visOenske() {
+  if (!innloggetBruker) { alert('Du må logge inn for å legge ut ønske!'); byttSide('profil'); return; }
+  document.getElementById('modal-bg').style.display = 'block';
+  document.getElementById('oenske-modal').style.display = 'block';
+}
+
+async function publiserOenske() {
+  const tittel = document.getElementById('o-tittel').value;
+  const beskrivelse = document.getElementById('o-beskrivelse').value;
+  const kategori = document.getElementById('o-kategori').value;
+  const sted = document.getElementById('o-sted').value;
+  if (!tittel || !sted) { alert('Fyll inn tittel og sted!'); return; }
+  const { error } = await sb.from('oensker').insert([{
+    epost: innloggetBruker.email,
+    tittel, beskrivelse, kategori, sted
+  }]);
+  if (error) alert('Feil: ' + error.message);
+  else { alert('Ønsket er publisert!'); lukkAlleModaler(); hentOensker(); }
+}
+
+async function hentOensker() {
+  const liste = document.getElementById('oensker-liste');
+  if (!liste) return;
+  liste.innerHTML = '';
+  const { data, error } = await sb.from('oensker').select('*').order('created_at', { ascending: false });
+  if (error || !data || !data.length) {
+    liste.innerHTML = '<div class="tom"><span>🙋</span>Ingen ønsker ennå — vær den første!</div>';
+    return;
+  }
+  data.forEach(o => {
+    const div = document.createElement('div');
+    div.style = 'background:#fff; border-radius:14px; padding:16px; margin-bottom:12px; border:1px solid #ececec; box-shadow:0 2px 8px rgba(0,0,0,0.05);';
+    div.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+        <h2 style="font-size:15px; font-weight:600;">${o.tittel}</h2>
+        <span style="background:#f0f7f3; color:#1a5c3a; border-radius:20px; padding:3px 10px; font-size:12px; font-weight:500;">${o.kategori || 'Annet'}</span>
+      </div>
+      <p style="font-size:13px; color:#555; margin-bottom:8px; line-height:1.5;">${o.beskrivelse || ''}</p>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:12px; color:#aaa;">📍 ${o.sted} · ${o.epost.split('@')[0]}</span>
+        ${innloggetBruker && innloggetBruker.email !== o.epost
+          ? `<button class="knapp" style="width:auto; padding:6px 14px; font-size:12px;" onclick="startChatOenske('${o.epost}', '${o.tittel}')">💬 Jeg kan hjelpe!</button>`
+          : ''}
+      </div>
+    `;
+    liste.appendChild(div);
+  });
+}
+
+function startChatOenske(epost, tittel) {
+  if (!innloggetBruker) { alert('Du må logge inn!'); return; }
+  alert('Send en melding til ' + epost + ' om: ' + tittel);
+}
+
 hentAnnonser();
 hentAlleStjerner();
 </script>
